@@ -6,26 +6,23 @@ import javax.swing.border.LineBorder;
 public class main extends JFrame {
 
     public main() {
-        // Crear el panel con el BorderLayout y ajustar su tamaño
+        // Crear el panel principal con BorderLayout
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setSize(350, 100);
+        panel.setSize(800, 600);
 
         // Agregar un borde al panel
-        Border panelBorder = new LineBorder(Color.BLACK); // Puedes personalizar el color y el estilo del borde
+        Border panelBorder = new LineBorder(Color.BLACK);
         panel.setBorder(panelBorder);
 
-        // Crear los componentes y ajustar su tamaño
+        // Crear los componentes en la parte superior (título y búsqueda)
         Font font = new Font("Arial", Font.PLAIN, 12);
-
         JLabel menu = new JLabel("MENU");
-        menu.setFont(font);
+        menu.setFont(font);    
         panel.add(menu, BorderLayout.WEST);
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setSize(150, 25); // Reducir el tamaño del panel superior
-
-        // Agregar un borde a topPanel
-        Border topPanelBorder = new LineBorder(Color.BLACK); // Puedes personalizar el color y el estilo del borde
+        topPanel.setSize(150, 25);
+        Border topPanelBorder = new LineBorder(Color.BLACK);
         topPanel.setBorder(topPanelBorder);
 
         JLabel titulo = new JLabel("TITULO");
@@ -39,72 +36,38 @@ public class main extends JFrame {
         topPanel.add(busqueda, BorderLayout.SOUTH);
         panel.add(topPanel, BorderLayout.NORTH);
 
-        // Crear un panel para el botón de perfil con forma circular en la parte superior derecha
-        JPanel profileButtonPanel = new JPanel(new BorderLayout());
-        profileButtonPanel.setSize(75, 75); // Tamaño del botón circular
-
-        // Agregar un borde a profileButtonPanel
-        Border profileButtonPanelBorder = new LineBorder(Color.BLACK); // Puedes personalizar el color y el estilo del borde
-        profileButtonPanel.setBorder(profileButtonPanelBorder);
-
-        JButton perfil = new JButton("Perfil") {
-            @Override
-            protected void paintComponent(Graphics g) {
-                if (!isOpaque()) {
-                    super.paintComponent(g);
-                    return;
-                }
-
-                super.paintComponent(g);
-
-                int width = getWidth();
-                int height = getHeight();
-                g.setColor(getBackground());
-                g.fillOval(0, 0, width, height);
-            }
-        };
-
-        perfil.setFont(font);
-        perfil.setForeground(Color.WHITE); // Color del texto en el botón
-        perfil.setBackground(Color.BLUE); // Color de fondo del botón
-        perfil.setOpaque(true);
-        perfil.setBorderPainted(false);
-        perfil.setSize(75, 75); // Tamaño del botón circular
-        profileButtonPanel.add(perfil, BorderLayout.NORTH);
-        panel.add(profileButtonPanel, BorderLayout.EAST);
-
-        // Crear un panel para los contenidos centrados en tres columnas usando GridBagLayout
+        // Crear el panel para contenidos centrados en tres columnas usando GridBagLayout
         JPanel contentPanel = new JPanel(new GridBagLayout());
-
-        // Agregar un borde a contentPanel
-        Border contentPanelBorder = new LineBorder(Color.BLACK); // Puedes personalizar el color y el estilo del borde
+        Border contentPanelBorder = new LineBorder(Color.BLACK);
         contentPanel.setBorder(contentPanelBorder);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0; // Aumentar el peso horizontal para desplazar hacia la derecha
-        gbc.insets = new Insets(25, 40, 25, 40); // Espaciado entre componentes (más margen a la derecha)
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(25, 40, 25, 40);
 
-        for (int i = 0; i < 6; i++) {
+        int numContents = 9; // Número de contenidos a agregar
+
+        for (int i = 0; i < numContents; i++) {
             JPanel contentItem = new JPanel();
             contentItem.setLayout(new BoxLayout(contentItem, BoxLayout.Y_AXIS));
 
-            // Agregar una etiqueta para la imagen
-            ImageIcon imageIcon = new ImageIcon("descarga.jfif"); // Reemplaza con la ruta de tu imagen
+            // Agregar una etiqueta para la imagen del contenido
+            ImageIcon imageIcon = new ImageIcon("./src/descarga.jfif");
             JLabel imageLabel = new JLabel(imageIcon);
             contentItem.add(imageLabel);
 
-            // Agregar dos etiquetas de descripción
-            JLabel descriptionLabel1 = new JLabel("Descripción 1");
+            // Agregar dos etiquetas de descripción independientes para el contenido
+            JLabel descriptionLabel1 = new JLabel("Descrin 1 - Contenido " + (i + 1));
             descriptionLabel1.setFont(font);
             contentItem.add(descriptionLabel1);
 
-            JLabel descriptionLabel2 = new JLabel("Descripción 2");
+            JLabel descriptionLabel2 = new JLabel("Descripción 2 - Contenido " + (i + 1));
             descriptionLabel2.setFont(font);
             contentItem.add(descriptionLabel2);
 
-            gbc.gridx = i % 3;
-            gbc.gridy = i / 3;
+            gbc.gridx = i % 3; // Columna
+            gbc.gridy = i / 3; // Fila
             contentPanel.add(contentItem, gbc);
         }
 
