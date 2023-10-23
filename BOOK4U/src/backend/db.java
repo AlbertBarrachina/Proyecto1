@@ -36,10 +36,12 @@ public class db {
 		return con;
 	}
 
-	public static void crearCliente(String dni, String nombre, String apellidos, int telefono, String correo,
-			String contrasenya) {
-		String sql = "INSERT INTO cliente value(" + dni + "," + nombre + "," + apellidos + "," + telefono + ",'',"
-				+ correo + "," + contrasenya + ",0,'S')";
+	// funciones de cliente
+
+	public static void crearCliente(String dni, String nombre, String apellidos, int telefono, String cuneta_bancaria,
+			String correo, String contrasenya, int creditos, String tipo) {
+		String sql = "INSERT INTO CLIENTE values(" + dni + "," + nombre + "," + apellidos + "," + telefono + ",'',"
+				+ correo + "," + contrasenya + ",0,'S');";
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -50,10 +52,11 @@ public class db {
 
 	}
 
-	public static void editarCliente(String dni, String nombre, String apellidos, int telefono, String correo,
-			String contrasenya, int creditos) {
-		String sql = "UPDATE TABLE cliente SET dni = " + dni + ", nombre = " + nombre + ", apellidos = " + apellidos
-				+ ", telefono = " + telefono + ", , password = " + contrasenya + " WHERE dni = " + dni + ";";
+	// cambia la info (dni, nombre, apellidos, telefono y correo) de la cuenta.
+	public static void editarInfoCliente(String dni, String dniNuevo, String nombre, String apellidos, int telefono,
+			String correo) {
+		String sql = "UPDATE TABLE CLIENTE SET dni = " + dniNuevo + ", nombre = " + nombre + ", apellidos = "
+				+ apellidos + ", telefono = " + telefono + " WHERE dni = " + dni + ";";
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -63,4 +66,47 @@ public class db {
 		}
 
 	}
+
+	// comprueba que las dos contraseñas coincidan, si es asi, cambia la contraseña
+	// de la cuenta. (falta encriptar)
+	public static String editarContrasenyaCliente(String dni, String contrasenya, String contrasenya2) {
+		if (contrasenya == contrasenya2) {
+			String sql = "UPDATE TABLE CLIENTE SET contrasenya = " + contrasenya + " WHERE dni = " + dni + ";";
+			try {
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				return "La contraseña se ha cambiado correctamente";
+
+			} catch (SQLException e) {
+				return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos";
+			}
+		} else {
+			return "La contraseña no coincide";
+		}
+	}
+
+	// edita cuantos creditos tiene una persona (necesita areglar)
+	public static void editarCreditosCliente(String dni, int creditos) {
+		String sql = "SELECT creditos from CLIENTE WHERE dni = " + dni + ";";
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			System.out.println(rs);
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+//		sql = "UPDATE TABLE CLIENTE SET creditos = creditos + " + creditos + " WHERE dni = " + dni + ";";
+//		try {
+//			Statement st = con.createStatement();
+//			ResultSet rs = st.executeQuery(sql);
+//
+//		} catch (SQLException e) {
+//			System.out.println(e);
+//		}
+	}
+
+	// funciones de compras
+
 }
