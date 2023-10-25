@@ -42,58 +42,134 @@ public class db {
 
 	// funciones de cliente----------------------------------------------
 
+	// ------------------------------------------------------------
 	// crea el cliente el la base de datos (funcion de register)
-	public static void crearCliente(String dni, String nombre, String apellidos, int telefono, String correo,
+	public static String crearCliente(String nombre, String apellidos, int telefono, String correo,
 			String contrasenya) {
-		String sql = "INSERT INTO CLIENTE values( ? , ? , ? , ? , NULL , ? , ? ,0, 'S')";
+		String sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0, 'S')";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, dni);
-			pst.setString(2, nombre);
-			pst.setString(3, apellidos);
-			pst.setInt(4, telefono);
-			pst.setString(5, correo);
-			pst.setString(6, contrasenya);
-			System.out.println("SQL Statement: " + sql);
+			pst.setString(1, nombre);
+			pst.setString(2, apellidos);
+			pst.setInt(3, telefono);
+			pst.setString(4, correo);
+			pst.setString(5, contrasenya);
+
 			int rowsInserted = pst.executeUpdate();
 			if (rowsInserted > 0) {
-				System.out.println("Usuario creado correctamente.");
+				return "Usuario creado correctamente.";
 			} else {
-				System.out.println("No se pudo crear el usuario.");
+				return "No se pudo crear el usuario.";
+			}
+		} catch (SQLException e) {
+			return "Error: " + (e);
+		}
+
+	}
+
+	// ------------------------------------------------------
+	// recoje toda la informacion del cliente
+	public static String[] mostrarInfoCliente(int idc) {
+		String cliente[] = new String[5];
+		String sql = "SELECT * from CLIENTE WHERE correo = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, idc);
+
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			if (rs.next()) {
+				cliente[0] = Integer.toString(rs.getInt("idc"));
+				cliente[1] = rs.getString("nombre");
+				cliente[2] = rs.getString("apellidos");
+				cliente[3] = Integer.toString(rs.getInt("telefono"));
+				cliente[2] = rs.getString("cuenta_bancaria");
+				cliente[2] = rs.getString("correo");
+				cliente[2] = rs.getString("contrasenya");
+				cliente[3] = Integer.toString(rs.getInt("creditos"));
+				cliente[2] = rs.getString("tipo");
+			} else {
+				System.out.println("No hay cliente.");
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
-			;
+		}
+		return cliente;
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// comprueba si los datos insertados coinciden con los datos en la base de
+	// datos(correo y contraseña).
+
+	public static String comprovarLoginCliente(String correo, String contrasenya) {
+		String contrasenyaCorrecta;
+		String sql = "SELECT contrasenya from CLIENTE WHERE correo = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, correo);
+
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			if (rs.next()) {
+				contrasenyaCorrecta = rs.getString("contrasenya");
+				if (contrasenyaCorrecta == contrasenya) {
+					return "Sesión iniciada correctamente";
+				} else {
+					return "Contraseña incorrecta";
+				}
+			} else {
+				return "No se ha encontrado el usuario.";
+			}
+		} catch (SQLException e) {
+			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// cambia la info (nombre, apellidos, telefono y correo) de la cuenta.
+	public static String editarInfoCliente(int idc, String nombre, String apellidos, int telefono, String correo) {
+		String sql = "UPDATE CLIENTE SET nombre = ?, apellidos = ?, telefono = ?, correo = ? WHERE idc = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, nombre);
+			pst.setString(2, apellidos);
+			pst.setInt(3, telefono);
+			pst.setString(4, correo);
+			pst.setInt(5, idc);
+
+			int rowsUpdated = pst.executeUpdate();
+			if (rowsUpdated > 0) {
+				return "Usuario actualizado correctamente.";
+			} else {
+				return "No se ha encontrado el usuario.";
+			}
+
+		} catch (SQLException e) {
+			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
 		}
 
 	}
 
-	// cambia la info (dni, nombre, apellidos, telefono y correo) de la cuenta.
-	public static void editarInfoCliente(String dni, String dniNuevo, String nombre, String apellidos, int telefono,
-			String correo) {
-		String sql = "UPDATE TABLE CLIENTE SET dni = " + dniNuevo + ", nombre = " + nombre + ", apellidos = "
-				+ apellidos + ", telefono = " + telefono + " WHERE dni = " + dni;
+	// -----------------------------------------------------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!
+	// Cambia la contraseña de la cuenta. !!!!!!!!!!!!!!!!!!!(falta
+	// encriptar)!!!!!!!!!!!!!!!!
+	public static String editarContrasenyaCliente(int idc, String contrasenya) {
+		String sql = "UPDATE CLIENTE SET contrasenya = ? WHERE idc = ?";
 		try {
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, contrasenya);
+			pst.setInt(2, idc);
 
+			int rowsUpdated = pst.executeUpdate();
+			if (rowsUpdated > 0) {
+				return "La contraseña se ha cambiado correctamente.";
+			} else {
+				return "No se ha podido cambiar la contraseña.";
+			}
 		} catch (SQLException e) {
-			System.out.println(e);
-		}
-
-	}
-
-	// comprueba que las dos contraseñas coincidan, si es asi, cambia la contraseña
-	// de la cuenta. (falta encriptar)
-	public static String editarContrasenyaCliente(String dni, String contrasenya) {
-		String sql = "UPDATE TABLE CLIENTE SET contrasenya = " + contrasenya + " WHERE dni = " + dni;
-		try {
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
-			return "La contraseña se ha cambiado correctamente";
-
-		} catch (SQLException e) {
-			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos";
+			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
 		}
 	}
 
@@ -101,50 +177,73 @@ public class db {
 	// edita cuantos creditos tiene una persona, comprueba si tiene suficientes para
 	// gastar y si tiene demasiados (max 999) y los actualiza, manda una string para
 	// que salga como notificacion por pantalla
-	public static String editarCreditosCliente(String dni, int creditos) {
-		int creditosActuales = 0;
-		String sql = "SELECT creditos from CLIENTE WHERE dni = ?";
-		try {
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, dni);
+	public static String editarCreditosCliente(int idc, int creditos) {
 
-			ResultSet rs = pst.executeQuery();
-
-			// si puede
-			if (rs.next()) {
-				creditosActuales = rs.getInt("creditos");
-				int temp = 0;
-				temp = creditosActuales + creditos;
-				if (temp >= 0 && temp <= 999) {
-					creditosActuales += creditos;
-				} else {
-					return "No tiene suficientes creditos";
-				}
-			} else {
-				return "No se ha encontrado el dni: " + dni;
-			}
-		} catch (SQLException e) {
-			return "No se ha podido hacer la operacion, error: " + (e) + ".";
-		}
-
-		sql = "UPDATE CLIENTE SET creditos = creditos + ? WHERE dni = ?";
+		String sql = "UPDATE CLIENTE SET creditos =  ? WHERE idc = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, creditos);
-			pst.setString(2, dni);
+			pst.setInt(2, idc);
 
 			int rowsUpdated = pst.executeUpdate();
 
 			if (rowsUpdated > 0) {
-				return "Operacion realizada con exito. Ahora tiene " + creditosActuales + " creditos.";
+				return "Operacion realizada con exito. Ahora tiene " + creditos + " creditos.";
 			} else {
-				return "No se ha encontrado el dni: " + dni;
+				return "No se ha encontrado el usuario.";
 			}
 		} catch (SQLException e) {
 			return "No se ha podido hacer la operacion, error: " + (e) + ".";
 		}
 	}
 
+	public static int getCreditosCliente(int idc) {
+		int creditosActuales = 0;
+		String sql = "SELECT creditos from CLIENTE WHERE idc = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, idc);
+
+			ResultSet rs = pst.executeQuery();
+			creditosActuales = rs.getInt("creditos");
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return creditosActuales;
+	}
+
+	// -------------------------------------------------------
+	// elimina el cliente que se ha indicado
+	public static String eliminarCliente(int idc) {
+		String sql = "DELETE FROM CLIENTE WHERE idc = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, idc);
+
+			int rowsDeleted = pst.executeUpdate();
+			if (rowsDeleted > 0) {
+				return "El cliente ha sido eliminado correctamente.";
+			} else {
+				return "No se ha podido eliminar el cliente.";
+			}
+		} catch (SQLException e) {
+			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
+		}
+	}
+
 	// funciones de compras
+
+	// crea una factura de la compra y llama a la fucnion que modifica los creditos
+	// del usuario
+	public static String comprarCompras(int idc, int creditos) {
+		String mensaje;
+
+		int creditosActuales = getCreditosCliente(idc);
+		
+		
+
+		mensaje = (editarCreditosCliente(idc, creditos));
+		return "Compra realizada con exito";
+	}
 
 }
