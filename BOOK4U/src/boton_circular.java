@@ -6,7 +6,7 @@ import javax.swing.*;
 
 class CircularButton extends JButton {
     public CircularButton(String text) {
-        super(text);
+        super(text); 
         setPreferredSize(new Dimension(100, 100));
         setContentAreaFilled(true);
         setFocusPainted(true);

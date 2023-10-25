@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
+ 
 public class main extends JFrame {
 
     public main() {
@@ -33,15 +33,42 @@ public class main extends JFrame {
 
         // Crear el botón de perfil con forma circular
         CircularButton perfilButton = new CircularButton("Perfil");
-        perfilButton.setForeground(Color.BLUE);
+        perfilButton.setForeground(Color.BLUE); 
         perfilButton.setFont(new Font("Arial", Font.PLAIN, 12));
 
         // Agregar el botón de perfil en la parte superior (EAST) del panel superior
         topPanel.add(perfilButton, BorderLayout.EAST);
 
         panel.add(topPanel, BorderLayout.NORTH);
+        String currentDirectory = System.getProperty("user.dir");
 
-        // PANEL CENTRAL PARA EL CONTENIDO
+     // Usa la barra diagonal inversa (\) para las rutas en Windows
+     String[] imagePaths = {
+         currentDirectory + "\\imagenes\\descarga.jfif",
+         currentDirectory + "\\imagenes\\1.jfif",
+         currentDirectory + "\\imagenes\\2.jfif",
+         currentDirectory + "\\imagenes\\3.jfif",
+         currentDirectory + "\\imagenes\\4.jfif",
+         currentDirectory + "\\imagenes\\5.jfif",
+         currentDirectory + "\\imagenes\\6.jfif",
+         currentDirectory + "\\imagenes\\7.jfif", 
+         currentDirectory + "\\imagenes\\8.jfif",
+         currentDirectory + "\\imagenes\\9.jfif",
+         currentDirectory + "\\imagenes\\10.jfif",
+         currentDirectory + "\\imagenes\\11.jfif",
+         currentDirectory + "\\imagenes\\12.jfif",
+         currentDirectory + "\\imagenes\\13.jfif",
+         currentDirectory + "\\imagenes\\14.jfif",
+         currentDirectory + "\\imagenes\\15.jfif",
+         currentDirectory + "\\imagenes\\16.jfif",
+         currentDirectory + "\\imagenes\\17.jfif",
+         currentDirectory + "\\imagenes\\18.jfif",
+         currentDirectory + "\\imagenes\\19.jfif"
+         // Agrega rutas para todas tus imágenes
+     };
+
+        
+        // Crear el panel central para el contenido
         JPanel contentPanel = new JPanel(new GridBagLayout());
         Border contentPanelBorder = new LineBorder(Color.BLACK);
         contentPanel.setBorder(contentPanelBorder);
@@ -51,31 +78,22 @@ public class main extends JFrame {
         gbc.weightx = 1.0;
         gbc.insets = new Insets(25, 40, 25, 40);
 
-        int numContents = 20; // Número de contenidos a agregar (aumentado)
+        int numContents = 20;
 
         for (int i = 0; i < numContents; i++) {
-            JPanel contentItem = new JPanel();
-            contentItem.setLayout(new BoxLayout(contentItem, BoxLayout.Y_AXIS));
+            String[] imagePathsForContent = new String[1];
+            imagePathsForContent[0] = imagePaths[i];
+            String description1 = "Descripción 1 - Contenido " + (i + 1);
+            String description2 = "Descripción 2 - Contenido " + (i + 1);
+            Contenido contenido = new Contenido(imagePathsForContent, description1, description2);
 
-            // Agregar una etiqueta para la imagen del contenido
-            ImageIcon imageIcon = new ImageIcon("./src/descarga.jfif");
-            JLabel imageLabel1 = new JLabel(imageIcon);
-            contentItem.add(imageLabel1);
-
-            // Agregar dos etiquetas de descripción independientes para el contenido
-            JLabel descriptionLabel1 = new JLabel("Descripción 1 - Contenido " + (i + 1));
-            descriptionLabel1.setFont(font);
-            contentItem.add(descriptionLabel1);
-
-            JLabel descriptionLabel2 = new JLabel("Descripción 2 - Contenido " + (i + 1));
-            descriptionLabel2.setFont(font);
-            contentItem.add(descriptionLabel2);
-
-            gbc.gridx = i % 4; // Columna
-            gbc.gridy = i / 4; // Fila
-            contentPanel.add(contentItem, gbc);
+            gbc.gridx = i % 4;
+            gbc.gridy = i / 4;
+            contentPanel.add(contenido, gbc);
         }
 
+
+ 
         // Agregar el panel de contenidos a un JScrollPane
         JScrollPane scrollPane = new JScrollPane(contentPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
