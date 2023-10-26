@@ -40,7 +40,7 @@ public class db {
 		return con;
 	}
 
-	// funciones de cliente----------------------------------------------
+	// funciones de tabla cliente----------------------------------------------
 
 	// ------------------------------------------------------------
 	// crea el cliente el la base de datos (funcion de register)
@@ -197,15 +197,19 @@ public class db {
 		}
 	}
 
+	// -----------------------------------------------------------
+	// obtiene cuantos creditos tiene el usuario indicado en su cuenta
 	public static int getCreditosCliente(int idc) {
 		int creditosActuales = 0;
-		String sql = "SELECT creditos from CLIENTE WHERE idc = ?";
+		String sql = "SELECT creditos from CLIENTE WHERE IDC = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
 
 			ResultSet rs = pst.executeQuery();
-			creditosActuales = rs.getInt("creditos");
+			if (rs.next()) {
+				creditosActuales = rs.getInt("creditos");
+			}
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
@@ -231,19 +235,70 @@ public class db {
 		}
 	}
 
-	// funciones de compras
+	// funciones de tabla compras
 
+	// ---------------------------------------------------------------------------------!!!!!!!!!!!error de longitud de alguna variable!!!!!!!!!
 	// crea una factura de la compra y llama a la fucnion que modifica los creditos
 	// del usuario
-	public static String comprarCompras(int idc, int creditos) {
-		String mensaje;
+	public static String comprarCompras(int idc, int creditos, String metodo_pago) {
+		String mensaje = "";
 
 		int creditosActuales = getCreditosCliente(idc);
-		
-		
+		if (creditosActuales >= creditos) {
+			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?)";
+			try {
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setInt(1, idc);
+				pst.setInt(2, creditos);
+				pst.setInt(3, creditos * 10);
+				pst.setString(4, metodo_pago);
 
-		mensaje = (editarCreditosCliente(idc, creditos));
-		return "Compra realizada con exito";
+				int rowsInserted = pst.executeUpdate();
+				if (rowsInserted > 0) {
+					creditos = creditosActuales - creditos;
+					mensaje = (editarCreditosCliente(idc, creditos));
+				} else {
+					mensaje = "No se pudo hacer la transaccion.";
+				}
+			} catch (SQLException e) {
+				mensaje = "Error: " + (e);
+			}
+
+		} else {
+			mensaje = "No tiene suficientes creditos.";
+		}
+		return mensaje;
+	}
+
+	public static void historialCompras(int idc) {
+		ArrayList<String[]> resultados = new ArrayList<>();
+		String sql = "SELECT * from COMPRAS WHERE cliente = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, idc);
+
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			while (rs.next()) {
+				String[] row = new String[5];
+				row[0] = Integer.toString(rs.getInt("id_compra"));
+				row[1] = Integer.toString(rs.getInt("cliente"));
+				row[2] = Integer.toString(rs.getInt("cantidad"));
+				row[3] = Integer.toString(rs.getInt("precio"));
+				row[4] = rs.getString("id_compra");
+
+				resultados.add(row);
+
+				System.out.println(row[0] + "   " + row[1] + "   " + row[2] + "   " + row[3] + "   " + row[4] + "   .");
+			}
+			if (resultados.isEmpty()) {
+				System.out.println("no compraste nada idiota. :3");
+			}
+		} catch (SQLException e) {
+			System.out.println((e));
+		}
+
 	}
 
 }
