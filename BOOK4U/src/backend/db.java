@@ -217,7 +217,7 @@ public class db {
 	}
 
 	// -------------------------------------------------------
-	// elimina el cliente que se ha indicado
+	// elimina el cliente que se ha indicado en casos extremos.
 	public static String eliminarCliente(int idc) {
 		String sql = "DELETE FROM CLIENTE WHERE idc = ?";
 		try {
@@ -237,14 +237,15 @@ public class db {
 
 	// funciones de tabla compras
 
-	// ---------------------------------------------------------------------------------!!!!!!!!!!!error de longitud de alguna variable!!!!!!!!!
-	// crea una factura de la compra y llama a la fucnion que modifica los creditos
-	// del usuario
+	// ---------------------------------------------------------------------------------
+	// crea una factura de la compra de creditos y llama a la fucnion que modifica los creditos
+	// del usuario ( maximo operaciones de dos digitos por seguridad)
 	public static String comprarCompras(int idc, int creditos, String metodo_pago) {
 		String mensaje = "";
 
 		int creditosActuales = getCreditosCliente(idc);
-		if (creditosActuales >= creditos) {
+		int temp = creditosActuales + creditos;
+		if (temp<=999) {
 			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?)";
 			try {
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -255,7 +256,7 @@ public class db {
 
 				int rowsInserted = pst.executeUpdate();
 				if (rowsInserted > 0) {
-					creditos = creditosActuales - creditos;
+					creditos = creditosActuales + creditos;
 					mensaje = (editarCreditosCliente(idc, creditos));
 				} else {
 					mensaje = "No se pudo hacer la transaccion.";
@@ -265,7 +266,7 @@ public class db {
 			}
 
 		} else {
-			mensaje = "No tiene suficientes creditos.";
+			mensaje = "Has llegado a tu limite de creditos acumulados.";
 		}
 		return mensaje;
 	}
@@ -293,12 +294,14 @@ public class db {
 				System.out.println(row[0] + "   " + row[1] + "   " + row[2] + "   " + row[3] + "   " + row[4] + "   .");
 			}
 			if (resultados.isEmpty()) {
-				System.out.println("no compraste nada idiota. :3");
+				System.out.println("No compraste nada.");
 			}
 		} catch (SQLException e) {
 			System.out.println((e));
 		}
 
 	}
+	
+	
 
 }
