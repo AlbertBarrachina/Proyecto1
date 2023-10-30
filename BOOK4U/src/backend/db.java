@@ -1,16 +1,21 @@
 package backend;
 
-import java.awt.Image;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
+import java.util.Base64;
 
 public class db {
 
@@ -40,6 +45,10 @@ public class db {
 		return con;
 	}
 
+	// encripacion de los textos necesatios
+	
+	//en progreso :'(
+	
 	// funciones de tabla cliente----------------------------------------------
 
 	// ------------------------------------------------------------
@@ -238,14 +247,15 @@ public class db {
 	// funciones de tabla compras
 
 	// ---------------------------------------------------------------------------------
-	// crea una factura de la compra de creditos y llama a la fucnion que modifica los creditos
+	// crea una factura de la compra de creditos y llama a la fucnion que modifica
+	// los creditos
 	// del usuario ( maximo operaciones de dos digitos por seguridad)
 	public static String comprarCompras(int idc, int creditos, String metodo_pago) {
 		String mensaje = "";
 
 		int creditosActuales = getCreditosCliente(idc);
 		int temp = creditosActuales + creditos;
-		if (temp<=999) {
+		if (temp <= 999) {
 			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?)";
 			try {
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -301,7 +311,5 @@ public class db {
 		}
 
 	}
-	
-	
 
 }
