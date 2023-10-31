@@ -5,27 +5,25 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.*;
 
 class CircularButton extends JButton {
-    public CircularButton(String text) {
-        super(text); 
+    public CircularButton(String text, Color backgroundColor) {
+        super(text);
         setPreferredSize(new Dimension(100, 100));
-        setContentAreaFilled(true);
-        setFocusPainted(true);
-        setBorderPainted(true);
-        setVisible(true);
-
-        // Agregar un ActionListener si deseas que el botón realice alguna acción al hacer clic
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Agregar aquí la acción que deseas realizar al hacer clic en el botón de perfil
-            }
-        });
+        setContentAreaFilled(false);
+        setFocusPainted(false);
+        setBorderPainted(false);
+        setBackground(backgroundColor);
+        setForeground(Color.WHITE); // Establecer el color de texto (si lo necesitas)
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         if (getModel().isArmed()) {
-            g.setColor(Color.RED); // Color cuando se presiona el botón
+            // Hacer el color un poco más oscuro cuando se presiona el botón
+            g.setColor(new Color(
+                (int) (getBackground().getRed() * 0.5),
+                (int) (getBackground().getGreen() * 0.5),
+                (int) (getBackground().getBlue() * 0.5)
+            ));
         } else {
             g.setColor(getBackground());
         }
@@ -36,6 +34,8 @@ class CircularButton extends JButton {
 
     @Override
     protected void paintBorder(Graphics g) {
-        // No dibujar borde
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(getForeground());
+        g2.draw(new Ellipse2D.Double(0, 0, getWidth(), getHeight()));
     }
 }
