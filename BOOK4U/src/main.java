@@ -12,37 +12,56 @@ public class main extends JFrame {
     private JPanel perfilPanel;
     private List<Contenido> contenidos = new ArrayList<>();
     private JPanel contentPanel;
+    private Color backgroundColor = new Color(173, 216, 230);
+
 
     public main() {
         ////STRING CON LOS NOMBRES DE LAS HABITACIONES/CASAS RURALES////
     	String[] descriptions1 = {
-            "Suite Deluxe", "Habitación con Vista al Mar", "Cabaña Acogedora", "Loft Urbano", "Habitación Familiar", "Bungalow de Montaña",
-            "Habitación Temática Vintage", "Villa con Piscina Privada", "Habitación Loft", "Suite Romántica", "Habitación con Jacuzzi", "Cabaña junto al Río",
-            "Habitación Eco-Friendly", "Alojamiento en Ático", "Habitación de Lujo", "Suite Junior", "Habitación con Terraza", "Cabaña de Campo",
-            "Habitación con Chimenea", "Loft Industrial",
+            "Suite Deluxe", "Habitacion con Vista al Mar", "CabaÃ±a Acogedora", "Loft Urbano", "Habitacion Familiar", "Bungalow de MontaÃ±a",
+            "Habitacion Tematica Vintage", "Villa con Piscina Privada", "Habitacion Loft", "Suite Romantica", "Habitacion con Jacuzzi", "Cabaï¿½a junto al Rio",
+            "Habitacion Eco-Friendly", "Alojamiento en atico", "Habitacion de Lujo", "Suite Junior", "Habitacion con Terraza", "CabaÃ±a de Campo",
+            "Habitacion con Chimenea", "Loft Industrial",
         };
         
     	////STRING CON LOS PRECIOS DE LAS HABITACIONES/CASAS RURALES////
         String[] descriptions2 = {
-            "80 Créditos", "95 Créditos", "70 créditos", "85 créditos", "90 créditos", "75 créditos",
-            "80 créditos", "99 créditos", "85 créditos", "95 créditos", "90 créditos", "80 créditos",
-            "70 créditos", "85 créditos", "99 créditos", "75 créditos", "80 créditos", "70 créditos",
-            "90 créditos", "85 créditos",
+            "80 creditos", "95 creditos", "70 creditos", "85 creditos", "90 creditos", "75 creditos",
+            "80 creditos", "99 creditos", "85 creditos", "95 creditos", "90 creditos", "80 creditos",
+            "70 creditos", "85 creditos", "99 creditos", "75 creditos", "80 creditos", "70 creditos",
+            "90 creditos", "85 creditos",
         };
 
-        ////PANEL PRINCIPAL DONDE SE AÑADIRAN EL RESTO DE PANELES////
+     // Colores para los diferentes paneles
+        Color baseColor1 = new Color(255, 228, 196);
+        Color menuColor = baseColor1.darker(); 
+        Color titleColor = baseColor1; 
+
+        Color baseColor2 = new Color(245, 245, 220);
+        Color searchColor = baseColor2; 
+        Color profileColor = baseColor2; 
+
+        
+        ////PANEL PRINCIPAL DONDE SE Aï¿½ADIRAN EL RESTO DE PANELES////
         panelPrincipal = new JPanel(new BorderLayout());
+        panelPrincipal.setBackground(backgroundColor);
+        
+        //PANEL LATERAL DONDE IRAN ALGUNO DE LOS APARTADOS DEL MENU
         JPanel menuPanel = new JPanel();
         menuPanel.setPreferredSize(new Dimension(100, 600));
+        menuPanel.setBackground(menuColor); // Establecer el color de fondo
         panelPrincipal.add(menuPanel, BorderLayout.WEST);
+
 
         ////PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
         JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(backgroundColor);
         topPanel.setBackground(new Color(173, 216, 230));  
 
 
         ////CREAMOS EL PANEL PARA EL TITULO////
         JPanel tituloPanel = new JPanel(new BorderLayout());  
+        tituloPanel.setBackground(titleColor);
         Font font = new Font("Arial", Font.PLAIN, 18);
         JLabel titulo = new JLabel("TITULO");
         titulo.setHorizontalAlignment(JLabel.CENTER);
@@ -57,10 +76,15 @@ public class main extends JFrame {
         busqueda.setHorizontalAlignment(JTextField.CENTER);
 
      // CREAMOS EL BOTON DE BUSQUEDA
-        CircularButton buscarButton = new CircularButton("", new Color(173, 120, 109));
-        buscarButton.setPreferredSize(new Dimension(30, 30)); // Establece un tamaño preferido
+        CircularButton buscarButton = new CircularButton("", null);  
+        buscarButton.setPreferredSize(new Dimension(30, 30)); 
+        buscarButton.setContentAreaFilled(false); 
+        buscarButton.setBorderPainted(true); 
+        buscarButton.setFocusPainted(false);
+        buscarButton.setOpaque(false); 
+
         try {
-            Image img = ImageIO.read(new File("ruta/a/tu/imagen.png")); // Reemplaza con la ruta a tu imagen
+            Image img = ImageIO.read(new File("src/imagenes/lupa.png")); // Reemplaza con la ruta a tu imagen
             Image resizedImg = img.getScaledInstance(buscarButton.getPreferredSize().width, buscarButton.getPreferredSize().height, Image.SCALE_SMOOTH);
             buscarButton.setIcon(new ImageIcon(resizedImg));
         } catch (IOException ex) {
@@ -74,6 +98,7 @@ public class main extends JFrame {
         });
         
         JPanel busquedaPanel = new JPanel(new BorderLayout());
+        busquedaPanel.setBackground(searchColor);
         busquedaPanel.add(busqueda, BorderLayout.CENTER);
         busquedaPanel.add(buscarButton, BorderLayout.EAST);
 
@@ -91,23 +116,25 @@ public class main extends JFrame {
             setContentPane(perfilPanel);
             revalidate();
         });
-        //AÑADIMOS EL BOTON A UN PANEL PERSONALIZADO//
+        //Aï¿½ADIMOS EL BOTON A UN PANEL PERSONALIZADO//
         JPanel perfilPanelContainer = new JPanel();
+        perfilPanelContainer.setBackground(profileColor);
         perfilPanelContainer.add(perfilButton);
         topPanel.add(perfilPanelContainer, BorderLayout.EAST);
 
-        ////AÑADIMOS EL PANEL SUPERIOR AL PANEL PRINCIPAL////
+        ////Aï¿½ADIMOS EL PANEL SUPERIOR AL PANEL PRINCIPAL////
         panelPrincipal.add(topPanel, BorderLayout.NORTH);
         
         
         ////CREAMOS EL PANEL DONDE IRAN ALOJADOS CADA UNO DE LOS CONTENIDOS////
         contentPanel = new JPanel(new GridBagLayout());
-        contentPanel.setBackground(new Color(173, 216, 230));  // Establece el color de fondo aquí
+        contentPanel.setBackground(backgroundColor);
+        contentPanel.setBackground(new Color(173, 216, 230));  
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(80,80,80,80);
 
         
         ////MARCAMOS CUANTOS CONTENIDOS QUEREMOS QUE TENGA EL PANEL//// 
@@ -120,20 +147,23 @@ public class main extends JFrame {
             String description1 = descriptions1[i];
             String description2 = descriptions2[i];
             Contenido contenido = new Contenido(imagePath, description1, description2, this, panelPrincipal);
+           
             contenidos.add(contenido);
             gbc.gridx = i % 4;
             gbc.gridy = i / 4;
             contentPanel.add(contenido, gbc);
         }
 
-        ///AÑADIMOS UN SCROLLPANE PARA PODER DESPLAZARSE 
+        ///Aï¿½ADIMOS UN SCROLLPANE PARA PODER DESPLAZARSE 
         ///MANUALMENTE POR LOS CONTENIDOS QUE HAY EN LA APLICACION
         JScrollPane scrollPane = new JScrollPane(contentPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);  // Ajusta este valor segÃºn sea necesario
         panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
+
         
-        ///AÑADIMOS EL PANEL PRINCIPAL AL FRAME///
+        ///Aï¿½ADIMOS EL PANEL PRINCIPAL AL FRAME///
         this.add(panelPrincipal);
         this.setTitle("BOOK4U");
         this.setSize(800, 600);
@@ -148,7 +178,7 @@ public class main extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(80,80,80,220);
         
         int count = 0;
         for (Contenido contenido : contenidos) {

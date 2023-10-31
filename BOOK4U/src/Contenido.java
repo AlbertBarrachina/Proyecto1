@@ -7,12 +7,14 @@ import java.io.File;
 class Contenido extends JPanel {
     private String description1;
     private String description2;
+    private Color backgroundColor = new Color(173, 216, 230);  // Define el color de fondo
     
     public Contenido(String imagePath, String description1, String description2, JFrame frame, JPanel mainPanel) {
         this.description1 = description1;
         this.description2 = description2;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(backgroundColor);  // Establece el color de fondo del panel
 
         ImageIcon imageIcon = createImageIcon(imagePath);
         if (imageIcon != null) {
@@ -32,10 +34,14 @@ class Contenido extends JPanel {
 
         JLabel descriptionLabel1 = new JLabel(description1);
         descriptionLabel1.setFont(new Font("Arial", Font.PLAIN, 18));
+        descriptionLabel1.setOpaque(true);  // Hace que el fondo de la etiqueta sea opaco
+        descriptionLabel1.setBackground(backgroundColor);  // Establece el color de fondo de la etiqueta
         add(descriptionLabel1);
 
         JLabel descriptionLabel2 = new JLabel(description2);
         descriptionLabel2.setFont(new Font("Arial", Font.PLAIN, 18));
+        descriptionLabel2.setOpaque(true);  // Hace que el fondo de la etiqueta sea opaco
+        descriptionLabel2.setBackground(backgroundColor);  // Establece el color de fondo de la etiqueta
         add(descriptionLabel2);
     }
 

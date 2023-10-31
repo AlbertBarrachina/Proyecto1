@@ -5,20 +5,20 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.*;
 
 class CircularButton extends JButton {
-    public CircularButton(String text, Color backgroundColor) {
+    public CircularButton(String text, Color color) {
         super(text);
         setPreferredSize(new Dimension(100, 100));
         setContentAreaFilled(false);
         setFocusPainted(false);
         setBorderPainted(false);
-        setBackground(backgroundColor);
+        setBackground(color);
         setForeground(Color.WHITE); // Establecer el color de texto (si lo necesitas)
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         if (getModel().isArmed()) {
-            // Hacer el color un poco más oscuro cuando se presiona el botón
+            // Hacer el color un poco mï¿½s oscuro cuando se presiona el botï¿½n
             g.setColor(new Color(
                 (int) (getBackground().getRed() * 0.5),
                 (int) (getBackground().getGreen() * 0.5),
