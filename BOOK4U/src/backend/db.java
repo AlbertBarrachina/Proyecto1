@@ -46,41 +46,56 @@ public class db {
 	}
 
 	// encripacion de los textos necesatios
-	
-	//en progreso :'(
-	
+
+	// en progreso :'(
+
 	// funciones de tabla cliente----------------------------------------------
 
 	// ------------------------------------------------------------
 	// crea el cliente el la base de datos (funcion de register)
 	public static String crearCliente(String nombre, String apellidos, int telefono, String correo,
 			String contrasenya) {
-		String sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0, 'S')";
+		String sql = "SELECT telefono, correo from CLIENTE WHERE correo = ? OR telefono = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, nombre);
-			pst.setString(2, apellidos);
-			pst.setInt(3, telefono);
-			pst.setString(4, correo);
-			pst.setString(5, contrasenya);
+			pst.setString(1, correo);
+			pst.setInt(2, telefono);
 
-			int rowsInserted = pst.executeUpdate();
-			if (rowsInserted > 0) {
-				return "Usuario creado correctamente.";
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			if (rs.next()) {
+				return "El correo o el telefono ya estan en uso";
 			} else {
-				return "No se pudo crear el usuario.";
+				sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0, 'S')";
+				try {
+					pst = con.prepareStatement(sql);
+					pst.setString(1, nombre);
+					pst.setString(2, apellidos);
+					pst.setInt(3, telefono);
+					pst.setString(4, correo);
+					pst.setString(5, contrasenya);
+
+					int rowsInserted = pst.executeUpdate();
+					if (rowsInserted > 0) {
+						return "Usuario creado correctamente.";
+					} else {
+						return "No se pudo crear el usuario.";
+					}
+				} catch (SQLException e) {
+					return "Error: " + (e);
+				}
 			}
 		} catch (SQLException e) {
 			return "Error: " + (e);
 		}
-
 	}
 
 	// ------------------------------------------------------
 	// recoje toda la informacion del cliente
 	public static String[] mostrarInfoCliente(int idc) {
-		String cliente[] = new String[5];
-		String sql = "SELECT * from CLIENTE WHERE correo = ?";
+		String cliente[] = new String[9];
+		String sql = "SELECT * from CLIENTE WHERE idc = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
@@ -93,11 +108,11 @@ public class db {
 				cliente[1] = rs.getString("nombre");
 				cliente[2] = rs.getString("apellidos");
 				cliente[3] = Integer.toString(rs.getInt("telefono"));
-				cliente[2] = rs.getString("cuenta_bancaria");
-				cliente[2] = rs.getString("correo");
-				cliente[2] = rs.getString("contrasenya");
-				cliente[3] = Integer.toString(rs.getInt("creditos"));
-				cliente[2] = rs.getString("tipo");
+				cliente[4] = rs.getString("cuenta_bancaria");
+				cliente[5] = rs.getString("correo");
+				cliente[6] = rs.getString("contrasenya");
+				cliente[7] = Integer.toString(rs.getInt("creditos"));
+				cliente[8] = rs.getString("tipo");
 			} else {
 				System.out.println("No hay cliente.");
 			}
@@ -111,7 +126,7 @@ public class db {
 	// comprueba si los datos insertados coinciden con los datos en la base de
 	// datos(correo y contraseña).
 
-	public static String comprovarLoginCliente(String correo, String contrasenya) {
+	public static boolean comprobarLoginCliente(String correo, String contrasenya) {
 		String contrasenyaCorrecta;
 		String sql = "SELECT contrasenya from CLIENTE WHERE correo = ?";
 		try {
@@ -123,38 +138,58 @@ public class db {
 			// si existe el usuario
 			if (rs.next()) {
 				contrasenyaCorrecta = rs.getString("contrasenya");
-				if (contrasenyaCorrecta == contrasenya) {
-					return "Sesión iniciada correctamente";
+				if (contrasenyaCorrecta.equals(contrasenya)) {
+					return true;
 				} else {
-					return "Contraseña incorrecta";
+					return false;
 				}
 			} else {
-				return "No se ha encontrado el usuario.";
+				return false;
 			}
 		} catch (SQLException e) {
-			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+			return false;
 		}
 	}
 
 	// -------------------------------------------------------------------------
-	// cambia la info (nombre, apellidos, telefono y correo) de la cuenta.
+	// cambia la info (nombre, apellidos, telefono y correo) de la cuenta.!!!!!!!falta comprobar!!!!!!!!
 	public static String editarInfoCliente(int idc, String nombre, String apellidos, int telefono, String correo) {
-		String sql = "UPDATE CLIENTE SET nombre = ?, apellidos = ?, telefono = ?, correo = ? WHERE idc = ?";
+		String sql = "SELECT telefono, correo\r\n" + "FROM CLIENTE c1\r\n" + "WHERE (correo = ? OR telefono = ?)\r\n"
+				+ "  AND NOT EXISTS (\r\n" + "    SELECT 1\r\n" + "    FROM CLIENTE c2\r\n"
+				+ "    WHERE (c2.correo = ? AND c2.idc = ?)\r\n" + "      OR (c2.telefono = ? AND c2.idc = ?)\r\n"
+				+ "      AND c1.telefono = c2.telefono\r\n" + "      AND c1.correo = c2.correo\r\n" + "  );";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, nombre);
-			pst.setString(2, apellidos);
-			pst.setInt(3, telefono);
-			pst.setString(4, correo);
-			pst.setInt(5, idc);
+			pst.setString(1, correo);
+			pst.setInt(2, telefono);
 
-			int rowsUpdated = pst.executeUpdate();
-			if (rowsUpdated > 0) {
-				return "Usuario actualizado correctamente.";
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			if (rs.next()) {
+				return "El correo o el telefono ya estan en uso";
 			} else {
-				return "No se ha encontrado el usuario.";
-			}
 
+				sql = "UPDATE CLIENTE SET nombre = ?, apellidos = ?, telefono = ?, correo = ? WHERE idc = ?";
+				try {
+					pst = con.prepareStatement(sql);
+					pst.setString(1, nombre);
+					pst.setString(2, apellidos);
+					pst.setInt(3, telefono);
+					pst.setString(4, correo);
+					pst.setInt(5, idc);
+
+					int rowsUpdated = pst.executeUpdate();
+					if (rowsUpdated > 0) {
+						return "Usuario actualizado correctamente.";
+					} else {
+						return "No se ha encontrado el usuario.";
+					}
+
+				} catch (SQLException e) {
+					return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
+				}
+			}
 		} catch (SQLException e) {
 			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
 		}
@@ -281,7 +316,7 @@ public class db {
 		return mensaje;
 	}
 
-	public static void historialCompras(int idc) {
+	public static ArrayList<String[]> historialCompras(int idc) {
 		ArrayList<String[]> resultados = new ArrayList<>();
 		String sql = "SELECT * from COMPRAS WHERE cliente = ?";
 		try {
@@ -301,15 +336,101 @@ public class db {
 
 				resultados.add(row);
 
-				System.out.println(row[0] + "   " + row[1] + "   " + row[2] + "   " + row[3] + "   " + row[4] + "   .");
 			}
 			if (resultados.isEmpty()) {
-				System.out.println("No compraste nada.");
+				String[] row = new String[5];
+				row[0] = "No compraste nada.";
+				resultados.add(row);
 			}
 		} catch (SQLException e) {
-			System.out.println((e));
+			String[] row = new String[5];
+			row[0] = "" + (e);
+			resultados.add(row);
 		}
+		return resultados;
 
+	}
+
+	// funciones tabla reserva
+
+	// permite cancelar o denegar reservas dependiendo de si es por parte de un
+	// usuario o un admin.
+	public static String editarInfoEmpresa(int id_reserva, String estado) {
+
+		String sql = "UPDATE RESERVA SET estado = ? WHERE id_reserva = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, estado);
+			pst.setInt(2, id_reserva);
+
+			int rowsUpdated = pst.executeUpdate();
+
+			if (rowsUpdated > 0) {
+				return "Infomracion cambiada correctamente";
+			} else {
+				return "No se ha encontrado la reserva.";
+			}
+		} catch (SQLException e) {
+			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+		}
+	}
+
+	// funciones tabla
+	// empresa----------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------------------------
+	// edita la informacion de la empresa en caso de que se cambie le direccion o
+	// hagan un cambio de nombre
+	public static String editarInfoEmpresa(int ide, String nombre, String direccion) {
+
+		String sql = "UPDATE EMPRESA SET nombre =  ?, direccion = ? WHERE ide = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, nombre);
+			pst.setString(2, direccion);
+			pst.setInt(2, ide);
+
+			int rowsUpdated = pst.executeUpdate();
+
+			if (rowsUpdated > 0) {
+				return "Infomracion cambiada correctamente";
+			} else {
+				return "No se ha encontrado la empresa.";
+			}
+		} catch (SQLException e) {
+			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+		}
+	}
+
+	// funciones tabla habitacion
+
+	// ----------------------------------------------------------------
+	// edita la informacion de la habitacion en caso de querer cambiar el precio,
+	// los descuentos, la descripcion, el tipo o cuantas camas tiene(personas que
+	// pueden dormir en esta).
+	public static String editarInfoHabitacion(int id_habitacion, int precio, Float descuento, String tipo, int camas,
+			String descripcion) {
+
+		String sql = "UPDATE HABITACION SET precio =  ?, descuento = ?, tipo = ?, camas = ?, descripcion = ? WHERE id_habitacion = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, precio);
+			pst.setFloat(2, descuento);
+			pst.setString(3, tipo);
+			pst.setInt(4, camas);
+			pst.setString(5, descripcion);
+			pst.setInt(6, id_habitacion);
+
+			int rowsUpdated = pst.executeUpdate();
+
+			if (rowsUpdated > 0) {
+				return "Infomracion cambiada correctamente";
+			} else {
+				return "No se ha encontrado la habitacion.";
+			}
+		} catch (SQLException e) {
+			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+		}
 	}
 
 }
