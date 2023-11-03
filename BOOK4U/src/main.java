@@ -1,4 +1,5 @@
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import backend.archivo;
 import backend.db;
@@ -16,7 +17,11 @@ public class main {
 //		}else {
 //			System.out.println("wawaa");
 //		}
-		System.out.println(db.editarInfoCliente(2, "NOT Alex", "Prieto", 669696976, "correogenrico@gmail.com"));
+//		System.out.println(db.editarInfoCliente(2, "NOT Alex", "Prieto", 669696976, "correogenrico@gmail.com"));
+		ArrayList<String[]> resultados = db.buscarHabitacion(0, 0, 0, null, 0);
+		 for (String[] item : resultados) {
+	            System.out.println(item[0]);
+	        }
 		
 	}
 
