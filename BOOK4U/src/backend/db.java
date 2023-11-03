@@ -128,17 +128,17 @@ public class db {
 
 	public static boolean comprobarLoginCliente(String correo, String contrasenya) {
 		String contrasenyaCorrecta;
-		String sql = "SELECT contrasenya from CLIENTE WHERE correo = ?";
+		String sql = "SELECT contrasenya FROM CLIENTE WHERE correo = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, correo);
 
 			ResultSet rs = pst.executeQuery();
 
-			// si existe el usuario
 			if (rs.next()) {
 				contrasenyaCorrecta = rs.getString("contrasenya");
 				if (contrasenyaCorrecta.equals(contrasenya)) {
+					System.out.println(contrasenyaCorrecta);
 					return true;
 				} else {
 					return false;
@@ -152,16 +152,15 @@ public class db {
 	}
 
 	// -------------------------------------------------------------------------
-	// cambia la info (nombre, apellidos, telefono y correo) de la cuenta.!!!!!!!falta comprobar!!!!!!!!
+	// cambia la info (nombre, apellidos, telefono y correo) de la
+	// cuenta.!!!!!!!falta comprobar!!!!!!!!
 	public static String editarInfoCliente(int idc, String nombre, String apellidos, int telefono, String correo) {
-		String sql = "SELECT telefono, correo\r\n" + "FROM CLIENTE c1\r\n" + "WHERE (correo = ? OR telefono = ?)\r\n"
-				+ "  AND NOT EXISTS (\r\n" + "    SELECT 1\r\n" + "    FROM CLIENTE c2\r\n"
-				+ "    WHERE (c2.correo = ? AND c2.idc = ?)\r\n" + "      OR (c2.telefono = ? AND c2.idc = ?)\r\n"
-				+ "      AND c1.telefono = c2.telefono\r\n" + "      AND c1.correo = c2.correo\r\n" + "  );";
+		String sql = "SELECT telefono, correo FROM CLIENTE WHERE (correo = ? OR telefono = ?)";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, correo);
 			pst.setInt(2, telefono);
+			pst.setInt(3, idc);
 
 			ResultSet rs = pst.executeQuery();
 
