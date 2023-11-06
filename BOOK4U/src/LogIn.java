@@ -11,7 +11,7 @@ public class LogIn {
 
 	        JPanel panel = new JPanel();
 	        frame.add(panel);
-	        panel.setLayout(new GridLayout(3, 2));
+//	        panel.setLayout(new GridLayout(3, 2));
 
 	        JLabel userLabel = new JLabel("Usuario:");
 	        panel.add(userLabel);
