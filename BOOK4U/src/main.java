@@ -9,7 +9,8 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String cliente[] = new String[10];
-		LogIn.login();
+//		LogIn.login();
+		Registro.registro();
 	}
 
 }

@@ -73,6 +73,9 @@ public class Registro {
 						// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						JOptionPane.showMessageDialog(null, mensaje);
 					}
+					else {
+						JOptionPane.showMessageDialog(null, mensaje);
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.");
 				}
