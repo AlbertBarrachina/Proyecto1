@@ -138,7 +138,6 @@ public class db {
 			if (rs.next()) {
 				contrasenyaCorrecta = rs.getString("contrasenya");
 				if (contrasenyaCorrecta.equals(contrasenya)) {
-					System.out.println(contrasenyaCorrecta);
 					return true;
 				} else {
 					return false;
