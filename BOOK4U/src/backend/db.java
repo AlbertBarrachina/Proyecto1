@@ -45,7 +45,7 @@ public class db {
 		return con;
 	}
 
-	// encripacion de los textos necesarios
+	// encripacion de los textos necesatios
 
 	// en progreso :'(
 
@@ -128,17 +128,17 @@ public class db {
 
 	public static boolean comprobarLoginCliente(String correo, String contrasenya) {
 		String contrasenyaCorrecta;
-		String sql = "SELECT contrasenya from CLIENTE WHERE correo = ?";
+		String sql = "SELECT contrasenya FROM CLIENTE WHERE correo = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, correo);
 
 			ResultSet rs = pst.executeQuery();
 
-			// si existe el usuario
 			if (rs.next()) {
 				contrasenyaCorrecta = rs.getString("contrasenya");
 				if (contrasenyaCorrecta.equals(contrasenya)) {
+					System.out.println(contrasenyaCorrecta);
 					return true;
 				} else {
 					return false;
@@ -152,12 +152,11 @@ public class db {
 	}
 
 	// -------------------------------------------------------------------------
-	// cambia la info (nombre, apellidos, telefono y correo) de la cuenta.!!!!!!!falta comprobar!!!!!!!!
+	// cambia la info (nombre, apellidos, telefono y correo) de la
+	// cuenta.!!!!!!!falta comprobar y areglar el primer select para que solo mire
+	// los otros campos!!!!!!!!
 	public static String editarInfoCliente(int idc, String nombre, String apellidos, int telefono, String correo) {
-		String sql = "SELECT telefono, correo\r\n" + "FROM CLIENTE c1\r\n" + "WHERE (correo = ? OR telefono = ?)\r\n"
-				+ "  AND NOT EXISTS (\r\n" + "    SELECT 1\r\n" + "    FROM CLIENTE c2\r\n"
-				+ "    WHERE (c2.correo = ? AND c2.idc = ?)\r\n" + "      OR (c2.telefono = ? AND c2.idc = ?)\r\n"
-				+ "      AND c1.telefono = c2.telefono\r\n" + "      AND c1.correo = c2.correo\r\n" + "  );";
+		String sql = "SELECT telefono, correo FROM CLIENTE WHERE (correo = ? OR telefono = ?)";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, correo);
@@ -318,7 +317,7 @@ public class db {
 
 	public static ArrayList<String[]> historialCompras(int idc) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * from COMPRAS WHERE cliente = ?";
+		String sql = "SELECT * FROM COMPRAS WHERE cliente = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
@@ -431,6 +430,73 @@ public class db {
 		} catch (SQLException e) {
 			return "No se ha podido hacer la operacion, error: " + (e) + ".";
 		}
+	}
+
+	// busca toda la informacion de las habitaciones que entren dentro de las
+	// categorias de busqueda introducidas, si la categoria es null no se incluye en
+	// el select
+	public static ArrayList<String[]> buscarHabitacion(int empresa, int precio, float descuento, String tipo,
+			int camas) {
+		ArrayList<String[]> resultados = new ArrayList<>();
+		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
+		ArrayList<Object> params = new ArrayList<>();
+		if (empresa > 0) {
+			params.add(empresa);
+		}
+
+		if (precio > 0) {
+			sqlBuilder.append(" AND precio <= ?");
+			params.add(precio);
+		}
+
+		if (descuento > 0) {
+			sqlBuilder.append(" AND descuento = ?");
+			params.add(descuento);
+		}
+
+		if (tipo != null && !tipo.isEmpty()) {
+			sqlBuilder.append(" AND tipo = ?");
+			params.add(tipo);
+		}
+
+		if (camas > 0) {
+			sqlBuilder.append(" AND camas = ?");
+			params.add(camas);
+		}
+
+		String sql = sqlBuilder.toString();
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			while (rs.next()) {
+				String[] row = new String[8];
+				row[0] = Integer.toString(rs.getInt("id_habitacion"));
+				row[1] = Integer.toString(rs.getInt("empresa"));
+				row[2] = Integer.toString(rs.getInt("precio"));
+				row[3] = Integer.toString(rs.getInt("descuento"));
+				row[4] = rs.getString("disponibilidad");
+				row[5] = rs.getString("tipo");
+				row[6] = Integer.toString(rs.getInt("camas"));
+				row[7] = rs.getString("descripcion");
+
+				resultados.add(row);
+
+			}
+			if (resultados.isEmpty()) {
+				String[] row = new String[5];
+				row[0] = "No se han encontrado habitaciones. :(";
+				resultados.add(row);
+			}
+		} catch (SQLException e) {
+			String[] row = new String[5];
+			row[0] = "" + (e);
+			resultados.add(row);
+		}
+		return resultados;
+
 	}
 
 }

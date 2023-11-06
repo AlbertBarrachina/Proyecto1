@@ -55,6 +55,7 @@ class Contenido extends JPanel {
         }
     }
 
+    
     public String getDescription1() {
         return description1;
     }
