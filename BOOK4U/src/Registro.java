@@ -8,52 +8,43 @@ import javax.swing.*;
 
 import backend.db;
 
-public class Registro {
+public class Registro extends JPanel {
+	{
 
-	public static void registro() {
-		JFrame frame = new JFrame("Pantalla de Registro");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 300);
-		frame.setResizable(false);
-
-		JPanel panelRegistro = new JPanel();
-		panelRegistro.setLayout(new BoxLayout(panelRegistro, BoxLayout.Y_AXIS));
-		frame.add(panelRegistro);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		JLabel nombreLabel = new JLabel("Nombre:");
-		panelRegistro.add(nombreLabel);
+		add(nombreLabel);
 		JTextField nombreField = new JTextField(20);
-		panelRegistro.add(nombreField);
+		add(nombreField);
 
 		JLabel apellidoLabel = new JLabel("Apellido:");
-		panelRegistro.add(apellidoLabel);
+		add(apellidoLabel);
 		JTextField apellidoField = new JTextField(20);
-		panelRegistro.add(apellidoField);
+		add(apellidoField);
 
 		JLabel telefonoLabel = new JLabel("Telefono:");
-		panelRegistro.add(telefonoLabel);
+		add(telefonoLabel);
 		JTextField telefonoField = new JTextField(20);
-		panelRegistro.add(telefonoField);
+		add(telefonoField);
 
 		JLabel correoLabel = new JLabel("Correo:");
-		panelRegistro.add(correoLabel);
+		add(correoLabel);
 		JTextField correoField = new JTextField(20);
-		panelRegistro.add(correoField);
+		add(correoField);
 
 		JLabel contraseñaLabel = new JLabel("Contraseña:");
-		panelRegistro.add(contraseñaLabel);
+		add(contraseñaLabel);
 		JPasswordField contraseñaField = new JPasswordField(20);
-		panelRegistro.add(contraseñaField);
+		add(contraseñaField);
 
 		JLabel contraseña2Label = new JLabel("Repita la contraseña:");
-		panelRegistro.add(contraseña2Label);
+		add(contraseña2Label);
 		JPasswordField contraseña2Field = new JPasswordField(20);
-		panelRegistro.add(contraseña2Field);
+		add(contraseña2Field);
 
 		JButton registrarButton = new JButton("Registrar");
-		panelRegistro.add(registrarButton);
-
-		frame.setVisible(true);
+		add(registrarButton);
 
 		registrarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -64,16 +55,24 @@ public class Registro {
 				String password2 = new String(passwd2);
 				if (password1.equals(password2)) {
 					String mensaje = "Error";
-					mensaje = db.crearCliente(nombreField.getText(), apellidoField.getText(),
-							Integer.parseInt(telefonoField.getText()), correoField.getText(), password1);
-					if (mensaje.equals("Usuario creado correctamente.")) {
-						// aqui abajo lo del testo de abajo
 
-						// cambio de pantalla a la pantalla de login para iniciar sesion
-						// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-						JOptionPane.showMessageDialog(null, mensaje);
-					}
-					else {
+					if (telefonoField.getText().length() == 9) {
+						mensaje = db.comprobarCorreoTelefonoCliente(Integer.parseInt(telefonoField.getText()),
+								correoField.getText());
+						if (mensaje.equals(".")) {
+							mensaje = db.crearCliente(nombreField.getText(), apellidoField.getText(),
+									Integer.parseInt(telefonoField.getText()), correoField.getText(), password1);
+							if (mensaje.equals("Usuario creado correctamente.")) {
+								main.cargarLogin();
+								JOptionPane.showMessageDialog(null, mensaje);
+							} else {
+								JOptionPane.showMessageDialog(null, mensaje);
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, mensaje);
+						}
+					} else {
+						mensaje = "Introduzca un telefono valido";
 						JOptionPane.showMessageDialog(null, mensaje);
 					}
 				} else {

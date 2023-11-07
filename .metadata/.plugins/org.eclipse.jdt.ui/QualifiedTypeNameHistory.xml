@@ -2,7 +2,6 @@
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="java.awt.SystemTray"/>
-    <fullyQualifiedTypeName name="java.awt.Image"/>
     <fullyQualifiedTypeName name="java.awt.TrayIcon"/>
     <fullyQualifiedTypeName name="java.awt.Toolkit"/>
     <fullyQualifiedTypeName name="com.sun.media.sound.Toolkit"/>
@@ -16,4 +15,11 @@
     <fullyQualifiedTypeName name="java.awt.Dimension"/>
     <fullyQualifiedTypeName name="backend.db"/>
     <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="LogIn"/>
+    <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+    <fullyQualifiedTypeName name="javax.swing.JFrame"/>
+    <fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
+    <fullyQualifiedTypeName name="java.awt.Image"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
 </qualifiedTypeNameHistroy>

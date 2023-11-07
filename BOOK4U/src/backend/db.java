@@ -52,6 +52,28 @@ public class db {
 	// funciones de tabla cliente----------------------------------------------
 
 	// ------------------------------------------------------------
+	
+	public static String comprobarCorreoTelefonoCliente(int telefono, String correo) {
+		String sql = "SELECT telefono, correo FROM CLIENTE WHERE (correo = ? OR telefono = ?)";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, correo);
+			pst.setInt(2, telefono);
+
+			ResultSet rs = pst.executeQuery();
+
+			// si existe el usuario
+			if (rs.next()) {
+				return "El correo o el telefono ya estan en uso";
+			} else {
+
+				return ".";
+			}
+		} catch (SQLException e) {
+			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
+		}
+
+	}
 	// crea el cliente el la base de datos (funcion de register)
 	public static String crearCliente(String nombre, String apellidos, int telefono, String correo,
 			String contrasenya) {

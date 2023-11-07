@@ -3,33 +3,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class LogIn {
-
-	public static void login() {
-		JFrame frame = new JFrame("Inicio de Sesión");
-		frame.setSize(300, 175);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-
-		JPanel panelLogin = new JPanel();
-		panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.Y_AXIS));
-        frame.add(panelLogin);
+public class LogIn extends JPanel {
+	{
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		JLabel userLabel = new JLabel("Usuario:");
-		panelLogin.add(userLabel);
+		this.add(userLabel);
 		JTextField userText = new JTextField();
-		panelLogin.add(userText);
+		this.add(userText);
 
 		JLabel passwordLabel = new JLabel("Contraseña:");
-		panelLogin.add(passwordLabel);
+		this.add(passwordLabel);
 		JPasswordField passwordText = new JPasswordField();
-		panelLogin.add(passwordText);
+		this.add(passwordText);
 
 		JButton loginButton = new JButton("Iniciar Sesión");
-		panelLogin.add(loginButton);
-		
+		this.add(loginButton);
+
 		JButton loginRegistroBoton = new JButton("Crear usuario");
-		panelLogin.add(loginRegistroBoton);
+		this.add(loginRegistroBoton);
 
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -44,13 +36,11 @@ public class LogIn {
 				}
 			}
 		});
-		
+
 		loginRegistroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//cambio de pantalla a la pantalla de registro
+				main.cargarRegistro();
 			}
 		});
-
-		frame.setVisible(true);
 	}
 }
