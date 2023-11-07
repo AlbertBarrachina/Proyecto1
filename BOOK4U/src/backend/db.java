@@ -1,7 +1,5 @@
 package backend;
 
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,22 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
-import java.util.Base64;
-
 public class db {
 
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 

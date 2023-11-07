@@ -1,9 +1,7 @@
-import java.awt.Dimension;
+package paneles;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.*;
 
 import backend.db;
@@ -63,7 +61,7 @@ public class Registro extends JPanel {
 							mensaje = db.crearCliente(nombreField.getText(), apellidoField.getText(),
 									Integer.parseInt(telefonoField.getText()), correoField.getText(), password1);
 							if (mensaje.equals("Usuario creado correctamente.")) {
-								main.cargarLogin();
+								main.main.cargarLogin();
 								JOptionPane.showMessageDialog(null, mensaje);
 							} else {
 								JOptionPane.showMessageDialog(null, mensaje);

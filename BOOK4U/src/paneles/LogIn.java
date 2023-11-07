@@ -1,3 +1,4 @@
+package paneles;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +26,14 @@ public class LogIn extends JPanel {
 
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String usuario = userText.getText();
-				String contraseña = new String(passwordText.getPassword());
-
-				// Aquí puedes agregar la lógica de autenticación.
-				if (usuario.equals("usuario") && contraseña.equals("contraseña")) {
+				String correo = userText.getText();
+				String contrasenya = new String(passwordText.getPassword());
+				
+				if (backend.db.comprobarLoginCliente(correo, contrasenya)) {
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					//falta hacer que guarde los datos depndiendo de que se ponga en los campos
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, "perez@gmail.com;cowontraseña");
 					JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
 				} else {
 					JOptionPane.showMessageDialog(null, "Inicio de sesión fallido");
@@ -39,7 +43,7 @@ public class LogIn extends JPanel {
 
 		loginRegistroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				main.cargarRegistro();
+				main.main.cargarRegistro();
 			}
 		});
 	}
