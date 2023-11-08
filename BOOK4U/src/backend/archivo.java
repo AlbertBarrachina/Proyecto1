@@ -49,7 +49,9 @@ public class archivo {
 		return lista;
 	}
 
-	
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//falta corregir errores al sobreescribir lineas
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//funcion para editar una linea especifica de un archivo (tipo txt o parecidos) requeire la ruta(string) la linea a editar(la primera es 0) y el texto que se desea insertar
 	public static void editarTxt(String ruta, int linea, String textoNuevo) {
 

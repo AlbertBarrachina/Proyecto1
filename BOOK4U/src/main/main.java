@@ -38,8 +38,8 @@ public class main {
 
 		// carga la pagina principal si el login es correcto
 		if (db.comprobarLoginCliente(cliente[0], cliente[1]) == true) {
+			
 			ContenidoUI contenidoUI = new ContenidoUI(frame);
-			frame.setSize(1500, 1000);
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login
@@ -80,8 +80,6 @@ public class main {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U habitaciones");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(300, 175);
-			frame.setResizable(false);
 			ContenidoUI panelPrincipal = new ContenidoUI(frame);
 			frame.revalidate();
 			frame.repaint();
