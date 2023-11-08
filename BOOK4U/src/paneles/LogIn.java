@@ -29,11 +29,14 @@ public class LogIn extends JPanel {
 				String correo = userText.getText();
 				String contrasenya = new String(passwordText.getPassword());
 				
+				
 				if (backend.db.comprobarLoginCliente(correo, contrasenya)) {
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					//falta hacer que guarde los datos depndiendo de que se ponga en los campos
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, "perez@gmail.com;cowontraseña");
+					String[] array = new String[2];
+					array[0] = correo;
+					array[1] = contrasenya;
+					main.main.cargarPrincipal();
+					String linea= backend.archivo.juntarLinea(array);
+					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, linea);
 					JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
 				} else {
 					JOptionPane.showMessageDialog(null, "Inicio de sesión fallido");

@@ -24,7 +24,6 @@ public class archivo {
 	public static String[] leerTxt(String ruta, int linea) {
 		String[] lista = new String[10];
 		int i = 0;
-		int n = 0;
 		try {
 			File archivo = new File(ruta);
 
@@ -32,16 +31,11 @@ public class archivo {
 
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-			String textolinea;
-			while ((textolinea = bufferedReader.readLine()) != null) {
+			String textoLinea;
+			while ((textoLinea = bufferedReader.readLine()) != null) {
 				i++;
 				if (i == linea) {
-					String[] tokens = textolinea.split(";");
-
-					for (String token : tokens) {
-						lista[n] = (token.trim());
-						n++;
-					}
+					lista=separarLinea(textoLinea);
 					break;
 				}
 			}
@@ -60,7 +54,7 @@ public class archivo {
 	public static void editarTxt(String ruta, int linea, String textoNuevo) {
 
 		 try {
-		        List<String> lines = Files.readAllLines(Paths.get(ruta), StandardCharsets.UTF_8);
+		        List<String> lines = Files.readAllLines(Paths.get(ruta));
 
 		        if (linea < 0) {
 		            System.err.println("Invalid line number.");
@@ -74,11 +68,29 @@ public class archivo {
 		        }
 
 		        lines.set(linea, textoNuevo);
-		        Files.write(Paths.get(ruta), lines, StandardCharsets.UTF_8);
+		        Files.write(Paths.get(ruta), lines);
 
 		        System.out.println("Specific line modified or added successfully.");
 		    } catch (IOException e) {
 		        e.printStackTrace();
 		    }
+	}
+	
+	//funcion que junta los campos enviados separandolos por un punto y coma
+
+	public static String juntarLinea(String[] array) {
+	        String joinedString = String.join(";", array);
+
+	        return joinedString;
+	}
+	//funcion que separa la linea donde hay puntos y coma devolviendo una array de strings de esa linea
+	public static String[] separarLinea(String textoLinea){
+		String[] tokens = textoLinea.split(";");
+		int n = 0;
+		for (String token : tokens) {
+			tokens[n] = (token.trim());
+			n++;
+		}
+		return tokens;
 	}
 }

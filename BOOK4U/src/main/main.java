@@ -34,7 +34,6 @@ public class main {
 		int iconHeight = 32;
 		Image resizedIcon = originalIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		ImageIcon finalIcon = new ImageIcon(resizedIcon);
-
 		frame.setIconImage(finalIcon.getImage());
 
 		// carga la pagina principal si el login es correcto
@@ -75,5 +74,17 @@ public class main {
 		frame.revalidate();
 		frame.repaint();
 	}
+	
+	// funcion para cargar la pantalla principal
+		public static void cargarPrincipal() {
+			frame.getContentPane().removeAll();
+			frame.setTitle("BOOK4U habitaciones");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(300, 175);
+			frame.setResizable(false);
+			ContenidoUI panelPrincipal = new ContenidoUI(frame);
+			frame.revalidate();
+			frame.repaint();
+		}
 
 }
