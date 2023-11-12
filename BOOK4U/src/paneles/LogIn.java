@@ -1,6 +1,9 @@
 package paneles;
 
 import javax.swing.*;
+
+import main.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -28,14 +31,14 @@ public class LogIn extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String correo = userText.getText();
 				String contrasenya = new String(passwordText.getPassword());
-				
-				
+
 				if (backend.db.comprobarLoginCliente(correo, contrasenya)) {
 					String[] array = new String[2];
 					array[0] = correo;
 					array[1] = contrasenya;
-					main.main.cargarPrincipal();
-					String linea= backend.archivo.juntarLinea(array);
+					main.setSesion(array[0], array[1]);
+					main.cargarPrincipal();
+					String linea = backend.archivo.juntarLinea(array);
 					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, linea);
 					JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
 				} else {
@@ -46,7 +49,7 @@ public class LogIn extends JPanel {
 
 		loginRegistroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				main.main.cargarRegistro();
+				main.cargarRegistro();
 			}
 		});
 	}

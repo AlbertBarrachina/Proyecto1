@@ -21,24 +21,17 @@ public class main {
 	private List<paneles.Contenido> contenidos = new ArrayList<>();
 	private JPanel contentPanel;
 	private Color backgroundColor = new Color(173, 216, 230);
-
+	private static String cliente[] = new String[10];
 	// desde aqui se cmabia de pantalla
 	public static void main(String[] args) {
-		String cliente[] = new String[10];
 		cliente = archivo.leerTxt("src/config/config_usuario.txt", 1);
-		// icono de la aplicacion!
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!no funciona
-		// correctamente!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		ImageIcon originalIcon = new ImageIcon("/src/assets/book4u.ico");
-		int iconWidth = 32;
-		int iconHeight = 32;
-		Image resizedIcon = originalIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
-		ImageIcon finalIcon = new ImageIcon(resizedIcon);
-		frame.setIconImage(finalIcon.getImage());
+		//establece el icono de la aplicacion
+		ImageIcon Icon = new ImageIcon("src/assets/book4u.png");
+		frame.setIconImage(Icon.getImage());
 
 		// carga la pagina principal si el login es correcto
 		if (db.comprobarLoginCliente(cliente[0], cliente[1]) == true) {
-			
+			cliente=backend.db.mostrarInfoCliente(cliente[0], cliente[1]);
 			ContenidoUI contenidoUI = new ContenidoUI(frame);
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
@@ -74,15 +67,23 @@ public class main {
 		frame.revalidate();
 		frame.repaint();
 	}
-	
-	// funcion para cargar la pantalla principal
-		public static void cargarPrincipal() {
-			frame.getContentPane().removeAll();
-			frame.setTitle("BOOK4U habitaciones");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			ContenidoUI panelPrincipal = new ContenidoUI(frame);
-			frame.revalidate();
-			frame.repaint();
-		}
 
+	// funcion para cargar la pantalla principal
+	public static void cargarPrincipal() {
+		frame.getContentPane().removeAll();
+		frame.setTitle("BOOK4U habitaciones");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ContenidoUI panelPrincipal = new ContenidoUI(frame);
+		frame.revalidate();
+		frame.repaint();
+	}
+	// guarda los datos en la array de cliente para tenerlos en toda la aplicacion
+	// cada vez que se abre esta
+	public static void setSesion(String correo, String contrasenya) {
+		cliente = db.mostrarInfoCliente(correo, contrasenya);
+	}
+	//devuelve los datos del usuario logeado actualmente
+	public static String[] getSesion() {
+		return cliente;
+	}
 }

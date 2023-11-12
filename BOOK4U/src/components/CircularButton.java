@@ -11,8 +11,6 @@ public class CircularButton extends JButton {
         setContentAreaFilled(false);
         setFocusPainted(false);
         setBorderPainted(false);
-        setBackground(color);
-        setForeground(Color.WHITE); // Establecer el color de texto (si lo necesitas)
     }
 
     @Override

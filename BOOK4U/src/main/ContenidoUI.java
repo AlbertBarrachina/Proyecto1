@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import components.ImagenPerfil;
+
 public class ContenidoUI {
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
@@ -126,11 +128,10 @@ public class ContenidoUI {
 		topPanel.add(busquedaPanel, BorderLayout.CENTER);
 
 		//// CREAMOS EL BOTON QUE SERVIRA PARA ACCEDER AL PERFIL DE USUARIO////
-		components.CircularButton perfilButton = new components.CircularButton("Perfil", new Color(131, 36, 110));
-		perfilButton.setPreferredSize(new Dimension(60, 60));
-
-		perfilButton.setFont(new Font("Arial", Font.PLAIN, 12));
-		perfilButton.addActionListener(e -> {
+		ImagenPerfil botonPerfil = new components.ImagenPerfil();
+		botonPerfil.setPreferredSize(new Dimension(60, 60));
+		
+		botonPerfil.addActionListener(e -> {
 			if (perfilPanel == null) {
 				perfilPanel = new paneles.perfil_usuario(frame, panelPrincipal);
 			}
@@ -141,7 +142,7 @@ public class ContenidoUI {
 		// A�ADIMOS EL BOTON A UN PANEL PERSONALIZADO//
 		JPanel perfilPanelContainer = new JPanel();
 		perfilPanelContainer.setBackground(profileColor);
-		perfilPanelContainer.add(perfilButton);
+		perfilPanelContainer.add(botonPerfil);
 		topPanel.add(perfilPanelContainer, BorderLayout.EAST);
 
 		//// A�ADIMOS EL PANEL SUPERIOR AL PANEL PRINCIPAL////

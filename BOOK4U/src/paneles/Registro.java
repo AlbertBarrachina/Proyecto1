@@ -61,6 +61,8 @@ public class Registro extends JPanel {
 							mensaje = db.crearCliente(nombreField.getText(), apellidoField.getText(),
 									Integer.parseInt(telefonoField.getText()), correoField.getText(), password1);
 							if (mensaje.equals("Usuario creado correctamente.")) {
+								String[]usuario= db.mostrarInfoCliente(correoField.getText(), password1);
+								backend.archivo.copiarArchivo(usuario[0],"src/assets/perfiles/","default","src/assets/perfiles/");
 								main.main.cargarLogin();
 								JOptionPane.showMessageDialog(null, mensaje);
 							} else {

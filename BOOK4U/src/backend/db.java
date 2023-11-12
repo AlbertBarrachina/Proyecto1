@@ -12,9 +12,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -105,12 +105,13 @@ public class db {
 
 	// ------------------------------------------------------
 	// recoje toda la informacion del cliente
-	public static String[] mostrarInfoCliente(int idc) {
+	public static String[] mostrarInfoCliente(String correo, String contrasenya) {
 		String cliente[] = new String[9];
-		String sql = "SELECT * from CLIENTE WHERE idc = ?";
+		String sql = "SELECT * from CLIENTE WHERE correo = ? AND contrasenya = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, idc);
+			pst.setString(1, correo);
+			pst.setString(2,contrasenya);
 
 			ResultSet rs = pst.executeQuery();
 

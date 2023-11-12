@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,5 +95,14 @@ public class archivo {
 			n++;
 		}
 		return tokens;
+	}
+	public static void copiarArchivo(String nombreNuevo,String rutaNueva, String nombreOriginal, String rutaOrigen) {
+		Path destino = Path.of(rutaNueva, nombreNuevo+".png");
+		Path origen = Path.of(rutaOrigen, nombreOriginal+".png");
+		try {
+			Files.move(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
