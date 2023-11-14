@@ -1,7 +1,13 @@
 package paneles;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 
 public class perfil_usuario extends JPanel {
 	public perfil_usuario(JFrame frame, JPanel mainPanel) {
