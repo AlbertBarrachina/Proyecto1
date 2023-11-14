@@ -105,9 +105,9 @@ public class archivo {
 		Path destino = Path.of(rutaNueva, nombreNuevo+".png");
 		Path origen = Path.of(rutaOrigen, nombreOriginal+".png");
 		try {
-			Files.move(origen, destino, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	        Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 }
