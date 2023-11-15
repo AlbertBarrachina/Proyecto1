@@ -16,11 +16,7 @@ import backend.db;
 public class main {
 	// frame de la aplicacion, se usara este para todo
 	private static JFrame frame = new JFrame("Book4U Loading...");
-	private JPanel panelPrincipal;
-	private JPanel perfilPanel;
 	private List<paneles.Contenido> contenidos = new ArrayList<>();
-	private JPanel contentPanel;
-	private Color backgroundColor = new Color(173, 216, 230);
 	private static String cliente[] = new String[10];
 	// desde aqui se cmabia de pantalla
 	public static void main(String[] args) {
@@ -71,9 +67,29 @@ public class main {
 	// funcion para cargar la pantalla principal
 	public static void cargarPrincipal() {
 		frame.getContentPane().removeAll();
-		frame.setTitle("BOOK4U habitaciones");
+		frame.setTitle("BOOK4U");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ContenidoUI panelPrincipal = new ContenidoUI(frame);
+		frame.revalidate();
+		frame.repaint();
+	}
+	//funcio para cargar el panel del perfil de usuario
+	public static void cargarPerfil() {
+		frame.getContentPane().removeAll();
+		frame.setTitle("BOOK4U perfil");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		paneles.perfil_usuario panelPerfil = new paneles.perfil_usuario();
+		frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
+		frame.revalidate();
+		frame.repaint();
+	}
+	// funcion para cargar la pantalla de historial de reservas
+	public static void cargarHistoricoReservas() {
+		frame.getContentPane().removeAll();
+		frame.setTitle("BOOK4U reservas");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		paneles.historicoReservas panelHistorico = new paneles.historicoReservas();
+		frame.getContentPane().add(panelHistorico, BorderLayout.CENTER);
 		frame.revalidate();
 		frame.repaint();
 	}

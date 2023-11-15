@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 
 import components.ImagenPerfil;
 
-public class ContenidoUI {
+public class ContenidoUI extends JPanel{
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
 	private List<paneles.Contenido> contenidos;
@@ -132,11 +132,7 @@ public class ContenidoUI {
 		botonPerfil.setPreferredSize(new Dimension(60, 60));
 		
 		botonPerfil.addActionListener(e -> {
-			if (perfilPanel == null) {
-				perfilPanel = new paneles.perfil_usuario(frame, panelPrincipal);
-			}
-			frame.setContentPane(perfilPanel); // Aquí se debe llamar a setContentPane() en el objeto frame
-			frame.revalidate();
+			main.cargarHistoricoReservas();
 		});
 
 		// Aï¿½ADIMOS EL BOTON A UN PANEL PERSONALIZADO//

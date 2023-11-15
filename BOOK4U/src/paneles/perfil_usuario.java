@@ -4,13 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
 public class perfil_usuario extends JPanel {
-	public perfil_usuario(JFrame frame, JPanel mainPanel) {
+	public perfil_usuario() {
 		setLayout(new BorderLayout());
 		setBackground(new Color(173, 216, 230)); // Establecer el color de fondo deseado
 
@@ -20,9 +19,13 @@ public class perfil_usuario extends JPanel {
 
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
-			frame.setContentPane(mainPanel);
-			frame.revalidate();
+			main.main.cargarPrincipal();
 		});
 		add(backButton, BorderLayout.SOUTH);
+		JButton historialButton = new JButton("Historico de reservas");
+		backButton.addActionListener(e -> {
+			main.main.cargarHistoricoReservas();
+		});
+		add(historialButton, BorderLayout.EAST);
 	}
 }

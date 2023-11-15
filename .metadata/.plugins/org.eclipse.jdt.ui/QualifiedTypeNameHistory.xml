@@ -36,5 +36,8 @@
     <fullyQualifiedTypeName name="java.nio.charset.StandardCharsets"/>
     <fullyQualifiedTypeName name="backend.archivo"/>
     <fullyQualifiedTypeName name="main.ContenidoUI"/>
+    <fullyQualifiedTypeName name="paneles.historicoReservas"/>
     <fullyQualifiedTypeName name="main.main"/>
+    <fullyQualifiedTypeName name="paneles.perfil_usuario"/>
+    <fullyQualifiedTypeName name="javax.swing.JViewport"/>
 </qualifiedTypeNameHistroy>
