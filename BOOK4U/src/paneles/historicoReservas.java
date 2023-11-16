@@ -2,6 +2,7 @@ package paneles;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,8 +15,11 @@ import javax.swing.JViewport;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import backend.db;
+
 public class historicoReservas extends JPanel {
 	{
+		String[] cliente = main.main.getSesion();
 		setLayout(new BorderLayout());
 		setBackground(new Color(173, 216, 230)); // Establecer el color de fondo deseado
 		setBounds(100, 100, 900, 1500);
@@ -32,25 +36,24 @@ public class historicoReservas extends JPanel {
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
-		int numberOfTexts = 100;
-//		String[] reservas = ;
+		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]));
+		int numberOfTexts = reservas.size();
 		for (int i = 1; i <= numberOfTexts; i++) {
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);
-			textPane.setText("");
-
-			// Optional: Center-align the text in the JTextPane
-			SimpleAttributeSet center = new SimpleAttributeSet();
-			StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-			textPane.getStyledDocument().setParagraphAttributes(0, textPane.getDocument().getLength(), center, false);
-
+			String[] reserva = reservas.get(i-1);
+			if (reserva.length == 7) {
+				textPane.setText("ID: "+reserva[0]+"|Habitacion: "+reserva[1]+"|Precio: "+reserva[3]+"Estado: "+reserva[4]+"|Fecha de entrada: "+reserva[5]+"|Fecha de salida: "+reserva[6]+"|");
+			} else {
+				textPane.setText("Invalid data");
+			}
 			textPanel.add(textPane);
 		}
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
-		
+
 //		scrollPane.setBounds(100, 100, 900, 1500);
 		add(scrollPane);
 	}

@@ -98,9 +98,6 @@ public class archivo {
 	}
 	
 	//copia un archivo y le cambia el nombre
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//no va bien solo lo renombra
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public static void copiarArchivo(String nombreNuevo,String rutaNueva, String nombreOriginal, String rutaOrigen) {
 		Path destino = Path.of(rutaNueva, nombreNuevo+".png");
 		Path origen = Path.of(rutaOrigen, nombreOriginal+".png");

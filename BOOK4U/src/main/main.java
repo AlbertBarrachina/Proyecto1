@@ -17,7 +17,7 @@ public class main {
 	// frame de la aplicacion, se usara este para todo
 	private static JFrame frame = new JFrame("Book4U Loading...");
 	private List<paneles.Contenido> contenidos = new ArrayList<>();
-	private static String cliente[] = new String[10];
+	private static String[] cliente = new String[10];
 	// desde aqui se cmabia de pantalla
 	public static void main(String[] args) {
 		cliente = archivo.leerTxt("src/config/config_usuario.txt", 1);
@@ -27,7 +27,7 @@ public class main {
 
 		// carga la pagina principal si el login es correcto
 		if (db.comprobarLoginCliente(cliente[0], cliente[1]) == true) {
-			cliente=backend.db.mostrarInfoCliente(cliente[0], cliente[1]);
+			setSesion(cliente[0], cliente[1]);
 			ContenidoUI contenidoUI = new ContenidoUI(frame);
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");

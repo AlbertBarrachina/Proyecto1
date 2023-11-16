@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class db {
@@ -366,7 +367,7 @@ public class db {
 
 	// permite cancelar o denegar reservas dependiendo de si es por parte de un
 	// usuario o un admin.
-	public static String editarInfoEmpresa(int id_reserva, String estado) {
+	public static String editarInfoReserva(int id_reserva, String estado) {
 
 		String sql = "UPDATE RESERVA SET estado = ? WHERE id_reserva = ?";
 		try {
@@ -384,6 +385,46 @@ public class db {
 		} catch (SQLException e) {
 			return "No se ha podido hacer la operacion, error: " + (e) + ".";
 		}
+	}
+	
+	public static ArrayList<String[]> historialReservas(int idc) {
+		ArrayList<String[]> resultados = new ArrayList<>();
+		String sql = "SELECT * FROM RESERVA WHERE cliente = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, idc);
+
+			ResultSet rs = pst.executeQuery();
+
+			//formato para convertir fechas en strings
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+			// si existe el usuario
+			while (rs.next()) {
+				String[] row = new String[7];
+				row[0] = Integer.toString(rs.getInt("id_reserva"));
+				row[1] = Integer.toString(rs.getInt("id_habitacion"));
+				row[2] = Integer.toString(rs.getInt("cliente"));
+				row[3] = Integer.toString(rs.getInt("precio"));
+				row[4] = rs.getString("estado");
+				row[5]=  dateFormat.format(rs.getDate("fecha_entrada"));
+				row[6]=  dateFormat.format(rs.getDate("fecha_salida"));
+
+				resultados.add(row);
+
+			}
+			if (resultados.isEmpty()) {
+				String[] row = new String[5];
+				row[0] = "No se encontraron reservas.";
+				resultados.add(row);
+			}
+		} catch (SQLException e) {
+			String[] row = new String[5];
+			row[0] = "" + (e);
+			resultados.add(row);
+		}
+		return resultados;
+
 	}
 
 	// funciones tabla
