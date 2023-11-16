@@ -48,8 +48,8 @@ public class ContenidoUI {
 		String[] descriptions1 = { "Suite Deluxe", "Habitacion con Vista al Mar", "Cabaña Acogedora", "Loft Urbano",
 				"Habitacion Familiar", "Bungalow de Montaña", "Habitacion Tematica Vintage",
 				"Villa con Piscina Privada", "Habitacion Loft", "Suite Romantica", "Habitacion con Jacuzzi",
-				"Cabaï¿½a junto al Rio", "Habitacion Eco-Friendly", "Alojamiento en atico", "Habitacion de Lujo",
-				"Suite Junior", "Habitacion con Terraza", "CabaÃ±a de Campo", "Habitacion con Chimenea",
+				"Cabaña junto al Rio", "Habitacion Eco-Friendly", "Alojamiento en atico", "Habitacion de Lujo",
+				"Suite Junior", "Habitacion con Terraza", "Cabaña de Campo", "Habitacion con Chimenea",
 				"Loft Industrial", };
 
 		//// STRING CON LOS PRECIOS DE LAS HABITACIONES/CASAS RURALES////
