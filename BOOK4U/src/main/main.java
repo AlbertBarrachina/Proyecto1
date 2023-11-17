@@ -2,7 +2,10 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -18,8 +21,20 @@ public class main {
 	private static JFrame frame = new JFrame("Book4U Loading...");
 	private List<paneles.Contenido> contenidos = new ArrayList<>();
 	private static String[] cliente = new String[10];
+	private static int[]dimensiones = new int[2];
 	// desde aqui se cmabia de pantalla
 	public static void main(String[] args) {
+		 frame.addComponentListener(new ComponentAdapter() {
+	            @Override
+	            public void componentResized(ComponentEvent e) {
+	                // Get the new size of the window
+	                Dimension newSize = e.getComponent().getSize();
+
+	                int altura = newSize.height;
+	                int ancho = newSize.width;
+	                setdimensiones(altura, ancho);
+	            }
+	        });
 		cliente = archivo.leerTxt("src/config/config_usuario.txt", 1);
 		//establece el icono de la aplicacion
 		ImageIcon Icon = new ImageIcon("src/assets/book4u.png");
@@ -101,5 +116,12 @@ public class main {
 	//devuelve los datos del usuario logeado actualmente
 	public static String[] getSesion() {
 		return cliente;
+	}
+	public static void setdimensiones(int alto,int ancho) {
+		dimensiones[0] = alto;
+		dimensiones[1] = ancho;
+	}
+	public static int[] getdimensiones() {
+		return dimensiones;
 	}
 }
