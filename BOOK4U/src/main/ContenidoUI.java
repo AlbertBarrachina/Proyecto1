@@ -125,7 +125,7 @@ public class ContenidoUI {
 		busquedaPanel.add(busqueda, BorderLayout.CENTER);
 		busquedaPanel.add(buscarButton, BorderLayout.EAST);
 
-		topPanel.add(busquedaPanel, BorderLayout.CENTER);
+		topPanel.add(busquedaPanel, BorderLayout.CENTER);  
 
 		//// CREAMOS EL BOTON QUE SERVIRA PARA ACCEDER AL PERFIL DE USUARIO////
 		ImagenPerfil botonPerfil = new components.ImagenPerfil();
