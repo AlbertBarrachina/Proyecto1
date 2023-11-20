@@ -31,7 +31,7 @@ public class historicoReservas extends JPanel {
 		String[] cliente = main.main.getSesion();
 		setLayout(new BorderLayout());
 		setBackground(new Color(173, 216, 230));
-		setBounds(100, 100, dimensiones[0], dimensiones[1]);
+		setBounds(0, 0, dimensiones[0], dimensiones[1]);
 		
 //		JLabel label = new JLabel("Historial de compras");
 //		label.setBounds(0,0,1920,500);
