@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,6 +79,20 @@ public class archivo {
 		        e.printStackTrace();
 		    }
 	}
+	
+	
+	 public static List<String> leerTodasLasLineas(String ruta) {
+	        List<String> lineas = new ArrayList<>();
+	        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                lineas.add(linea);
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return lineas;
+	    }
 	
 	//funcion que junta los campos enviados separandolos por un punto y coma
 

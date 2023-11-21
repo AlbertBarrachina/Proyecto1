@@ -13,8 +13,7 @@ public class DETALLES_HABITACION extends JPanel {
     private JFrame frame;
     private JPanel mainPanel;
 
-    public DETALLES_HABITACION(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion, String descripcionHabitacion, JFrame frame, JPanel mainPanel) {
-        this.frame = frame;
+    public DETALLES_HABITACION(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion, String descripcionHabitacion, JFrame frame2, JPanel mainPanel) {
         this.mainPanel = mainPanel;
         this.nombreHabitacion = nombreHabitacion;
         this.precioHabitacion = precioHabitacion;

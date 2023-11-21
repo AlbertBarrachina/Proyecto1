@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import backend.archivo;
 import components.ImagenPerfil;
 
 public class ContenidoUI {
@@ -44,19 +45,8 @@ public class ContenidoUI {
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
 
-		//// STRING CON LOS NOMBRES DE LAS HABITACIONES/CASAS RURALES////
-		String[] descriptions1 = { "Suite Deluxe", "Habitacion con Vista al Mar", "Cabaña Acogedora", "Loft Urbano",
-				"Habitacion Familiar", "Bungalow de Montaña", "Habitacion Tematica Vintage",
-				"Villa con Piscina Privada", "Habitacion Loft", "Suite Romantica", "Habitacion con Jacuzzi",
-				"Cabaña junto al Rio", "Habitacion Eco-Friendly", "Alojamiento en atico", "Habitacion de Lujo",
-				"Suite Junior", "Habitacion con Terraza", "Cabaña de Campo", "Habitacion con Chimenea",
-				"Loft Industrial", };
-
-		//// STRING CON LOS PRECIOS DE LAS HABITACIONES/CASAS RURALES////
-		String[] descriptions2 = { "80 creditos", "95 creditos", "70 creditos", "85 creditos", "90 creditos",
-				"75 creditos", "80 creditos", "99 creditos", "85 creditos", "95 creditos", "90 creditos", "80 creditos",
-				"70 creditos", "85 creditos", "99 creditos", "75 creditos", "80 creditos", "70 creditos", "90 creditos",
-				"85 creditos", };
+		String[] descriptions1 = archivo.leerTodasLasLineas("src/config/descripciones1.txt").toArray(new String[0]);
+		String[] descriptions2 = archivo.leerTodasLasLineas("src/config/descripciones2.txt").toArray(new String[0]);
 
 		// Colores para los diferentes paneles
 		Color baseColor1 = new Color(255, 228, 196);
