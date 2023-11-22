@@ -47,7 +47,8 @@ public class ContenidoUI {
 
 		String[] descriptions1 = archivo.leerTodasLasLineas("src/config/descripciones1.txt").toArray(new String[0]);
 		String[] descriptions2 = archivo.leerTodasLasLineas("src/config/descripciones2.txt").toArray(new String[0]);
-
+		
+		
 		// Colores para los diferentes paneles
 		Color baseColor1 = new Color(255, 228, 196);
 		Color menuColor = baseColor1.darker();
