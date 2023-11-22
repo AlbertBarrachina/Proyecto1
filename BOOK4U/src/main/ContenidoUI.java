@@ -131,7 +131,7 @@ public class ContenidoUI extends JPanel{
 		botonPerfil.setPreferredSize(new Dimension(60, 60));
 		
 		botonPerfil.addActionListener(e -> {
-			main.cargarHistoricoReservas();
+			loader.cargarHistoricoReservas();
 		});
 
 		// A�ADIMOS EL BOTON A UN PANEL PERSONALIZADO//

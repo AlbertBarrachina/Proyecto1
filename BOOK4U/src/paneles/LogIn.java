@@ -37,7 +37,7 @@ public class LogIn extends JPanel {
 					array[0] = correo;
 					array[1] = contrasenya;
 					main.setSesion(array[0], array[1]);
-					main.cargarPrincipal();
+					loader.cargarPrincipal();
 					String linea = backend.archivo.juntarLinea(array);
 					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, linea);
 					JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
@@ -49,7 +49,7 @@ public class LogIn extends JPanel {
 
 		loginRegistroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				main.cargarRegistro();
+				loader.cargarRegistro();
 			}
 		});
 	}

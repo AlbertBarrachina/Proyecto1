@@ -32,7 +32,12 @@ public class main {
 
 	                int altura = newSize.height;
 	                int ancho = newSize.width;
-	                setdimensiones(altura, ancho);
+	                setDimensiones(altura, ancho);
+	                updateDimensions(frame.getSize());
+	            }
+	            private void updateDimensions(Dimension newSize) {
+	                dimensiones[0] = (int) newSize.getWidth();
+	                dimensiones[1] = (int) newSize.getHeight();
 	            }
 	        });
 		cliente = archivo.leerTxt("src/config/config_usuario.txt", 1);
@@ -48,66 +53,12 @@ public class main {
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login
 		} else {
-			cargarLogin();
+			loader.cargarLogin();
 			frame.setVisible(true);
 		}
 	}
 
-	// funcion para cargar la pantalla de registro
-	public static void cargarRegistro() {
-		frame.getContentPane().removeAll();
-		frame.setTitle("Pantalla de Registro");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 300);
-		frame.setResizable(false);
-		paneles.Registro panelRegistro = new paneles.Registro();
-		frame.getContentPane().add(panelRegistro, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-	}
-
-	// funcion para cargar la pantalla de login
-	public static void cargarLogin() {
-		frame.getContentPane().removeAll();
-		frame.setTitle("Pantalla de Login");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 175);
-		frame.setResizable(false);
-		paneles.LogIn panelLogin = new paneles.LogIn();
-		frame.getContentPane().add(panelLogin, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-	}
-
-	// funcion para cargar la pantalla principal
-	public static void cargarPrincipal() {
-		frame.getContentPane().removeAll();
-		frame.setTitle("BOOK4U");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ContenidoUI panelPrincipal = new ContenidoUI(frame);
-		frame.revalidate();
-		frame.repaint();
-	}
-	//funcio para cargar el panel del perfil de usuario
-	public static void cargarPerfil() {
-		frame.getContentPane().removeAll();
-		frame.setTitle("BOOK4U perfil");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		paneles.perfil_usuario panelPerfil = new paneles.perfil_usuario();
-		frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-	}
-	// funcion para cargar la pantalla de historial de reservas
-	public static void cargarHistoricoReservas() {
-		frame.getContentPane().removeAll();
-		frame.setTitle("BOOK4U reservas");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		paneles.historicoReservas panelHistorico = new paneles.historicoReservas();
-		frame.getContentPane().add(panelHistorico, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-	}
+	
 	// guarda los datos en la array de cliente para tenerlos en toda la aplicacion
 	// cada vez que se abre esta
 	public static void setSesion(String correo, String contrasenya) {
@@ -117,11 +68,14 @@ public class main {
 	public static String[] getSesion() {
 		return cliente;
 	}
-	public static void setdimensiones(int alto,int ancho) {
+	public static void setDimensiones(int alto,int ancho) {
 		dimensiones[0] = alto;
 		dimensiones[1] = ancho;
 	}
-	public static int[] getdimensiones() {
+	public static int[] getDimensiones() {
 		return dimensiones;
+	}
+	public static JFrame getFrame() {
+		return frame;
 	}
 }

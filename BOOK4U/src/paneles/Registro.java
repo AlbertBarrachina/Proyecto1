@@ -3,7 +3,7 @@ package paneles;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-
+import main.*;
 import backend.db;
 
 public class Registro extends JPanel {
@@ -63,7 +63,7 @@ public class Registro extends JPanel {
 							if (mensaje.equals("Usuario creado correctamente.")) {
 								String[]usuario= db.mostrarInfoCliente(correoField.getText(), password1);
 								backend.archivo.copiarArchivo(usuario[0],"src/assets/perfiles/","default","src/assets/perfiles/");
-								main.main.cargarLogin();
+								loader.cargarLogin();
 								JOptionPane.showMessageDialog(null, mensaje);
 							} else {
 								JOptionPane.showMessageDialog(null, mensaje);

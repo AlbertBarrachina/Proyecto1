@@ -1,48 +1,61 @@
 package paneles;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-import javax.print.attribute.AttributeSet;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.JViewport;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-
+import main.*;
 import backend.db;
 
 public class historicoReservas extends JPanel {
-	{
-		int[] dimensiones = main.main.getdimensiones();
-		String[] cliente = main.main.getSesion();
-		setLayout(new BorderLayout());
+	int[] dimensiones = main.getDimensiones();
+	String[] cliente = main.getSesion();
+
+	public historicoReservas() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				Dimension newSize = e.getComponent().getSize();
+				int altura = newSize.height;
+				int ancho = newSize.width;
+				main.setDimensiones(altura, ancho);
+				dimensiones = main.getDimensiones();
+			}
+		});
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		
 		setBackground(new Color(173, 216, 230));
 		setBounds(0, 0, dimensiones[0], dimensiones[1]);
-		
-//		JLabel label = new JLabel("Historial de compras");
-//		label.setBounds(0,0,1920,500);
-//		label.setBackground(new Color(255,255,255));
-//		add(label);
+
+		JLabel label = new JLabel("Historial de compras");
+		constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.1; // 10% of the vertical space
+		label.setBackground(new Color(255,255,255));
+		add(label,constraints);
 
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
-			main.main.cargarPrincipal();
+			loader.cargarPrincipal();
 		});
-		add(backButton, BorderLayout.SOUTH);
+		
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
@@ -56,16 +69,15 @@ public class historicoReservas extends JPanel {
 			textPane.setEditable(false);
 			String[] reserva = reservas.get(i - 1);
 			if (reserva.length == 7) {
-				//intenta cargar la imgen
+				// intenta cargar la imgen
 				try {
 					File file = new File("src/assets/imagenes/1.jpg");
 					Image image = ImageIO.read(file);
-					Image resizedImage = image.getScaledInstance(100, 100,
-							Image.SCALE_SMOOTH);
+					Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 
 					// Create an ImageIcon from the Image
 					ImageIcon imageIcon = new ImageIcon(resizedImage);
-					
+
 					// Create a JLabel to display the image
 					JLabel imageLabel = new JLabel(imageIcon);
 
@@ -74,18 +86,18 @@ public class historicoReservas extends JPanel {
 					JLabel imageLabel = new JLabel("Imagen no encontrada.");
 					panelTexto.add(imageLabel);
 				}
-				if(reserva[4].equals("F")) {
-					reserva[4]="Finalizada";
-				}else if(reserva[4].equals("P")) {
-					reserva[4]="Pagada";
-				}else if(reserva[4].equals("C")) {
-					reserva[4]="Cancelada";
-				}else if(reserva[4].equals("D")) {
-					reserva[4]="Denegada";
+				if (reserva[4].equals("F")) {
+					reserva[4] = "Finalizada";
+				} else if (reserva[4].equals("P")) {
+					reserva[4] = "Pagada";
+				} else if (reserva[4].equals("C")) {
+					reserva[4] = "Cancelada";
+				} else if (reserva[4].equals("D")) {
+					reserva[4] = "Denegada";
 				}
-				textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3]
-						+ " creditos.\rEstado: " + reserva[4] + ".\rFecha de entrada: " + reserva[5] + ".\rFecha de salida: "
-						+ reserva[6]+".");
+				textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3] + " creditos.\rEstado: "
+						+ reserva[4] + ".\rFecha de entrada: " + reserva[5] + ".\rFecha de salida: " + reserva[6]
+						+ ".");
 			} else {
 				textPane.setText("Invalid data");
 			}
@@ -94,11 +106,24 @@ public class historicoReservas extends JPanel {
 		}
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
-		
+
 		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
-//		scrollPane.setBounds(0, 0, 3000, 2000);
-		add(scrollPane);
+		constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 8; // 9/10 of the vertical space
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.8; // 90% of the vertical space
+		add(scrollPane,constraints);
+		
+		constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 10;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.05; // 10% of the vertical space
+		add(backButton,constraints);
 	}
 }

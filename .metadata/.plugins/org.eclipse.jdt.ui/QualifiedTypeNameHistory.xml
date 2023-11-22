@@ -11,7 +11,6 @@
     <fullyQualifiedTypeName name="com.sun.org.apache.xml.internal.security.utils.Base64"/>
     <fullyQualifiedTypeName name="javax.crypto.SecretKey"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
-    <fullyQualifiedTypeName name="java.awt.Dimension"/>
     <fullyQualifiedTypeName name="backend.db"/>
     <fullyQualifiedTypeName name="java.lang.Integer"/>
     <fullyQualifiedTypeName name="LogIn"/>
@@ -40,4 +39,11 @@
     <fullyQualifiedTypeName name="main.main"/>
     <fullyQualifiedTypeName name="paneles.perfil_usuario"/>
     <fullyQualifiedTypeName name="javax.swing.JViewport"/>
+    <fullyQualifiedTypeName name="java.awt.Dimension"/>
+    <fullyQualifiedTypeName name="java.awt.event.ComponentAdapter"/>
+    <fullyQualifiedTypeName name="java.awt.event.ComponentEvent"/>
+    <fullyQualifiedTypeName name="java.awt.GridBagConstraints"/>
+    <fullyQualifiedTypeName name="java.awt.Insets"/>
+    <fullyQualifiedTypeName name="java.awt.GridLayout"/>
+    <fullyQualifiedTypeName name="java.awt.GridBagLayout"/>
 </qualifiedTypeNameHistroy>

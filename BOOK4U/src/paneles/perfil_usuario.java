@@ -6,7 +6,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import main.*;
 
 public class perfil_usuario extends JPanel {
 	public perfil_usuario() {
@@ -19,12 +19,12 @@ public class perfil_usuario extends JPanel {
 
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
-			main.main.cargarPrincipal();
+			loader.cargarPrincipal();
 		});
 		add(backButton, BorderLayout.SOUTH);
 		JButton historialButton = new JButton("Historico de reservas");
 		backButton.addActionListener(e -> {
-			main.main.cargarHistoricoReservas();
+			loader.cargarHistoricoReservas();
 		});
 		add(historialButton, BorderLayout.EAST);
 	}
