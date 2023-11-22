@@ -80,7 +80,7 @@ public class main {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U habitaciones");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			ContenidoUI panelPrincipal = new ContenidoUI(frame);
+			paneles.Creditos panelCreditos = new paneles.Creditos();
 			frame.revalidate();
 			frame.repaint();
 		}
