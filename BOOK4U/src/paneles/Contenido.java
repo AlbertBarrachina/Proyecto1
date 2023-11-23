@@ -1,6 +1,9 @@
 package paneles;
 
 import javax.swing.*;
+
+import main.main;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,6 +13,8 @@ public class Contenido extends JPanel {
     private String description1;
     private String description2;
     private Color backgroundColor = new Color(173, 216, 230);  // Define el color de fondo
+    int[] dimensiones = main.getDimensiones();
+    
     
     public Contenido(String imagePath, String description1, String description2, JFrame frame, JPanel mainPanel) {
         this.description1 = description1;
@@ -21,7 +26,8 @@ public class Contenido extends JPanel {
         ImageIcon imageIcon = createImageIcon(imagePath);
         if (imageIcon != null) {
             Image image = imageIcon.getImage();
-            Image newImg = image.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+            //establece tamaño de la imaen con respecto al tamaño del frame
+            Image newImg = image.getScaledInstance((int)Math.round(dimensiones[0]*0.25), (int)Math.round(dimensiones[1]*0.3), Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);
             JLabel imageLabel = new JLabel(imageIcon);
             imageLabel.addMouseListener(new MouseAdapter() {

@@ -5,6 +5,10 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 public class loader {
+	private static int[] dimensiones;
+	public loader(){
+		dimensiones = main.getDimensiones();
+	}
 	// funcion para cargar la pantalla de historial de reservas
 		public static void cargarHistoricoReservas() {
 			JFrame frame = main.getFrame();
@@ -23,7 +27,7 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("Pantalla de Registro");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(300, 300);
+			frame.setSize(dimensiones[0], dimensiones[1]);
 			frame.setResizable(false);
 			paneles.Registro panelRegistro = new paneles.Registro();
 			frame.getContentPane().add(panelRegistro, BorderLayout.CENTER);

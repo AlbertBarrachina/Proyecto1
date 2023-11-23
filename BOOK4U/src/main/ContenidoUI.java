@@ -39,7 +39,7 @@ public class ContenidoUI extends JPanel{
 	}
 
 	private void construirUI() {
-
+		int[] dimensiones = main.getDimensiones();
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
 
@@ -131,7 +131,7 @@ public class ContenidoUI extends JPanel{
 		botonPerfil.setPreferredSize(new Dimension(60, 60));
 		
 		botonPerfil.addActionListener(e -> {
-			loader.cargarHistoricoReservas();
+			loader.cargarPerfil();
 		});
 
 		// A�ADIMOS EL BOTON A UN PANEL PERSONALIZADO//
@@ -184,8 +184,8 @@ public class ContenidoUI extends JPanel{
 		/// A�ADIMOS EL PANEL PRINCIPAL AL FRAME///
 		frame.add(panelPrincipal);
 		frame.setTitle("BOOK4U");
-		frame.setSize(900, 450);
-		frame.setExtendedState(frame.MAXIMIZED_BOTH);
+		frame.setSize(dimensiones[0],dimensiones[1]);
+//		frame.setExtendedState(frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}

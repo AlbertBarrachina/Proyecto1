@@ -33,29 +33,37 @@ public class historicoReservas extends JPanel {
 				int altura = newSize.height;
 				int ancho = newSize.width;
 				main.setDimensiones(altura, ancho);
-				dimensiones = main.getDimensiones();
 			}
 		});
+		// establece el display para que sea responsive
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
-		
+		constraints.fill = GridBagConstraints.BOTH;
+
 		setBackground(new Color(173, 216, 230));
 		setBounds(0, 0, dimensiones[0], dimensiones[1]);
 
+		// texto indicando que pagina es
 		JLabel label = new JLabel("Historial de compras");
-		constraints.fill = GridBagConstraints.BOTH;
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 1.0;
-        constraints.weighty = 0.1; // 10% of the vertical space
-		label.setBackground(new Color(255,255,255));
-		add(label,constraints);
+		label.setHorizontalAlignment(JLabel.CENTER);
+
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.1; // 10% of the vertical space
+		label.setBackground(new Color(255, 255, 255));
+		add(label, constraints);
 
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
-			loader.cargarPrincipal();
+			loader.cargarPerfil();
 		});
-		
+		constraints.gridx = 0;
+		constraints.gridy = 10;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.005; // 0.5% of the vertical space
+		add(backButton, constraints);
+
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
@@ -110,20 +118,12 @@ public class historicoReservas extends JPanel {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
-		constraints.fill = GridBagConstraints.BOTH;
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 8; // 9/10 of the vertical space
-        constraints.weightx = 1.0;
-        constraints.weighty = 0.8; // 90% of the vertical space
-		add(scrollPane,constraints);
-		
-		constraints.fill = GridBagConstraints.BOTH;
-        constraints.gridx = 0;
-        constraints.gridy = 10;
-        constraints.weightx = 1.0;
-        constraints.weighty = 0.05; // 10% of the vertical space
-		add(backButton,constraints);
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 8; // 9/10 of the vertical space
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.8; // 90% of the vertical space
+		add(scrollPane, constraints);
 	}
 }
