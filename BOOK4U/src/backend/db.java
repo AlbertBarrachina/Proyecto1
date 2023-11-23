@@ -444,6 +444,45 @@ public class db {
 		}
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+			//funcion que utilizaremos para realizar
+			//la reserva de la habitacion
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+	
+	public static String ReservarHabitacion(int idc, int creditos, String metodo_pago) {
+		String mensaje = "";
+
+		int creditosActuales = getCreditosCliente(idc);
+		int temp = creditosActuales + creditos;
+		if (temp <= 999) {
+			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?)";
+			try {
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setInt(1, idc);
+				pst.setInt(2, creditos);
+				pst.setInt(3, creditos * 10);
+				pst.setString(4, metodo_pago);
+
+				int rowsInserted = pst.executeUpdate();
+				if (rowsInserted > 0) {
+					creditos = creditosActuales + creditos;
+					mensaje = (editarCreditosCliente(idc, creditos));
+				} else {
+					mensaje = "No se pudo hacer la transaccion.";
+				}
+			} catch (SQLException e) {
+				mensaje = "Error: " + (e);
+			}
+
+		} else {
+			mensaje = "Has llegado a tu limite de creditos acumulados.";
+		}
+		return mensaje;
+	}
+	
+	
 	// busca toda la informacion de las habitaciones que entren dentro de las
 	// categorias de busqueda introducidas, si la categoria es null no se incluye en
 	// el select
