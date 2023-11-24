@@ -73,6 +73,7 @@ public class DETALLES_HABITACION extends JPanel {
         dateChooserInicio = new JDateChooser();
         dateChooserInicio.getJCalendar().setMinSelectableDate(new Date()); 
         ((JTextField)dateChooserInicio.getDateEditor().getUiComponent()).setEditable(false);
+        
 
         dateChooserFinal = new JDateChooser();
         dateChooserFinal.getJCalendar().setMinSelectableDate(new Date()); 
@@ -92,7 +93,7 @@ public class DETALLES_HABITACION extends JPanel {
         reserveButtonPanel = new JPanel();
         reserveButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         reserveButton = new JButton("Reservar");
-        reserveButton.setPreferredSize(new Dimension(200, 30));
+        reserveButton.setPreferredSize(new Dimension(200, 80));
         reserveButton.addActionListener(e -> {
             VentanaReserva();
         });
@@ -104,7 +105,7 @@ public class DETALLES_HABITACION extends JPanel {
 
         // Botón de regreso
         backButton = new JButton("Volver");
-        backButton.setPreferredSize(new Dimension(400, 50));
+        backButton.setPreferredSize(new Dimension(400, 55));
         backButton.addActionListener(e -> {
             frame.setContentPane(mainPanel);
             frame.revalidate();
@@ -129,6 +130,12 @@ public class DETALLES_HABITACION extends JPanel {
         // Obten las fechas seleccionadas
         Date fechaInicio = dateChooserInicio.getDate();
         Date fechaFinal = dateChooserFinal.getDate();
+        
+        if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
+        	JOptionPane.showMessageDialog(frame, " La fecha final no puede ser anterior a la fecha de inicio.", "Error en las Fechas", JOptionPane.ERROR_MESSAGE);
+        	return;
+        	
+        }
 
         // Formatea las fechas para mostrarlas
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
