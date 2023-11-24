@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import main.*;
 
-public class perfil_usuario extends JPanel {
-	public perfil_usuario() {
+public class perfilUsuario extends JPanel {
+	public perfilUsuario() {
 		// establece el display para que sea responsive
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();

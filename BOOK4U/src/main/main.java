@@ -16,7 +16,6 @@ import backend.db;
 public class main {
 	// frame de la aplicacion, se usara este para todo
 	private static JFrame frame = new JFrame("Book4U Loading...");
-	private List<paneles.Contenido> contenidos = new ArrayList<>();
 	private static String[] cliente = new String[10];
 	private static int[] dimensiones = new int[2];
 	private static Dimension screenSize;
@@ -24,7 +23,7 @@ public class main {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setDimensiones((int)Math.round(screenSize.height*0.7),(int)Math.round(screenSize.width*0.7));
 		frame.setBounds((int)Math.round(dimensiones[0]*0.1),(int)Math.round(dimensiones[1]*0.1),dimensiones[0], dimensiones[1]);
-		frame.setExtendedState(frame.MAXIMIZED_BOTH);
+		//frame.setExtendedState(frame.MAXIMIZED_BOTH);
 		//actualiza las dimensiones cada vez que se modifica el tamaño del frame
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -49,14 +48,14 @@ public class main {
 		frame.setIconImage(Icon.getImage());
 
 		// carga la pagina principal si el login es correcto
-		if (db.comprobarLoginCliente(cliente[0], cliente[1]) == true) {
+		if (db.comprobarLoginCliente(cliente[0], cliente[1])) {
 			setSesion(cliente[0], cliente[1]);
 			ContenidoUI contenidoUI = new ContenidoUI(frame);
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login
 		} else {
-			loader.cargarLogin();
+			loader.cargarCreditos();
 			frame.setVisible(true);
 		}
 	}

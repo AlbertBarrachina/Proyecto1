@@ -29,7 +29,7 @@ public class loader {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(dimensiones[0], dimensiones[1]);
 			frame.setResizable(false);
-			paneles.Registro panelRegistro = new paneles.Registro();
+			paneles.registro panelRegistro = new paneles.registro();
 			frame.getContentPane().add(panelRegistro, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
@@ -43,7 +43,7 @@ public class loader {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(300, 175);
 			frame.setResizable(false);
-			paneles.LogIn panelLogin = new paneles.LogIn();
+			paneles.logIn panelLogin = new paneles.logIn();
 			frame.getContentPane().add(panelLogin, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
@@ -65,8 +65,20 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U perfil");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			paneles.perfil_usuario panelPerfil = new paneles.perfil_usuario();
+			paneles.perfilUsuario panelPerfil = new paneles.perfilUsuario();
 			frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
+			frame.revalidate();
+			frame.repaint();
+		}
+		
+		// funcion para cargar la pantalla principal
+		public static void cargarCreditos() {
+			JFrame frame = main.getFrame();
+			frame.getContentPane().removeAll();
+			frame.setTitle("BOOK4U comprar creditos");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			paneles.creditos panelCreditos = new paneles.creditos();
+			frame.getContentPane().add(panelCreditos, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
 		}

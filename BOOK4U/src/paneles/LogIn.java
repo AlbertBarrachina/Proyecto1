@@ -7,7 +7,7 @@ import main.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class LogIn extends JPanel {
+public class logIn extends JPanel {
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

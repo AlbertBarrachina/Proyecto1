@@ -3,8 +3,8 @@ package paneles;
 import javax.swing.*;
 import java.awt.*;
 
-public class DETALLES_HABITACION extends JPanel {
-    public DETALLES_HABITACION(String texto, JFrame frame, JPanel mainPanel) {
+public class detallesHabitacion extends JPanel {
+    public detallesHabitacion(String texto, JFrame frame, JPanel mainPanel) {
         setLayout(new BorderLayout());
         setBackground(new Color(173, 216, 230));  // Establecer el color de fondo deseado
         

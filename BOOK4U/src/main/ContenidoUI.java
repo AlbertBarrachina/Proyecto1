@@ -27,7 +27,7 @@ import components.ImagenPerfil;
 public class ContenidoUI extends JPanel{
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
-	private List<paneles.Contenido> contenidos;
+	private List<paneles.contenido> contenidos;
 	private JFrame frame;
 	private JPanel contentPanel;
 
@@ -163,7 +163,7 @@ public class ContenidoUI extends JPanel{
 			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
 			String description1 = descriptions1[i];
 			String description2 = descriptions2[i];
-			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, frame,
+			paneles.contenido contenido = new paneles.contenido(imagePath, description1, description2, frame,
 					panelPrincipal);
 
 			contenidos.add(contenido);
@@ -198,7 +198,7 @@ public class ContenidoUI extends JPanel{
 		gbc.insets = new Insets(75, 75, 75, 75);
 
 		int count = 0;
-		for (paneles.Contenido contenido : contenidos) {
+		for (paneles.contenido contenido : contenidos) {
 			if (contenido.getDescription1().toLowerCase().contains(texto)
 					|| contenido.getDescription2().toLowerCase().contains(texto)) {
 				gbc.gridx = count % 4;
