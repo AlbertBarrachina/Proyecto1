@@ -9,14 +9,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-public class contenido extends JPanel {
+public class Contenido extends JPanel {
     private String description1;
     private String description2;
     private Color backgroundColor = new Color(173, 216, 230);  // Define el color de fondo
     int[] dimensiones = main.getDimensiones();
     
     
-    public contenido(String imagePath, String description1, String description2, JFrame frame, JPanel mainPanel) {
+    public Contenido(String imagePath, String description1, String description2, JFrame frame, JPanel mainPanel) {
         this.description1 = description1;
         this.description2 = description2;
 
@@ -33,7 +33,7 @@ public class contenido extends JPanel {
             imageLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    frame.setContentPane(new paneles.detallesHabitacion(description1 + ": " + description2, frame, mainPanel));
+                    frame.setContentPane(new paneles.DetallesHabitacion(description1 + ": " + description2, frame, mainPanel));
                     frame.revalidate();
                 }
             });

@@ -21,8 +21,8 @@ public class main {
 	private static Dimension screenSize;
 	public static void main(String[] args) {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setDimensiones((int)Math.round(screenSize.height*0.7),(int)Math.round(screenSize.width*0.7));
-		frame.setBounds((int)Math.round(dimensiones[0]*0.1),(int)Math.round(dimensiones[1]*0.1),dimensiones[0], dimensiones[1]);
+		setDimensiones((int)Math.round(screenSize.height*0.8),(int)Math.round(screenSize.width*0.8));
+		frame.setBounds((int)Math.round(dimensiones[0]*0.05),(int)Math.round(dimensiones[1]*0.05),dimensiones[0], dimensiones[1]);
 		//frame.setExtendedState(frame.MAXIMIZED_BOTH);
 		//actualiza las dimensiones cada vez que se modifica el tamaño del frame
 		frame.addComponentListener(new ComponentAdapter() {
@@ -42,8 +42,10 @@ public class main {
 				dimensiones[1] = (int) newSize.getHeight();
 			}
 		});
-		cliente = archivo.leerTxt("src/config/config_usuario.txt", 1);
-		// establece el icono de la aplicacion
+		//lee el archivo de config_usuario.txt para ves si puede iniciar sesion con esos dato
+		try {
+			cliente = archivo.leerTxt("src/config/config_usuario.txt", 1);
+			// establece el icono de la aplicacion
 		ImageIcon Icon = new ImageIcon("src/assets/book4u.png");
 		frame.setIconImage(Icon.getImage());
 
@@ -55,9 +57,14 @@ public class main {
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login
 		} else {
-			loader.cargarCreditos();
+			loader.cargarLogin();
 			frame.setVisible(true);
 		}
+		} catch (Exception e) {
+			loader.cargarLogin();
+			frame.setVisible(true);
+		}
+		
 	}
 
 	// guarda los datos en la array de cliente para tenerlos en toda la aplicacion

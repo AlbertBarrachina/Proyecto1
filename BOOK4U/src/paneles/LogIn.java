@@ -7,7 +7,7 @@ import main.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class logIn extends JPanel {
+public class LogIn extends JPanel {
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -37,6 +37,8 @@ public class logIn extends JPanel {
 					array[0] = correo;
 					array[1] = contrasenya;
 					main.setSesion(array[0], array[1]);
+					Dimension screenSize = main.getDimensionesPantalla();
+					main.setDimensiones((int)Math.round(screenSize.height*0.8),(int)Math.round(screenSize.width*0.8));
 					loader.cargarPrincipal();
 					String linea = backend.archivo.juntarLinea(array);
 					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, linea);

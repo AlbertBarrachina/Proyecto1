@@ -21,11 +21,11 @@ import javax.swing.JTextPane;
 import main.*;
 import backend.db;
 
-public class historicoReservas extends JPanel {
+public class HistoricoReservas extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 
-	public historicoReservas() {
+	public HistoricoReservas() {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -53,16 +53,6 @@ public class historicoReservas extends JPanel {
 		constraints.weighty = 0.1; // 10% of the vertical space
 		label.setBackground(new Color(255, 255, 255));
 		add(label, constraints);
-
-		JButton backButton = new JButton("Volver");
-		backButton.addActionListener(e -> {
-			loader.cargarPerfil();
-		});
-		constraints.gridx = 0;
-		constraints.gridy = 10;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.005; // 0.5% of the vertical space
-		add(backButton, constraints);
 
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
@@ -125,5 +115,15 @@ public class historicoReservas extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.8; // 90% of the vertical space
 		add(scrollPane, constraints);
+		
+		JButton backButton = new JButton("Volver");
+		backButton.addActionListener(e -> {
+			loader.cargarPerfil();
+		});
+		constraints.gridx = 0;
+		constraints.gridy = 10;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.005; // 0.5% of the vertical space
+		add(backButton, constraints);
 	}
 }

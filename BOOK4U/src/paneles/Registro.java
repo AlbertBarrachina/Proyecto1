@@ -6,7 +6,7 @@ import javax.swing.*;
 import main.*;
 import backend.db;
 
-public class registro extends JPanel {
+public class Registro extends JPanel {
 	{
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
