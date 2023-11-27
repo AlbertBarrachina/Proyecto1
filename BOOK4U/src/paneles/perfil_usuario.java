@@ -1,10 +1,13 @@
 package paneles;
 
 import javax.swing.*;
+
+import main.ContenidoUI;
+
 import java.awt.*;
 
 public class perfil_usuario extends JPanel {
-	public perfil_usuario(JFrame frame, JPanel mainPanel) {
+	public perfil_usuario(ContenidoUI contenidoUI, JPanel mainPanel) {
 		setLayout(new BorderLayout());
 		setBackground(new Color(173, 216, 230)); // Establecer el color de fondo deseado
 
@@ -14,9 +17,11 @@ public class perfil_usuario extends JPanel {
 
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
-			frame.setContentPane(mainPanel);
-			frame.revalidate();
+		    JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		    mainFrame.setContentPane(mainPanel);
+		    mainFrame.revalidate();
 		});
+
 		add(backButton, BorderLayout.SOUTH);
 	}
 }

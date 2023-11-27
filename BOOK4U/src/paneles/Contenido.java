@@ -1,6 +1,9 @@
 package paneles;
 
 import javax.swing.*;
+
+import main.ContenidoUI;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,7 +15,7 @@ public class Contenido extends JPanel {
     private String description2;
     private Color backgroundColor = new Color(173, 216, 230);
 
-    public Contenido(String imagePath, String description1, String description2, JFrame frame, JPanel mainPanel) {
+    public Contenido(String imagePath, String description1, String description2, ContenidoUI contenidoUI, JPanel mainPanel) {
         this.description1 = description1;
         this.description2 = description2;
 
@@ -25,8 +28,8 @@ public class Contenido extends JPanel {
             imageLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    frame.setContentPane(new DETALLES_HABITACION(imageIcon, description1, description2, description2, frame, mainPanel));
-                    frame.revalidate();
+                    contenidoUI.setContentPane(new DETALLES_HABITACION(imageIcon, description1, description2, description2, contenidoUI, mainPanel));
+                    contenidoUI.revalidate();
                 }
             });
             add(imageLabel);

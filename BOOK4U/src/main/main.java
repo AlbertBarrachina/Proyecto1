@@ -32,7 +32,7 @@ public class main {
 		// carga la pagina principal si el login es correcto
 		if (db.comprobarLoginCliente(cliente[0], cliente[1]) == true) {
 			cliente=backend.db.mostrarInfoCliente(cliente[0], cliente[1]);
-			ContenidoUI contenidoUI = new ContenidoUI(frame);
+			ContenidoUI contenidoUI = new ContenidoUI();
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login
@@ -70,12 +70,14 @@ public class main {
 
 	// funcion para cargar la pantalla principal
 	public static void cargarPrincipal() {
-		frame.getContentPane().removeAll();
-		frame.setTitle("BOOK4U habitaciones");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ContenidoUI panelPrincipal = new ContenidoUI(frame);
-		frame.revalidate();
-		frame.repaint();
+		 frame.getContentPane().removeAll();
+		    frame.setTitle("BOOK4U habitaciones");
+		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    ContenidoUI contenidoUI = new ContenidoUI(); // Aquí ContenidoUI es un JPanel
+		    frame.add(contenidoUI); // Agregar al JFrame
+		    frame.pack(); // Ajustar tamaño del JFrame basado en el contenido
+		    frame.setVisible(true);
+		
 	}
 	// guarda los datos en la array de cliente para tenerlos en toda la aplicacion
 	// cada vez que se abre esta

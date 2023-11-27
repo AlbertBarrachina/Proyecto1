@@ -24,17 +24,16 @@ import javax.swing.JTextField;
 
 import backend.archivo;
 import components.ImagenPerfil;
+import paneles.Contenido;
 
-public class ContenidoUI {
+public class ContenidoUI extends JPanel{
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
 	private List<paneles.Contenido> contenidos;
-	private JFrame frame;
 	private JPanel contentPanel;
 	private JPanel perfilPanel;
 
-	public ContenidoUI(JFrame frame) {
-		this.frame = frame;
+	public ContenidoUI() {
 		this.contenidos = new ArrayList<>();
 		this.backgroundColor = new Color(173, 216, 230);
 		construirUI();
@@ -124,10 +123,10 @@ public class ContenidoUI {
 		
 		botonPerfil.addActionListener(e -> {
 			if (perfilPanel == null) {
-				perfilPanel = new paneles.perfil_usuario(frame, panelPrincipal);
+				perfilPanel = new paneles.perfil_usuario(this, panelPrincipal);
 			}
-			frame.setContentPane(perfilPanel); // Aquí se debe llamar a setContentPane() en el objeto frame
-			frame.revalidate();
+			this.add(perfilPanel); // Aquí se debe llamar a setContentPane() en el objeto frame
+			this.revalidate();
 		});
 
 		// Aï¿½ADIMOS EL BOTON A UN PANEL PERSONALIZADO//
@@ -156,16 +155,16 @@ public class ContenidoUI {
 		/// CORRESPONDIENTES A CADA UNO DE LOS CONTENIDOS///
 		/// A SU VEZ SE MARCA COMO SE QUIERE QUE ESTOS CONTENIDOS ESTEN DISTRIBUIDOS///
 		for (int i = 0; i < numContents; i++) {
-			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
-			String description1 = descriptions1[i];
-			String description2 = descriptions2[i];
-			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, frame,
-					panelPrincipal);
+			  String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
+			    String description1 = descriptions1[i];
+			    String description2 = descriptions2[i];
 
-			contenidos.add(contenido);
-			gbc.gridx = i % 4;
-			gbc.gridy = i / 4;
-			contentPanel.add(contenido, gbc);
+			    // Usar 'this' en lugar de 'ContenidoUI' para referirse a la instancia actual de la clase
+			    paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, this, panelPrincipal);
+			    contenidos.add(contenido);
+			    gbc.gridx = i % 4;
+			    gbc.gridy = i / 4;
+			    contentPanel.add(contenido, gbc);
 		}
 
 		/// Aï¿½ADIMOS UN SCROLLPANE PARA PODER DESPLAZARSE
@@ -178,12 +177,8 @@ public class ContenidoUI {
 		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
 		/// Aï¿½ADIMOS EL PANEL PRINCIPAL AL FRAME///
-		frame.add(panelPrincipal);
-		frame.setTitle("BOOK4U");
-		frame.setSize(900, 450);
-		frame.setExtendedState(frame.MAXIMIZED_BOTH);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		this.revalidate();
+		this.repaint();
 	}
 
 	private void buscar(String texto) {
