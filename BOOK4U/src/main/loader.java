@@ -3,7 +3,9 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class loader {
 	private static int[] dimensiones;
@@ -18,7 +20,7 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U - reservas");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			paneles.HistoricoReservas panelHistorico = new paneles.HistoricoReservas();
+			paneles.historicoReservas panelHistorico = new paneles.historicoReservas();
 			frame.getContentPane().add(panelHistorico, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
@@ -60,7 +62,8 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			ContenidoUI panelPrincipal = new ContenidoUI(frame);
+			paneles.ContenidoUI panelPrincipal = new paneles.ContenidoUI();
+			frame.getContentPane().add(panelPrincipal, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
 		}
@@ -70,11 +73,23 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U - perfil");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			paneles.PerfilUsuario panelPerfil = new paneles.PerfilUsuario();
+			paneles.perfilUsuario panelPerfil = new paneles.perfilUsuario();
 			frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
 		}
+		
+		//funcio para cargar el panel de detalles habitacion
+				public static void cargardetallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion, String descripcionHabitacion, JPanel mainPanel) {
+					JFrame frame = main.getFrame();
+					frame.getContentPane().removeAll();
+					frame.setTitle("BOOK4U - perfil");
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					paneles.detallesHabitacion panelPerfil = new paneles.detallesHabitacion(imageIcon, nombreHabitacion, precioHabitacion, descripcionHabitacion, mainPanel);
+					frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
+					frame.revalidate();
+					frame.repaint();
+				}
 		
 		// funcion para cargar la pantalla principal
 		public static void cargarCreditos() {
@@ -82,7 +97,7 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U comprar creditos");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			paneles.Creditos panelCreditos = new paneles.Creditos();
+			paneles.creditos panelCreditos = new paneles.creditos();
 			frame.getContentPane().add(panelCreditos, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();

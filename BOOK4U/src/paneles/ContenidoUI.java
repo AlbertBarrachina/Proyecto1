@@ -1,4 +1,4 @@
-package main;
+package paneles;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,29 +16,24 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import components.ImagenPerfil;
+import main.*;
 
 public class ContenidoUI extends JPanel{
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
 	private List<paneles.Contenido> contenidos;
-	private JFrame frame;
 	private JPanel contentPanel;
 
-	public ContenidoUI(JFrame frame) {
-		this.frame = frame;
+	public ContenidoUI() {
 		this.contenidos = new ArrayList<>();
 		this.backgroundColor = new Color(173, 216, 230);
-		construirUI();
-	}
-
-	private void construirUI() {
+	
 		int[] dimensiones = main.getDimensiones();
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
@@ -163,8 +158,7 @@ public class ContenidoUI extends JPanel{
 			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
 			String description1 = descriptions1[i];
 			String description2 = descriptions2[i];
-			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, frame,
-					panelPrincipal);
+			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, panelPrincipal);
 
 			contenidos.add(contenido);
 			gbc.gridx = i % 4;
@@ -182,12 +176,14 @@ public class ContenidoUI extends JPanel{
 		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
 		/// A�ADIMOS EL PANEL PRINCIPAL AL FRAME///
-		frame.add(panelPrincipal);
-		frame.setTitle("BOOK4U");
-		frame.setSize(dimensiones[0],dimensiones[1]);
-//		frame.setExtendedState(frame.MAXIMIZED_BOTH);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
+		add(panelPrincipal, constraints);
 	}
 
 	private void buscar(String texto) {
@@ -209,10 +205,6 @@ public class ContenidoUI extends JPanel{
 		}
 		contentPanel.revalidate();
 		contentPanel.repaint();
-	}
-
-	public JPanel getPanelPrincipal() {
-		return panelPrincipal;
 	}
 
 }

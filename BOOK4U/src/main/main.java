@@ -52,7 +52,7 @@ public class main {
 		// carga la pagina principal si el login es correcto
 		if (db.comprobarLoginCliente(cliente[0], cliente[1])) {
 			setSesion(cliente[0], cliente[1]);
-			ContenidoUI contenidoUI = new ContenidoUI(frame);
+			loader.cargarPrincipal();
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login

@@ -21,11 +21,11 @@ import javax.swing.JTextPane;
 import main.*;
 import backend.db;
 
-public class HistoricoReservas extends JPanel {
+public class historicoReservas extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 
-	public HistoricoReservas() {
+	public historicoReservas() {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
