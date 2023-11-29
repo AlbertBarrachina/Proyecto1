@@ -23,7 +23,6 @@ public class main {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setDimensiones((int)Math.round(screenSize.height*0.8),(int)Math.round(screenSize.width*0.8));
 		frame.setBounds((int)Math.round(dimensiones[0]*0.05),(int)Math.round(dimensiones[1]*0.05),dimensiones[0], dimensiones[1]);
-		//frame.setExtendedState(frame.MAXIMIZED_BOTH);
 		//actualiza las dimensiones cada vez que se modifica el tamaño del frame
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -53,6 +52,7 @@ public class main {
 		if (db.comprobarLoginCliente(cliente[0], cliente[1])) {
 			setSesion(cliente[0], cliente[1]);
 			loader.cargarPrincipal();
+			frame.setExtendedState(frame.MAXIMIZED_BOTH);
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login

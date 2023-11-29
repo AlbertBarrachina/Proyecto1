@@ -51,7 +51,7 @@ public class Contenido extends JPanel {
         imageLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                loader.cargardetallesHabitacion(imageIcon, imagePath, description1, description2, mainPanel);
+                loader.cargardetallesHabitacion(imageIcon, description1, description2);
             }
         });
     }

@@ -1,10 +1,12 @@
 package backend;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -43,7 +45,7 @@ public class db {
 	// funciones de tabla cliente----------------------------------------------
 
 	// ------------------------------------------------------------
-	
+
 	public static String comprobarCorreoTelefonoCliente(int telefono, String correo) {
 		String sql = "SELECT telefono, correo FROM CLIENTE WHERE (correo = ? OR telefono = ?)";
 		try {
@@ -65,6 +67,7 @@ public class db {
 		}
 
 	}
+
 	// crea el cliente el la base de datos (funcion de register)
 	public static String crearCliente(String nombre, String apellidos, int telefono, String correo,
 			String contrasenya) {
@@ -112,7 +115,7 @@ public class db {
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, correo);
-			pst.setString(2,contrasenya);
+			pst.setString(2, contrasenya);
 
 			ResultSet rs = pst.executeQuery();
 
@@ -365,6 +368,47 @@ public class db {
 
 	// funciones tabla reserva
 
+	
+	//permite crear reservas
+	public static Boolean comprarReserva(int idc, int id_habitacion, int precio, String estado, String strEntrada, String strSalida) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date entrada = null;
+		try {
+			entrada = (Date) dateFormat.parse(strEntrada);
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        java.sql.Date entradas = new java.sql.Date(entrada.getTime());
+        Date salida = null;
+		try {
+			salida = (Date) dateFormat.parse(strEntrada);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        java.sql.Date salidas = new java.sql.Date(salida.getTime());
+			String sql = "INSERT INTO COMPRAS values( NULL ,? ,? ,? ,?, ?, ?)";
+			try {
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setInt(1, id_habitacion);
+				pst.setInt(2, idc);
+				pst.setInt(3, precio);
+				pst.setString(4, estado);
+				pst.setDate(5, entradas);
+				pst.setDate(6, salidas);
+
+				int rowsInserted = pst.executeUpdate();
+				if (rowsInserted>0) {
+					return true;
+				}else {
+					return false;
+				}
+			} catch (SQLException e) {
+				return false;
+			}
+	}
+	
 	// permite cancelar o denegar reservas dependiendo de si es por parte de un
 	// usuario o un admin.
 	public static String editarInfoReserva(int id_reserva, String estado) {
@@ -386,17 +430,20 @@ public class db {
 			return "No se ha podido hacer la operacion, error: " + (e) + ".";
 		}
 	}
-	
-	public static ArrayList<String[]> historialReservas(int idc) {
+
+	public static ArrayList<String[]> historialReservas(int idc, String estado, String estado2, String estado3) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * FROM RESERVA WHERE cliente = ?";
+		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?)";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
+			pst.setString(2, estado);
+			pst.setString(3, estado2);
+			pst.setString(4, estado3);
 
 			ResultSet rs = pst.executeQuery();
 
-			//formato para convertir fechas en strings
+			// formato para convertir fechas en strings
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
 			// si existe el usuario
@@ -407,21 +454,13 @@ public class db {
 				row[2] = Integer.toString(rs.getInt("cliente"));
 				row[3] = Integer.toString(rs.getInt("precio"));
 				row[4] = rs.getString("estado");
-				row[5]=  dateFormat.format(rs.getDate("fecha_entrada"));
-				row[6]=  dateFormat.format(rs.getDate("fecha_salida"));
+				row[5] = dateFormat.format(rs.getDate("fecha_entrada"));
+				row[6] = dateFormat.format(rs.getDate("fecha_salida"));
 
 				resultados.add(row);
 
-			}
-			if (resultados.isEmpty()) {
-				String[] row = new String[5];
-				row[0] = "No se encontraron reservas.";
-				resultados.add(row);
 			}
 		} catch (SQLException e) {
-			String[] row = new String[5];
-			row[0] = "" + (e);
-			resultados.add(row);
 		}
 		return resultados;
 
@@ -461,9 +500,9 @@ public class db {
 	// los descuentos, la descripcion, el tipo o cuantas camas tiene(personas que
 	// pueden dormir en esta).
 	public static String editarInfoHabitacion(int id_habitacion, int precio, Float descuento, String tipo, int camas,
-			String descripcion) {
+			String nombre, String descripcion) {
 
-		String sql = "UPDATE HABITACION SET precio =  ?, descuento = ?, tipo = ?, camas = ?, descripcion = ? WHERE id_habitacion = ?";
+		String sql = "UPDATE HABITACION SET precio =  ?, descuento = ?, tipo = ?, camas = ?, nombre = ? descripcion = ? WHERE id_habitacion = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, precio);
@@ -471,7 +510,8 @@ public class db {
 			pst.setString(3, tipo);
 			pst.setInt(4, camas);
 			pst.setString(5, descripcion);
-			pst.setInt(6, id_habitacion);
+			pst.setString(6, nombre);
+			pst.setInt(7, id_habitacion);
 
 			int rowsUpdated = pst.executeUpdate();
 
@@ -494,6 +534,7 @@ public class db {
 		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
 		ArrayList<Object> params = new ArrayList<>();
 		if (empresa > 0) {
+			sqlBuilder.append(" AND empresa = ?");
 			params.add(empresa);
 		}
 
@@ -525,7 +566,7 @@ public class db {
 
 			// si existe el usuario
 			while (rs.next()) {
-				String[] row = new String[8];
+				String[] row = new String[9];
 				row[0] = Integer.toString(rs.getInt("id_habitacion"));
 				row[1] = Integer.toString(rs.getInt("empresa"));
 				row[2] = Integer.toString(rs.getInt("precio"));
@@ -533,18 +574,19 @@ public class db {
 				row[4] = rs.getString("disponibilidad");
 				row[5] = rs.getString("tipo");
 				row[6] = Integer.toString(rs.getInt("camas"));
-				row[7] = rs.getString("descripcion");
+				row[7] = rs.getString("nombre");
+				row[8] = rs.getString("descripcion");
 
 				resultados.add(row);
 
 			}
 			if (resultados.isEmpty()) {
-				String[] row = new String[5];
+				String[] row = new String[9];
 				row[0] = "No se han encontrado habitaciones. :(";
 				resultados.add(row);
 			}
 		} catch (SQLException e) {
-			String[] row = new String[5];
+			String[] row = new String[9];
 			row[0] = "" + (e);
 			resultados.add(row);
 		}

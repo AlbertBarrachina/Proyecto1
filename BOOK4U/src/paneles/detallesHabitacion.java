@@ -1,24 +1,48 @@
 package paneles;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.text.SimpleDateFormat;
-import com.toedter.calendar.JDateChooser;
 import java.util.Date;
-import main.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import com.toedter.calendar.JDateChooser;
+
+import backend.db;
+import main.loader;
+import main.main;
 
 public class detallesHabitacion extends JPanel {
+	int[] dimensiones = main.getDimensiones();
+	String[] cliente = main.getSesion();
+	int id_habitacion = 1;
     private JLabel imageLabel;
     private JPanel imagePanel, detailsPanel, reserveButtonPanel, combinedPanel;
     private JButton backButton, reserveButton;
     private String nombreHabitacion;
     private String precioHabitacion;
     private String descripcionHabitacion;
-    private JPanel mainPanel;
     private JDateChooser dateChooserInicio;
     private JDateChooser dateChooserFinal;
 
-    public detallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion, String descripcionHabitacion, JPanel mainPanel) {
+    public detallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion) {
         this.nombreHabitacion = nombreHabitacion;
         this.precioHabitacion = precioHabitacion;
         this.descripcionHabitacion = descripcionHabitacion;
@@ -145,6 +169,7 @@ public class detallesHabitacion extends JPanel {
         // Botón para confirmar la reserva
         JButton confirmButton = new JButton("Confirmar Reserva");
         confirmButton.addActionListener(e -> {
+        	db.comprarReserva(Integer.parseInt(cliente[0]), id_habitacion, 10, "P", strFechaInicio, strFechaFinal);
             JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: " + strFechaInicio + "\nFecha Final: " + strFechaFinal);
         });
         dialogReserva.add(confirmButton);

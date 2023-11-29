@@ -1,6 +1,5 @@
 package paneles;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,9 +25,19 @@ public class perfilUsuario extends JPanel {
 		constraints.weighty = 0.05; // 10% of the vertical space
 		add(label, constraints);
 
-		JButton historialButton = new JButton("Historico de reservas");
+		JButton reservasButton = new JButton("Reservas actuales");
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.weightx = 0.5;
+		constraints.weighty = 0.0005;
+		add(reservasButton, constraints);
+		reservasButton.addActionListener(e -> {
+			loader.cargarMisReservas();
+		});
+		
+		JButton historialButton = new JButton("Historico de reservas");
+		constraints.gridx = 0;
+		constraints.gridy = 2;
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.0005;
 		add(historialButton, constraints);
@@ -38,7 +47,7 @@ public class perfilUsuario extends JPanel {
 		
 		JButton creditosButton = new JButton("Comprar Creditos");
 		constraints.gridx = 1;
-		constraints.gridy = 1;
+		constraints.gridy = 2;
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.0005;
 		add(creditosButton, constraints);
@@ -51,7 +60,7 @@ public class perfilUsuario extends JPanel {
 			loader.cargarPrincipal();
 		});
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 3;
 		constraints.gridwidth = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0005;

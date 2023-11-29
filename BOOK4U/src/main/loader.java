@@ -18,13 +18,25 @@ public class loader {
 		public static void cargarHistoricoReservas() {
 			JFrame frame = main.getFrame();
 			frame.getContentPane().removeAll();
-			frame.setTitle("BOOK4U - reservas");
+			frame.setTitle("BOOK4U - Historico reservas");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			paneles.historicoReservas panelHistorico = new paneles.historicoReservas();
 			frame.getContentPane().add(panelHistorico, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
 		}
+		
+		// funcion para cargar la pantalla de reservas actuales
+				public static void cargarMisReservas() {
+					JFrame frame = main.getFrame();
+					frame.getContentPane().removeAll();
+					frame.setTitle("BOOK4U - reservas");
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					paneles.misReservas panelReservas = new paneles.misReservas();
+					frame.getContentPane().add(panelReservas, BorderLayout.CENTER);
+					frame.revalidate();
+					frame.repaint();
+				}
 		
 		// funcion para cargar la pantalla de registro
 		public static void cargarRegistro() {
@@ -61,7 +73,8 @@ public class loader {
 			JFrame frame = main.getFrame();
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			frame.setResizable(true);
 			paneles.ContenidoUI panelPrincipal = new paneles.ContenidoUI();
 			frame.getContentPane().add(panelPrincipal, BorderLayout.CENTER);
 			frame.revalidate();
@@ -80,12 +93,12 @@ public class loader {
 		}
 		
 		//funcio para cargar el panel de detalles habitacion
-				public static void cargardetallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion, String descripcionHabitacion, JPanel mainPanel) {
+				public static void cargardetallesHabitacion(ImageIcon icono, String nombreHabitacion, String precioHabitacion) {
 					JFrame frame = main.getFrame();
 					frame.getContentPane().removeAll();
 					frame.setTitle("BOOK4U - perfil");
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					paneles.detallesHabitacion panelPerfil = new paneles.detallesHabitacion(imageIcon, nombreHabitacion, precioHabitacion, descripcionHabitacion, mainPanel);
+					paneles.detallesHabitacion panelPerfil = new paneles.detallesHabitacion(icono, nombreHabitacion, precioHabitacion);
 					frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
 					frame.revalidate();
 					frame.repaint();

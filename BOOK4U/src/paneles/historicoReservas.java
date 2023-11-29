@@ -26,15 +26,6 @@ public class historicoReservas extends JPanel {
 	String[] cliente = main.getSesion();
 
 	public historicoReservas() {
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				Dimension newSize = e.getComponent().getSize();
-				int altura = newSize.height;
-				int ancho = newSize.width;
-				main.setDimensiones(altura, ancho);
-			}
-		});
 		// establece el display para que sea responsive
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -57,50 +48,63 @@ public class historicoReservas extends JPanel {
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
-		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]));
-		int numberOfTexts = reservas.size();
-		for (int i = 1; i <= numberOfTexts; i++) {
-			// panel para cargar cada resultado
-			JPanel panelTexto = new JPanel();
-			// texto con la informacion de la busqueda
+		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]),"F","C","D");
+		if (reservas.size()<1) {
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);
-			String[] reserva = reservas.get(i - 1);
-			if (reserva.length == 7) {
-				// intenta cargar la imgen
-				try {
-					File file = new File("src/assets/imagenes/1.jpg");
-					Image image = ImageIO.read(file);
-					Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+			textPane.setText("No se han encontrado reservas");
+			textPanel.add(textPane);
+		} else {
+			int numberOfTexts = reservas.size();
+			for (int i = 1; i <= numberOfTexts; i++) {
+				// panel para cargar cada resultado
+				JPanel panelTexto = new JPanel();
+				// texto con la informacion de la busqueda
+				JTextPane textPane = new JTextPane();
+				textPane.setEditable(false);
+				String[] reserva = reservas.get(i - 1);
+				if (reserva.length == 7) {
+					// intenta cargar la imgen
+					try {
+						File file = new File("src/assets/imagenes/1.jpg");
+						Image image = ImageIO.read(file);
+						Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 
-					// Create an ImageIcon from the Image
-					ImageIcon imageIcon = new ImageIcon(resizedImage);
+						// Create an ImageIcon from the Image
+						ImageIcon imageIcon = new ImageIcon(resizedImage);
 
-					// Create a JLabel to display the image
-					JLabel imageLabel = new JLabel(imageIcon);
+						// Create a JLabel to display the image
+						JLabel imageLabel = new JLabel(imageIcon);
 
-					panelTexto.add(imageLabel);
-				} catch (IOException e) {
-					JLabel imageLabel = new JLabel("Imagen no encontrada.");
-					panelTexto.add(imageLabel);
+						panelTexto.add(imageLabel);
+					} catch (IOException e) {
+						JLabel imageLabel = new JLabel("Imagen no encontrada.");
+						panelTexto.add(imageLabel);
+					}
+					// intenta traducir el estado en una palabra, si no puede indica que no se pudo
+					// cargar
+					try {
+						if (reserva[4].equals("F")) {
+							reserva[4] = "Finalizada";
+						} else if (reserva[4].equals("P")) {
+							reserva[4] = "Pagada";
+						} else if (reserva[4].equals("C")) {
+							reserva[4] = "Cancelada";
+						} else if (reserva[4].equals("D")) {
+							reserva[4] = "Denegada";
+						}
+					} catch (Exception e) {
+						reserva[4] = "No se pudo cargar.";
+					}
+					textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3]
+							+ " creditos.\rEstado: " + reserva[4] + ".\rFecha de entrada: " + reserva[5]
+							+ ".\rFecha de salida: " + reserva[6] + ".");
+				} else {
+					textPane.setText("Invalid data");
 				}
-				if (reserva[4].equals("F")) {
-					reserva[4] = "Finalizada";
-				} else if (reserva[4].equals("P")) {
-					reserva[4] = "Pagada";
-				} else if (reserva[4].equals("C")) {
-					reserva[4] = "Cancelada";
-				} else if (reserva[4].equals("D")) {
-					reserva[4] = "Denegada";
-				}
-				textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3] + " creditos.\rEstado: "
-						+ reserva[4] + ".\rFecha de entrada: " + reserva[5] + ".\rFecha de salida: " + reserva[6]
-						+ ".");
-			} else {
-				textPane.setText("Invalid data");
+				panelTexto.add(textPane);
+				textPanel.add(panelTexto);
 			}
-			panelTexto.add(textPane);
-			textPanel.add(panelTexto);
 		}
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
@@ -115,7 +119,7 @@ public class historicoReservas extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.8; // 90% of the vertical space
 		add(scrollPane, constraints);
-		
+
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
 			loader.cargarPerfil();
