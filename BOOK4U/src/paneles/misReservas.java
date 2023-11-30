@@ -3,16 +3,22 @@ package paneles;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -102,6 +108,11 @@ public class misReservas extends JPanel{
 						textPane.setText("Invalid data");
 					}
 					panelTexto.add(textPane);
+					 JButton editarButton = new JButton("Editar reserva");
+				        editarButton.addActionListener(e -> {
+				            VentanaEditar();
+				        });
+				    panelTexto.add(editarButton);
 					textPanel.add(panelTexto);
 				}
 			}
@@ -129,6 +140,45 @@ public class misReservas extends JPanel{
 			constraints.weighty = 0.005; // 0.5% of the vertical space
 			add(backButton, constraints);
 		}
+		private void VentanaEditar() {
+	        JDialog dialogReserva = new JDialog(main.getFrame(), "Detalles de la Reserva", true);
+	        dialogReserva.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        dialogReserva.setLayout(new GridLayout(0, 1));
+	        dialogReserva.setSize(400, 300);
+
+	        // Agrega etiquetas y campos para los detalles de la reserva
+	        dialogReserva.add(new JLabel("Nombre de la habitación: "));
+	        dialogReserva.add(new JLabel("Precio: " ));
+	        dialogReserva.add(new JLabel("Descripción: "));
+
+//	        // Obten las fechas seleccionadas
+//	        Date fechaInicio = dateChooserInicio.getDate();
+//	        Date fechaFinal = dateChooserFinal.getDate();
+	        
+//	        if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
+//	        	JOptionPane.showMessageDialog(this, " La fecha final no puede ser anterior a la fecha de inicio.", "Error en las Fechas", JOptionPane.ERROR_MESSAGE);
+//	        	return;
+//	        	
+//	        }
+
+//	        // Formatea las fechas para mostrarlas
+//	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//	        String strFechaInicio = fechaInicio != null ? sdf.format(fechaInicio) : "N/A";
+//	        String strFechaFinal = fechaFinal != null ? sdf.format(fechaFinal) : "N/A";
+//
+//	        dialogReserva.add(new JLabel("Fecha de inicio: " + strFechaInicio));
+//	        dialogReserva.add(new JLabel("Fecha final: " + strFechaFinal));
+//
+//	        // Botón para confirmar la reserva
+//	        JButton confirmButton = new JButton("Confirmar Reserva");
+//	        confirmButton.addActionListener(e -> {
+//	        	db.comprarReserva(Integer.parseInt(cliente[0]), id_habitacion, 10, "P", strFechaInicio, strFechaFinal);
+//	            JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: " + strFechaInicio + "\nFecha Final: " + strFechaFinal);
+//	        });
+//	        dialogReserva.add(confirmButton);
+//
+//	        dialogReserva.setVisible(true);
+	    }
 	}
 
 

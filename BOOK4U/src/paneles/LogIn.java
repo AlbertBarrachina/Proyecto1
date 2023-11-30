@@ -11,7 +11,7 @@ public class LogIn extends JPanel {
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		JLabel userLabel = new JLabel("Usuario:");
+		JLabel userLabel = new JLabel("Correo electronico:");
 		this.add(userLabel);
 		JTextField userText = new JTextField();
 		this.add(userText);
