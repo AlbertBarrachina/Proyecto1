@@ -52,14 +52,17 @@ public class misReservas extends JPanel{
 
 			JPanel textPanel = new JPanel();
 			textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-
 			ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]),"P","P","P");
-			if (reservas.size()<1) {
-				JTextPane textPane = new JTextPane();
-				textPane.setEditable(false);
-				textPane.setText("No se han encontrado reservas");
-				textPanel.add(textPane);
-			} else {
+			
+			//areglar!! no comprueba si hay habitaciones correctamente
+//			if (reservas.isEmpty()) {
+//				System.out.println("paso-1");
+//				JTextPane textPane = new JTextPane();
+//				textPane.setEditable(false);
+//				textPane.setText("No se han encontrado reservas");
+//				textPanel.add(textPane);
+//			} else {
+				
 				int numberOfTexts = reservas.size();
 				for (int i = 1; i <= numberOfTexts; i++) {
 					// panel para cargar cada resultado
@@ -115,7 +118,7 @@ public class misReservas extends JPanel{
 				    panelTexto.add(editarButton);
 					textPanel.add(panelTexto);
 				}
-			}
+//			}
 
 			JScrollPane scrollPane = new JScrollPane(textPanel);
 

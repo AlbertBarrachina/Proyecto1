@@ -15,9 +15,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -371,23 +371,6 @@ public class db {
 	
 	//permite crear reservas
 	public static Boolean comprarReserva(int idc, int id_habitacion, int precio, String estado, String strEntrada, String strSalida) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date entrada = null;
-		try {
-			entrada = (Date) dateFormat.parse(strEntrada);
-		} catch (ParseException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-        java.sql.Date entradas = new java.sql.Date(entrada.getTime());
-        Date salida = null;
-		try {
-			salida = (Date) dateFormat.parse(strEntrada);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        java.sql.Date salidas = new java.sql.Date(salida.getTime());
 			String sql = "INSERT INTO COMPRAS values( NULL ,? ,? ,? ,?, ?, ?)";
 			try {
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -395,9 +378,15 @@ public class db {
 				pst.setInt(2, idc);
 				pst.setInt(3, precio);
 				pst.setString(4, estado);
-				pst.setDate(5, entradas);
-				pst.setDate(6, salidas);
+				pst.setTimestamp(5, java.sql.Timestamp.valueOf("2023-11-30 14:30:00"));
+				pst.setTimestamp(6, java.sql.Timestamp.valueOf("2023-11-30 14:30:00"));
 
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//////////////////////////////////////////////////////////////////
+				///				poner la variable en el texto de la fecha      //
+				/////////////////////////////////////////////////////////////////
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				
 				int rowsInserted = pst.executeUpdate();
 				if (rowsInserted>0) {
 					return true;
@@ -431,6 +420,7 @@ public class db {
 		}
 	}
 
+	
 	public static ArrayList<String[]> historialReservas(int idc, String estado, String estado2, String estado3) {
 		ArrayList<String[]> resultados = new ArrayList<>();
 		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?)";
@@ -440,14 +430,12 @@ public class db {
 			pst.setString(2, estado);
 			pst.setString(3, estado2);
 			pst.setString(4, estado3);
-
 			ResultSet rs = pst.executeQuery();
-
 			// formato para convertir fechas en strings
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM'h'");
 			// si existe el usuario
 			while (rs.next()) {
+				System.out.println("se ha encontrado habitaciones");
 				String[] row = new String[7];
 				row[0] = Integer.toString(rs.getInt("id_reserva"));
 				row[1] = Integer.toString(rs.getInt("id_habitacion"));
@@ -461,15 +449,16 @@ public class db {
 
 			}
 		} catch (SQLException e) {
+			System.out.println("catch");
 		}
 		return resultados;
 
 	}
 
-	// funciones tabla
-	// empresa----------------------------------------------------------------------
-
-	// ---------------------------------------------------------------------------------------------------
+	///////////////////////////////////////////////////////////
+	// 				funciones tabla empresa					///
+	///////////////////////////////////////////////////////////
+	
 	// edita la informacion de la empresa en caso de que se cambie le direccion o
 	// hagan un cambio de nombre
 	public static String editarInfoEmpresa(int ide, String nombre, String direccion) {

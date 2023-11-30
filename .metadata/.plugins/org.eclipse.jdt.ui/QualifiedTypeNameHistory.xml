@@ -10,7 +10,6 @@
     <fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
     <fullyQualifiedTypeName name="com.sun.org.apache.xml.internal.security.utils.Base64"/>
     <fullyQualifiedTypeName name="javax.crypto.SecretKey"/>
-    <fullyQualifiedTypeName name="java.lang.System"/>
     <fullyQualifiedTypeName name="java.lang.Integer"/>
     <fullyQualifiedTypeName name="LogIn"/>
     <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
@@ -55,4 +54,6 @@
     <fullyQualifiedTypeName name="backend.db"/>
     <fullyQualifiedTypeName name="main.loader"/>
     <fullyQualifiedTypeName name="paneles.ContenidoUI"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="jdk.internal.misc.FileSystemOption"/>
 </qualifiedTypeNameHistroy>
