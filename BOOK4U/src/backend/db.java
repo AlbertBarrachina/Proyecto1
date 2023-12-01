@@ -42,9 +42,9 @@ public class db {
 
 	// en progreso :'(
 
-	// funciones de tabla cliente----------------------------------------------
-
-	// ------------------------------------------------------------
+		///////////////////////////////////////////////////////////
+		// 				funciones tabla cliente				///
+		///////////////////////////////////////////////////////////
 
 	public static String comprobarCorreoTelefonoCliente(int telefono, String correo) {
 		String sql = "SELECT telefono, correo FROM CLIENTE WHERE (correo = ? OR telefono = ?)";
@@ -294,7 +294,9 @@ public class db {
 		}
 	}
 
-	// funciones de tabla compras
+		///////////////////////////////////////////////////////////
+		// 				funciones tabla compras					///
+		///////////////////////////////////////////////////////////
 
 	// ---------------------------------------------------------------------------------
 	// crea una factura de la compra de creditos y llama a la fucnion que modifica
@@ -366,7 +368,9 @@ public class db {
 
 	}
 
-	// funciones tabla reserva
+		///////////////////////////////////////////////////////////
+		// 				funciones tabla reserva					///
+		///////////////////////////////////////////////////////////
 
 	
 	//permite crear reservas
@@ -482,7 +486,9 @@ public class db {
 		}
 	}
 
-	// funciones tabla habitacion
+		///////////////////////////////////////////////////////////
+		// 				funciones tabla habitacion				///
+		///////////////////////////////////////////////////////////
 
 	// ----------------------------------------------------------------
 	// edita la informacion de la habitacion en caso de querer cambiar el precio,
@@ -518,7 +524,7 @@ public class db {
 	// categorias de busqueda introducidas, si la categoria es null no se incluye en
 	// el select
 	public static ArrayList<String[]> buscarHabitacion(int empresa, int precio, float descuento, String tipo,
-			int camas) {
+			int camas, int id) {
 		ArrayList<String[]> resultados = new ArrayList<>();
 		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
 		ArrayList<Object> params = new ArrayList<>();
@@ -545,6 +551,11 @@ public class db {
 		if (camas > 0) {
 			sqlBuilder.append(" AND camas = ?");
 			params.add(camas);
+		}
+		
+		if (id > 0) {
+			sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE id_habitacion = ?");
+			params.add(id);
 		}
 
 		String sql = sqlBuilder.toString();

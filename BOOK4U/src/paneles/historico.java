@@ -21,11 +21,11 @@ import javax.swing.JTextPane;
 import main.*;
 import backend.db;
 
-public class historicoReservas extends JPanel {
+public class historico extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 
-	public historicoReservas() {
+	public historico() {
 		// establece el display para que sea responsive
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -35,7 +35,7 @@ public class historicoReservas extends JPanel {
 		setBounds(0, 0, dimensiones[0], dimensiones[1]);
 
 		// texto indicando que pagina es
-		JLabel label = new JLabel("Historial de compras");
+		JLabel label = new JLabel("Historial de compras y reservas");
 		label.setHorizontalAlignment(JLabel.CENTER);
 
 		constraints.gridx = 0;
@@ -49,6 +49,7 @@ public class historicoReservas extends JPanel {
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
 		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]),"F","C","D");
+		//reservas = db.historialCompras(Integer.parseInt(cliente[0]));
 		if (reservas.size()<1) {
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);

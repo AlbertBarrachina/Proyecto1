@@ -20,7 +20,7 @@ public class loader {
 			frame.getContentPane().removeAll();
 			frame.setTitle("BOOK4U - Historico reservas");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			paneles.historicoReservas panelHistorico = new paneles.historicoReservas();
+			paneles.historico panelHistorico = new paneles.historico();
 			frame.getContentPane().add(panelHistorico, BorderLayout.CENTER);
 			frame.revalidate();
 			frame.repaint();
