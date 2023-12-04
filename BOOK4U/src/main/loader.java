@@ -96,7 +96,7 @@ public class loader {
 				public static void cargardetallesHabitacion(ImageIcon icono, String nombreHabitacion, String precioHabitacion) {
 					JFrame frame = main.getFrame();
 					frame.getContentPane().removeAll();
-					frame.setTitle("BOOK4U - perfil");
+					frame.setTitle("BOOK4U - Habitacion");
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					paneles.detallesHabitacion panelPerfil = new paneles.detallesHabitacion(icono, nombreHabitacion, precioHabitacion);
 					frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
