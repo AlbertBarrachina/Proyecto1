@@ -7,10 +7,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
+import java.util.List;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -145,36 +144,29 @@ public class misReservas extends JPanel {
 	}
 
 	private void VentanaEditar(String[] reserva) {
-		ArrayList<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0, Integer.parseInt(reserva[0]));
+		List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0, Integer.parseInt(reserva[1]));
+		String[] habitacion = new String[9];
+		if (!habitaciones.isEmpty()) {
+			habitacion = Arrays.copyOf(habitaciones.get(0), 9);
+		}
 		JDialog dialogReserva = new JDialog(main.getFrame(), "Detalles de la Reserva", true);
 		dialogReserva.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		dialogReserva.setLayout(new GridLayout(0, 1));
 		dialogReserva.setSize(400, 300);
 
 		// Agrega etiquetas y campos para los detalles de la reserva
-		dialogReserva.add(new JLabel("Nombre de la habitación: "));
+		dialogReserva.add(new JLabel("Nombre de la habitación: " + habitacion[7]));
 		dialogReserva.add(new JLabel("Precio: " + reserva[3]));
-		dialogReserva.add(new JLabel("Descripción: "));
-
-//	        if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
-//	        	JOptionPane.showMessageDialog(this, " La fecha final no puede ser anterior a la fecha de inicio.", "Error en las Fechas", JOptionPane.ERROR_MESSAGE);
-//	        	return;
-//	        	
-//	        }
-
-//	        // Formatea las fechas para mostrarlas
-//	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//	        String strFechaInicio = fechaInicio != null ? sdf.format(fechaInicio) : "N/A";
-//	        String strFechaFinal = fechaFinal != null ? sdf.format(fechaFinal) : "N/A";
-//
-//	        dialogReserva.add(new JLabel("Fecha de inicio: " + strFechaInicio));
-//	        dialogReserva.add(new JLabel("Fecha final: " + strFechaFinal));
-//
+		dialogReserva.add(new JLabel("Descripción: " + habitacion[8]));
+		
 		// Botón para confirmar la reserva
-		JButton confirmButton = new JButton("Confirmar Reserva");
+		JButton confirmButton = new JButton("Cancelar reserva");
 		confirmButton.addActionListener(e -> {
-			db.editarInfoReserva(Integer.parseInt(reserva[0]), reserva[4]);
-			JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: ");
+			db.editarInfoReserva(1);
+//				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
+//			}else {
+//				JOptionPane.showMessageDialog(dialogReserva, "ERROR");
+//			}
 		});
 		dialogReserva.add(confirmButton);
 		dialogReserva.setVisible(true);
