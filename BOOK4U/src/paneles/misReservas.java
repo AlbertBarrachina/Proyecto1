@@ -55,7 +55,6 @@ public class misReservas extends JPanel {
 
 		// areglar!! no comprueba si hay habitaciones correctamente
 		if (reservas.isEmpty()) {
-			System.out.println("paso-1");
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);
 			textPane.setText("No se han encontrado reservas");
@@ -162,11 +161,11 @@ public class misReservas extends JPanel {
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Cancelar reserva");
 		confirmButton.addActionListener(e -> {
-			db.editarInfoReserva(1);
-//				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
-//			}else {
-//				JOptionPane.showMessageDialog(dialogReserva, "ERROR");
-//			}
+			if(db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
+				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
+			}else {
+				JOptionPane.showMessageDialog(dialogReserva, "ERROR");
+			}
 		});
 		dialogReserva.add(confirmButton);
 		dialogReserva.setVisible(true);

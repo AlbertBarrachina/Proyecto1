@@ -413,7 +413,7 @@ public class db {
 	///////////////////////////////////////
 	
 	// permite cancelar reservas.
-	public static void editarInfoReserva(int id_reserva) {
+	public static boolean editarInfoReserva(int id_reserva) {
 
 		String sql = "UPDATE RESERVA SET estado = 'C' WHERE id_reserva = ?";
 		try {
@@ -423,12 +423,12 @@ public class db {
 			int rowsUpdated = pst.executeUpdate();
 
 			if (rowsUpdated > 0) {
-//				return true;
+				return true;
 			} else {
-//				return false;
+				return false;
 			}
 		} catch (SQLException e) {
-//			return false;
+			return false;
 		}
 	}
 	
