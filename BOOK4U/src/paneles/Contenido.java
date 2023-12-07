@@ -1,6 +1,10 @@
 package paneles;
 
 import javax.swing.*;
+
+
+import main.*;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,28 +13,27 @@ import java.io.File;
 public class Contenido extends JPanel {
     private String description1;
     private String description2;
+    private JLabel imageLabel;
+    private ImageIcon imageIcon;
     private Color backgroundColor = new Color(173, 216, 230);  // Define el color de fondo
+    int[] dimensiones = main.getDimensiones();
     
-    public Contenido(String imagePath, String description1, String description2, JFrame frame, JPanel mainPanel) {
+    
+    public Contenido(String imagePath, String description1, String description2, JPanel mainPanel) {
         this.description1 = description1;
         this.description2 = description2;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(backgroundColor);  // Establece el color de fondo del panel
 
-        ImageIcon imageIcon = createImageIcon(imagePath);
+        imageIcon = createImageIcon(imagePath);
         if (imageIcon != null) {
             Image image = imageIcon.getImage();
-            Image newImg = image.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+            //establece tamaño de la imaen con respecto al tamaño del frame
+            Image newImg = image.getScaledInstance((int)Math.round(dimensiones[0]*0.25), (int)Math.round(dimensiones[1]*0.3), Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);
-            JLabel imageLabel = new JLabel(imageIcon);
-            imageLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    frame.setContentPane(new paneles.DETALLES_HABITACION(description1 + ": " + description2, frame, mainPanel));
-                    frame.revalidate();
-                }
-            });
+            imageLabel = new JLabel(imageIcon);
+           
             add(imageLabel);
         }
 
@@ -45,6 +48,12 @@ public class Contenido extends JPanel {
         descriptionLabel2.setOpaque(true);  // Hace que el fondo de la etiqueta sea opaco
         descriptionLabel2.setBackground(backgroundColor);  // Establece el color de fondo de la etiqueta
         add(descriptionLabel2);
+        imageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                loader.cargardetallesHabitacion(imageIcon, description1, description2);
+            }
+        });
     }
 
     private static ImageIcon createImageIcon(String imagePath) {

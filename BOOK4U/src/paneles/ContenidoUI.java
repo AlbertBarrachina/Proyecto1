@@ -1,4 +1,4 @@
-package main;
+package paneles;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,46 +15,36 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-public class ContenidoUI {
+import backend.FiltradoHabitaciones;
+import backend.archivo;
+import components.ImagenPerfil;
+import main.*;
+
+public class ContenidoUI extends JPanel {
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
 	private List<paneles.Contenido> contenidos;
-	private JFrame frame;
 	private JPanel contentPanel;
-	private JPanel perfilPanel;
 
-	public ContenidoUI(JFrame frame) {
-		this.frame = frame;
+	public ContenidoUI() {
 		this.contenidos = new ArrayList<>();
 		this.backgroundColor = new Color(173, 216, 230);
-		construirUI();
-	}
 
-	private void construirUI() {
-
+		int[] dimensiones = main.getDimensiones();
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
 
-		//// STRING CON LOS NOMBRES DE LAS HABITACIONES/CASAS RURALES////
-		String[] descriptions1 = { "Suite Deluxe", "Habitacion con Vista al Mar", "Cabaña Acogedora", "Loft Urbano",
-				"Habitacion Familiar", "Bungalow de Montaña", "Habitacion Tematica Vintage",
-				"Villa con Piscina Privada", "Habitacion Loft", "Suite Romantica", "Habitacion con Jacuzzi",
-				"Cabaï¿½a junto al Rio", "Habitacion Eco-Friendly", "Alojamiento en atico", "Habitacion de Lujo",
-				"Suite Junior", "Habitacion con Terraza", "CabaÃ±a de Campo", "Habitacion con Chimenea",
-				"Loft Industrial", };
-
-		//// STRING CON LOS PRECIOS DE LAS HABITACIONES/CASAS RURALES////
-		String[] descriptions2 = { "80 creditos", "95 creditos", "70 creditos", "85 creditos", "90 creditos",
-				"75 creditos", "80 creditos", "99 creditos", "85 creditos", "95 creditos", "90 creditos", "80 creditos",
-				"70 creditos", "85 creditos", "99 creditos", "75 creditos", "80 creditos", "70 creditos", "90 creditos",
-				"85 creditos", };
+		String[] descriptions1 = archivo.leerTodasLasLineas("src/config/descripciones1.txt").toArray(new String[0]);
+		String[] descriptions2 = archivo.leerTodasLasLineas("src/config/descripciones2.txt").toArray(new String[0]);
 
 		// Colores para los diferentes paneles
 		Color baseColor1 = new Color(255, 228, 196);
@@ -71,9 +61,64 @@ public class ContenidoUI {
 
 		// PANEL LATERAL DONDE IRAN ALGUNO DE LOS APARTADOS DEL MENU
 		JPanel menuPanel = new JPanel();
-		menuPanel.setPreferredSize(new Dimension(100, 600));
+		menuPanel.setPreferredSize(new Dimension(200, 600));
 		menuPanel.setBackground(menuColor); // Establecer el color de fondo
 		panelPrincipal.add(menuPanel, BorderLayout.WEST);
+		
+		menuPanel.setLayout(new GridBagLayout()); // Usando GridBagLayout para un mejor control
+		GridBagConstraints gbc1 = new GridBagConstraints();
+		gbc1.gridwidth = GridBagConstraints.REMAINDER;
+		gbc1.fill = GridBagConstraints.HORIZONTAL;
+		
+		
+		// Crear una instancia de la clase FiltradorDeContenido
+		FiltradoHabitaciones filtrador = new FiltradoHabitaciones(contenidos, contentPanel); // Asegúrate de que contenidos y contentPanel están definidos
+
+		// Componentes de filtrado
+		JComboBox<String> filtroPrecio = new JComboBox<>(new String[]{"1 - 10", "11 - 20", "21 - 30", "31 - 40", "41 - 50", "51 - 60", "61 - 70", "71 - 80", "81 - 90", "91 - 99"});
+		JCheckBox filtroDescuento = new JCheckBox("Con descuento");
+		JComboBox<String> filtroTipoHabitacion = new JComboBox<>(new String[]{"Hotel", "Casa Rural", "ApartHotel"});
+		JComboBox<Integer> filtroNumCamas = new JComboBox<>(new Integer[]{1, 2, 3, 4});
+
+		// Listeners para los componentes de filtrado
+		/*ActionListener filtroListener = new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        filtrador.filtrarContenidos(
+		            (String) filtroPrecio.getSelectedItem(), 
+		            filtroDescuento.isSelected(), 
+		            (String) filtroTipoHabitacion.getSelectedItem(), 
+		            (Integer) filtroNumCamas.getSelectedItem()
+		        );
+		    }
+		};
+
+		filtroPrecio.addActionListener(filtroListener);
+		filtroDescuento.addActionListener(filtroListener);
+		filtroTipoHabitacion.addActionListener(filtroListener);
+		filtroNumCamas.addActionListener(filtroListener);*/
+		
+		Dimension maxComponentSize = new Dimension(Integer.MAX_VALUE, filtroPrecio.getPreferredSize().height);
+		filtroPrecio.setMaximumSize(maxComponentSize);
+		filtroDescuento.setMaximumSize(maxComponentSize);
+		filtroTipoHabitacion.setMaximumSize(maxComponentSize);
+		filtroNumCamas.setMaximumSize(maxComponentSize);
+
+
+		// Agregar componentes de filtrado al panel de menú
+		menuPanel.add(new JLabel("Filtrar por Precio:"), gbc1);
+		menuPanel.add(filtroPrecio, gbc1);
+		menuPanel.add(new JLabel("Descuento:"), gbc1);
+		menuPanel.add(filtroDescuento, gbc1);
+		menuPanel.add(new JLabel("Tipo de Habitación:"), gbc1);
+		menuPanel.add(filtroTipoHabitacion, gbc1);
+		menuPanel.add(new JLabel("Número de Camas:"), gbc1);
+		menuPanel.add(filtroNumCamas, gbc1);
+		
+		
+		
+		
+		
+		
 
 		//// PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
 		JPanel topPanel = new JPanel(new BorderLayout());
@@ -84,10 +129,25 @@ public class ContenidoUI {
 		JPanel tituloPanel = new JPanel(new BorderLayout());
 		tituloPanel.setBackground(titleColor);
 		Font font = new Font("Arial", Font.PLAIN, 18);
-		JLabel titulo = new JLabel("TITULO");
+		JLabel titulo = new JLabel("");
 		titulo.setHorizontalAlignment(JLabel.CENTER);
 		titulo.setFont(font);
-		tituloPanel.add(titulo, BorderLayout.CENTER);
+
+		// Cargar y añadir la imagen al panel tituloPanel
+		try {
+			Image img = ImageIO.read(new File("src/assets/book4u.png")); // Reemplaza con la ruta a tu imagen
+			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tamaño según sea
+																					// necesario
+
+			ImageIcon imageIcon = new ImageIcon(resizedImg);
+			JLabel imageLabel = new JLabel(imageIcon);
+
+			tituloPanel.add(imageLabel, BorderLayout.WEST);
+			tituloPanel.add(titulo, BorderLayout.CENTER);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
 		tituloPanel.setPreferredSize(new Dimension(100, 30));
 		topPanel.add(tituloPanel, BorderLayout.WEST);
 
@@ -126,22 +186,17 @@ public class ContenidoUI {
 		topPanel.add(busquedaPanel, BorderLayout.CENTER);
 
 		//// CREAMOS EL BOTON QUE SERVIRA PARA ACCEDER AL PERFIL DE USUARIO////
-		components.CircularButton perfilButton = new components.CircularButton("Perfil", new Color(131, 36, 110));
-		perfilButton.setPreferredSize(new Dimension(60, 60));
+		ImagenPerfil botonPerfil = new components.ImagenPerfil();
+		botonPerfil.setPreferredSize(new Dimension(60, 60));
 
-		perfilButton.setFont(new Font("Arial", Font.PLAIN, 12));
-		perfilButton.addActionListener(e -> {
-			if (perfilPanel == null) {
-				perfilPanel = new paneles.perfil_usuario(frame, panelPrincipal);
-			}
-			frame.setContentPane(perfilPanel); // Aquí se debe llamar a setContentPane() en el objeto frame
-			frame.revalidate();
+		botonPerfil.addActionListener(e -> {
+			loader.cargarPerfil();
 		});
 
 		// Aï¿½ADIMOS EL BOTON A UN PANEL PERSONALIZADO//
 		JPanel perfilPanelContainer = new JPanel();
 		perfilPanelContainer.setBackground(profileColor);
-		perfilPanelContainer.add(perfilButton);
+		perfilPanelContainer.add(botonPerfil);
 		topPanel.add(perfilPanelContainer, BorderLayout.EAST);
 
 		//// Aï¿½ADIMOS EL PANEL SUPERIOR AL PANEL PRINCIPAL////
@@ -167,8 +222,7 @@ public class ContenidoUI {
 			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
 			String description1 = descriptions1[i];
 			String description2 = descriptions2[i];
-			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, frame,
-					panelPrincipal);
+			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, panelPrincipal);
 
 			contenidos.add(contenido);
 			gbc.gridx = i % 4;
@@ -186,12 +240,14 @@ public class ContenidoUI {
 		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
 		/// Aï¿½ADIMOS EL PANEL PRINCIPAL AL FRAME///
-		frame.add(panelPrincipal);
-		frame.setTitle("BOOK4U");
-		frame.setSize(900, 450);
-		frame.setExtendedState(frame.MAXIMIZED_BOTH);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
+		add(panelPrincipal, constraints);
 	}
 
 	private void buscar(String texto) {
@@ -213,10 +269,6 @@ public class ContenidoUI {
 		}
 		contentPanel.revalidate();
 		contentPanel.repaint();
-	}
-
-	public JPanel getPanelPrincipal() {
-		return panelPrincipal;
 	}
 
 }

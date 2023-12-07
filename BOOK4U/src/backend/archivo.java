@@ -11,7 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -78,6 +80,21 @@ public class archivo {
 		    }
 	}
 	
+	
+	
+	 public static List<String> leerTodasLasLineas(String ruta) {
+	        List<String> lineas = new ArrayList<>();
+	        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                lineas.add(linea);
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return lineas;
+	    }
+	
 	//funcion que junta los campos enviados separandolos por un punto y coma
 
 	public static String juntarLinea(String[] array) {
@@ -94,5 +111,16 @@ public class archivo {
 			n++;
 		}
 		return tokens;
+	}
+	
+	//copia un archivo y le cambia el nombre
+	public static void copiarArchivo(String nombreNuevo,String rutaNueva, String nombreOriginal, String rutaOrigen) {
+		Path destino = Path.of(rutaNueva, nombreNuevo+".png");
+		Path origen = Path.of(rutaOrigen, nombreOriginal+".png");
+		try {
+	        Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 }
