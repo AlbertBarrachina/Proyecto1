@@ -18,9 +18,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -352,7 +352,7 @@ public class db {
 				row[1] = Integer.toString(rs.getInt("cliente"));
 				row[2] = Integer.toString(rs.getInt("cantidad"));
 				row[3] = Integer.toString(rs.getInt("precio"));
-				row[4] = rs.getString("id_compra");
+				row[4] = rs.getString("metodo_pago");
 
 				resultados.add(row);
 

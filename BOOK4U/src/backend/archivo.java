@@ -20,9 +20,11 @@ import java.util.stream.Stream;
 
 public class archivo {
 
+	//////////////////////////////////////////////////////////////////////////////////
 	// lee el archivo introducido en la variable "ruta" y solo la linea "linea", las
 	// lineas empiezan por 1 y la ruta para entrar en la carpeta config es
 	// "./src/config/"
+	//////////////////////////////////////////////////////////////////////////////////
 	public static String[] leerTxt(String ruta, int linea) {
 		String[] lista = new String[10];
 		int i = 0;
@@ -37,7 +39,7 @@ public class archivo {
 			while ((textoLinea = bufferedReader.readLine()) != null) {
 				i++;
 				if (i == linea) {
-					lista=separarLinea(textoLinea);
+					lista = separarLinea(textoLinea);
 					break;
 				}
 			}
@@ -51,59 +53,68 @@ public class archivo {
 		return lista;
 	}
 
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//falta corregir errores al sobreescribir lineas
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//funcion para editar una linea especifica de un archivo (tipo txt o parecidos) requeire la ruta(string) la linea a editar(la primera es 0) y el texto que se desea insertar
+	//////////////////////////////////////////////////////////////////////////////////
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// falta corregir errores al sobreescribir lineas
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// funcion para editar una linea especifica de un archivo (tipo txt o parecidos)
+	// requeire la ruta(string) la linea a editar(la primera es 0) y el texto que se
+	// desea insertar
+	//////////////////////////////////////////////////////////////////////////////////
 	public static void editarTxt(String ruta, int linea, String textoNuevo) {
 
-		 try {
-		        List<String> lines = Files.readAllLines(Paths.get(ruta));
+		try {
+			List<String> lines = Files.readAllLines(Paths.get(ruta));
 
-		        if (linea < 0) {
-		            System.err.println("Invalid line number.");
-		            return;
-		        }
+			if (linea < 0) {
+				System.err.println("Invalid line number.");
+				return;
+			}
 
-		        if (linea >= lines.size()) {
-		            int linesToAdd = linea - lines.size();
-		            List<String> emptyLines = Stream.generate(() -> "").limit(linesToAdd + 1).collect(Collectors.toList());
-		            lines.addAll(emptyLines);
-		        }
+			if (linea >= lines.size()) {
+				int linesToAdd = linea - lines.size();
+				List<String> emptyLines = Stream.generate(() -> "").limit(linesToAdd + 1).collect(Collectors.toList());
+				lines.addAll(emptyLines);
+			}
 
-		        lines.set(linea, textoNuevo);
-		        Files.write(Paths.get(ruta), lines);
+			lines.set(linea, textoNuevo);
+			Files.write(Paths.get(ruta), lines);
 
-		        System.out.println("Specific line modified or added successfully.");
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
+			System.out.println("Specific line modified or added successfully.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
-	
-	 public static List<String> leerTodasLasLineas(String ruta) {
-	        List<String> lineas = new ArrayList<>();
-	        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
-	            String linea;
-	            while ((linea = br.readLine()) != null) {
-	                lineas.add(linea);
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return lineas;
-	    }
-	
-	//funcion que junta los campos enviados separandolos por un punto y coma
+
+	public static List<String> leerTodasLasLineas(String ruta) {
+		List<String> lineas = new ArrayList<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+			String linea;
+			while ((linea = br.readLine()) != null) {
+				lineas.add(linea);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return lineas;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// funcion que junta los campos enviados separandolos por un punto y coma
+	// necesita una String[] y devuelve una String
+	//////////////////////////////////////////////////////////////////////////
 
 	public static String juntarLinea(String[] array) {
-	        String joinedString = String.join(";", array);
+		String joinedString = String.join(";", array);
 
-	        return joinedString;
+		return joinedString;
 	}
-	//funcion que separa la linea donde hay puntos y coma devolviendo una array de strings de esa linea
-	public static String[] separarLinea(String textoLinea){
+
+	////////////////////////////////////////////////////////////////////////////////
+	// funcion que separa la linea donde hay puntos y coma devolviendo una array de
+	// strings de esa linea
+	////////////////////////////////////////////////////////////////////////////////
+	public static String[] separarLinea(String textoLinea) {
 		String[] tokens = textoLinea.split(";");
 		int n = 0;
 		for (String token : tokens) {
@@ -112,15 +123,17 @@ public class archivo {
 		}
 		return tokens;
 	}
-	
-	//copia un archivo y le cambia el nombre
-	public static void copiarArchivo(String nombreNuevo,String rutaNueva, String nombreOriginal, String rutaOrigen) {
-		Path destino = Path.of(rutaNueva, nombreNuevo+".png");
-		Path origen = Path.of(rutaOrigen, nombreOriginal+".png");
+
+	//////////////////////////////////////////////
+	// copia un archivo y le cambia el nombre
+	//////////////////////////////////////////////
+	public static void copiarArchivo(String nombreNuevo, String rutaNueva, String nombreOriginal, String rutaOrigen) {
+		Path destino = Path.of(rutaNueva, nombreNuevo + ".png");
+		Path origen = Path.of(rutaOrigen, nombreOriginal + ".png");
 		try {
-	        Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+			Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

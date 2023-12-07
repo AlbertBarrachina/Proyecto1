@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import main.*;
 import backend.db;
@@ -24,6 +25,7 @@ import backend.db;
 public class historico extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
+	
 
 	public historico() {
 		// establece el display para que sea responsive
@@ -45,16 +47,19 @@ public class historico extends JPanel {
 		label.setBackground(new Color(255, 255, 255));
 		add(label, constraints);
 
-		JPanel textPanel = new JPanel();
-		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+		////////////////////////////
+		// pestaña de reservas
+		/////////////////////////////
+		JPanel reservasPanel = new JPanel();
+		JPanel textPanelReserva = new JPanel();
+		textPanelReserva.setLayout(new BoxLayout(textPanelReserva, BoxLayout.Y_AXIS));
 
-		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]),"F","C","D");
-		//reservas = db.historialCompras(Integer.parseInt(cliente[0]));
-		if (reservas.size()<1) {
+		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]), "F", "C", "D");
+		if (reservas.size() < 1) {
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);
 			textPane.setText("No se han encontrado reservas");
-			textPanel.add(textPane);
+			textPanelReserva.add(textPane);
 		} else {
 			int numberOfTexts = reservas.size();
 			for (int i = 1; i <= numberOfTexts; i++) {
@@ -104,22 +109,93 @@ public class historico extends JPanel {
 					textPane.setText("Invalid data");
 				}
 				panelTexto.add(textPane);
-				textPanel.add(panelTexto);
+				textPanelReserva.add(panelTexto);
 			}
 		}
 
-		JScrollPane scrollPane = new JScrollPane(textPanel);
+		JScrollPane scrollPaneReservas = new JScrollPane(textPanelReserva);
 
-		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+		scrollPaneReservas.getVerticalScrollBar().setUnitIncrement(32);
+		scrollPaneReservas.getHorizontalScrollBar().setUnitIncrement(16);
 
+		reservasPanel.add(scrollPaneReservas);	
+
+		///////////////////////////////////////
+		// panel de compras de creditos
+		////////////////////////////////////
+
+		JPanel creditosPanel = new JPanel();
+		JPanel textPanelCompra = new JPanel();
+		textPanelCompra.setLayout(new BoxLayout(textPanelCompra, BoxLayout.Y_AXIS));
+
+		ArrayList<String[]> Compras = db.historialCompras(Integer.parseInt(cliente[0]));
+		if (reservas.size() < 1) {
+			JTextPane textPane = new JTextPane();
+			textPane.setEditable(false);
+			textPane.setText("No se han encontrado reservas");
+			textPanelCompra.add(textPane);
+		} else {
+			int numberOfTexts = Compras.size();
+			for (int i = 1; i <= numberOfTexts; i++) {
+				// panel para cargar cada resultado
+				JPanel panelTexto = new JPanel();
+				// texto con la informacion de la busqueda
+				JTextPane textPane = new JTextPane();
+				textPane.setEditable(false);
+				String[] compra = Compras.get(i - 1);
+				if (compra.length == 5) {
+					// intenta cargar la imgen
+					try {
+						File file = new File("src/assets/book4u.png");
+						Image image = ImageIO.read(file);
+						Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+						// Create an ImageIcon from the Image
+						ImageIcon imageIcon = new ImageIcon(resizedImage);
+
+						// Create a JLabel to display the image
+						JLabel imageLabel = new JLabel(imageIcon);
+
+						panelTexto.add(imageLabel);
+					} catch (IOException e) {
+						JLabel imageLabel = new JLabel("Imagen no encontrada.");
+						panelTexto.add(imageLabel);
+					}
+					textPane.setText("\rCantidad: " + compra[2] + "\rPrecio: " + compra[3] + "€\rMetodo de pago: "
+							+ compra[4] + " .");
+				} else {
+					textPane.setText("Invalid data");
+				}
+				panelTexto.add(textPane);
+				textPanelCompra.add(panelTexto);
+			}
+		}
+
+		JScrollPane scrollPaneCompras = new JScrollPane(textPanelCompra);
+
+		scrollPaneReservas.getVerticalScrollBar().setUnitIncrement(32);
+		scrollPaneReservas.getHorizontalScrollBar().setUnitIncrement(16);
+
+		creditosPanel.add(scrollPaneCompras);
+		
+		/////////////////////////////
+		// crea las pestañas
+		/////////////////////////////
+		
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab("Reservas", null, reservasPanel, "First Tab");
+		tabbedPane.addTab("Creditos", null, creditosPanel, "Second Tab");
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		constraints.gridheight = 8; // 9/10 of the vertical space
+		constraints.gridheight = 8;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.8; // 90% of the vertical space
-		add(scrollPane, constraints);
+		constraints.weighty = 0.8;
+		add(tabbedPane, constraints);
+		
+		///////////////////////////////
+		// boton para volver al perfil
+		///////////////////////////////
 
 		JButton backButton = new JButton("Volver");
 		backButton.addActionListener(e -> {
