@@ -1,17 +1,14 @@
 package backend;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.SwingWorker;
+import java.util.Date;
 
 public class db {
 
@@ -311,14 +308,16 @@ public class db {
 		int creditosActuales = getCreditosCliente(idc);
 		int temp = creditosActuales + creditos;
 		if (temp <= 999) {
-			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?)";
+			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?, ?)";
 			try {
 				PreparedStatement pst = con.prepareStatement(sql);
 				pst.setInt(1, idc);
 				pst.setInt(2, creditos);
 				pst.setInt(3, creditos * 10);
 				pst.setString(4, metodo_pago);
-
+				java.util.Date currentDate = new java.util.Date();
+				java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
+				pst.setDate(5, sqlDate);
 				int rowsInserted = pst.executeUpdate();
 				if (rowsInserted > 0) {
 					creditos = creditosActuales + creditos;
@@ -338,7 +337,7 @@ public class db {
 
 	public static ArrayList<String[]> historialCompras(int idc) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * FROM COMPRAS WHERE cliente = ?";
+		String sql = "SELECT * FROM COMPRAS WHERE cliente = ? ORDER BY DESC";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
@@ -353,7 +352,13 @@ public class db {
 				row[2] = Integer.toString(rs.getInt("cantidad"));
 				row[3] = Integer.toString(rs.getInt("precio"));
 				row[4] = rs.getString("id_compra");
-
+				//transforma de fecha .sql a fecha .util
+                java.sql.Date sqlDate = rs.getDate("fecha");
+                java.util.Date utilDate = new java.util.Date(sqlDate.getTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String dateString = dateFormat.format(utilDate);
+                row[5] = dateString;
+				
 				resultados.add(row);
 
 			}
@@ -447,7 +452,6 @@ public class db {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM'h'");
 			// si existe el usuario
 			while (rs.next()) {
-				System.out.println("se ha encontrado habitaciones");
 				String[] row = new String[7];
 				row[0] = Integer.toString(rs.getInt("id_reserva"));
 				row[1] = Integer.toString(rs.getInt("id_habitacion"));

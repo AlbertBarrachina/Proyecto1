@@ -59,8 +59,8 @@ public class creditos extends JPanel {
 		add(labelCantidad, constraints);
 
 		// Metodo de pago
-		//falta añadir la funcionalida de la cuenta de banco
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// falta añadir la funcionalida de la cuenta de banco
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		String[] opciones = { "---", "Paypal" };
 
 		JLabel labelTargeta = new JLabel("Metodo de pago");
@@ -148,8 +148,9 @@ public class creditos extends JPanel {
 						int cantidad = Integer.parseInt(cantidadText);
 						int total = cantidad * precioCredito;
 						if (!metodoPago.equals("Cargando...") && !metodoPago.equals("---")) {
-							db.comprarCompras(Integer.parseInt(cliente[0]), cantidad, metodoPago);
-							JOptionPane.showMessageDialog(creditos.this, "Compra realizada por €" + total,
+							JOptionPane.showMessageDialog(creditos.this,
+									db.comprarCompras(Integer.parseInt(cliente[0]), cantidad, metodoPago)
+											+ "Compra realizada por €" + total,
 									"Compra Exitosa", JOptionPane.INFORMATION_MESSAGE);
 						} else {
 							JOptionPane.showMessageDialog(creditos.this, "Seleccione un metodo de pago", "Error",
