@@ -344,7 +344,7 @@ public class db {
 			pst.setInt(1, idc);
 
 			ResultSet rs = pst.executeQuery();
-
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM'h'");
 			// si existe el usuario
 			while (rs.next()) {
 				String[] row = new String[5];
@@ -353,12 +353,7 @@ public class db {
 				row[2] = Integer.toString(rs.getInt("cantidad"));
 				row[3] = Integer.toString(rs.getInt("precio"));
 				row[4] = rs.getString("id_compra");
-				//transforma de fecha .sql a fecha .util
-                java.sql.Date sqlDate = rs.getDate("fecha");
-                java.util.Date utilDate = new java.util.Date(sqlDate.getTime());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                String dateString = dateFormat.format(utilDate);
-                row[5] = dateString;
+                row[5] = dateFormat.format(rs.getDate("fecha").toString());
 				
 				resultados.add(row);
 
