@@ -33,156 +33,163 @@ public class detallesHabitacion extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 	int id_habitacion = 1;
-    private JLabel imageLabel;
-    private JPanel imagePanel, detailsPanel, reserveButtonPanel, combinedPanel;
-    private JButton backButton, reserveButton;
-    private String nombreHabitacion;
-    private String precioHabitacion;
-    private String descripcionHabitacion;
-    private JDateChooser dateChooserInicio;
-    private JDateChooser dateChooserFinal;
+	private JLabel imageLabel;
+	private JPanel imagePanel, detailsPanel, reserveButtonPanel, combinedPanel;
+	private JButton backButton, reserveButton;
+	private String nombreHabitacion;
+	private String precioHabitacion;
+	private String descripcionHabitacion;
+	private JDateChooser dateChooserInicio;
+	private JDateChooser dateChooserFinal;
 
-    public detallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion) {
-        this.nombreHabitacion = nombreHabitacion;
-        this.precioHabitacion = precioHabitacion;
-        this.descripcionHabitacion = descripcionHabitacion;
+	public detallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion) {
+		this.nombreHabitacion = nombreHabitacion;
+		this.precioHabitacion = precioHabitacion;
+		this.descripcionHabitacion = descripcionHabitacion;
 
-        setLayout(new BorderLayout(10, 10));
-        setBackground(new Color(173, 216, 230));
+		setLayout(new BorderLayout(10, 10));
+		setBackground(new Color(173, 216, 230));
 
-        // Panel de imagen
-        imagePanel = new JPanel(new BorderLayout());
-        imagePanel.setBorder(BorderFactory.createTitledBorder(""));
-        imagePanel.setPreferredSize(new Dimension(600, 400));
-        imageLabel = new JLabel();
-        imageLabel.setHorizontalAlignment(JLabel.CENTER);
-        imagePanel.add(imageLabel, BorderLayout.CENTER);
-        add(imagePanel, BorderLayout.WEST);
+		// Panel de imagen
+		imagePanel = new JPanel(new BorderLayout());
+		imagePanel.setBorder(BorderFactory.createTitledBorder(""));
+		imagePanel.setPreferredSize(new Dimension(600, 400));
+		imageLabel = new JLabel();
+		imageLabel.setHorizontalAlignment(JLabel.CENTER);
+		imagePanel.add(imageLabel, BorderLayout.CENTER);
+		add(imagePanel, BorderLayout.WEST);
 
-        // Panel combinado para detalles y botón
-        combinedPanel = new JPanel();
-        combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.Y_AXIS));
+		// Panel combinado para detalles y botón
+		combinedPanel = new JPanel();
+		combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.Y_AXIS));
 
-        // Panel de detalles con fuente más grande y mayor tamaño
-        detailsPanel = new JPanel();
-        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
-        detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        detailsPanel.setPreferredSize(new Dimension(400, 300)); 
+		// Panel de detalles con fuente más grande y mayor tamaño
+		detailsPanel = new JPanel();
+		detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+		detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		detailsPanel.setPreferredSize(new Dimension(400, 300));
 
-        JLabel nameLabel = new JLabel(nombreHabitacion);
-        nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        nameLabel.setPreferredSize(new Dimension(500, 200));
-        detailsPanel.add(nameLabel);
+		JLabel nameLabel = new JLabel(nombreHabitacion);
+		nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		nameLabel.setPreferredSize(new Dimension(500, 200));
+		detailsPanel.add(nameLabel);
 
-        JLabel priceLabel = new JLabel(precioHabitacion);
-        priceLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        priceLabel.setPreferredSize(new Dimension(500, 200));
-        detailsPanel.add(priceLabel);
+		JLabel priceLabel = new JLabel(precioHabitacion);
+		priceLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		priceLabel.setPreferredSize(new Dimension(500, 200));
+		detailsPanel.add(priceLabel);
 
-        JLabel descriptionLabel = new JLabel("Descripción: " + descripcionHabitacion);
-        descriptionLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        descriptionLabel.setPreferredSize(new Dimension(500, 200));
-        detailsPanel.add(descriptionLabel);
+		JLabel descriptionLabel = new JLabel("Descripción: " + descripcionHabitacion);
+		descriptionLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		descriptionLabel.setPreferredSize(new Dimension(500, 200));
+		detailsPanel.add(descriptionLabel);
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////																						///////
-        /////// UTILIZANDO LA LIBRERIA DE JCALENDAR AÑADIMOS EL CAMPO DE FECHA_INICIO Y FECHA_FINAL ///////
-        ///////																						///////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        dateChooserInicio = new JDateChooser();
-        dateChooserFinal = new JDateChooser();
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		/////// ///////
+		/////// UTILIZANDO LA LIBRERIA DE JCALENDAR AÑADIMOS EL CAMPO DE FECHA_INICIO Y
+		/////////////////////////////////////////////////////////////////////////////////////////////////// FECHA_FINAL
+		/////////////////////////////////////////////////////////////////////////////////////////////////// ///////
+		/////// ///////
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		dateChooserInicio = new JDateChooser();
+		dateChooserFinal = new JDateChooser();
 
-        dateChooserInicio = new JDateChooser();
-        dateChooserInicio.getJCalendar().setMinSelectableDate(new Date()); 
-        ((JTextField)dateChooserInicio.getDateEditor().getUiComponent()).setEditable(false);
-        
+		dateChooserInicio = new JDateChooser();
+		dateChooserInicio.getJCalendar().setMinSelectableDate(new Date());
+		((JTextField) dateChooserInicio.getDateEditor().getUiComponent()).setEditable(false);
 
-        dateChooserFinal = new JDateChooser();
-        dateChooserFinal.getJCalendar().setMinSelectableDate(new Date()); 
-        ((JTextField)dateChooserFinal.getDateEditor().getUiComponent()).setEditable(false);
-        
-        
-        detailsPanel.add(new JLabel("Fecha de Inicio:"));
-        detailsPanel.add(dateChooserInicio);
+		dateChooserFinal = new JDateChooser();
+		dateChooserFinal.getJCalendar().setMinSelectableDate(new Date());
+		((JTextField) dateChooserFinal.getDateEditor().getUiComponent()).setEditable(false);
 
-        detailsPanel.add(new JLabel("Fecha Final:"));
-        detailsPanel.add(dateChooserFinal);
+		detailsPanel.add(new JLabel("Fecha de Inicio:"));
+		detailsPanel.add(dateChooserInicio);
 
-        combinedPanel.add(detailsPanel);
-        combinedPanel.add(Box.createVerticalGlue());
+		detailsPanel.add(new JLabel("Fecha Final:"));
+		detailsPanel.add(dateChooserFinal);
 
-        // Panel para el botón de reservar
-        reserveButtonPanel = new JPanel();
-        reserveButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        reserveButton = new JButton("Reservar");
-        reserveButton.setPreferredSize(new Dimension(200, 80));
-        reserveButton.addActionListener(e -> {
-            VentanaReserva();
-        });
-        reserveButtonPanel.add(reserveButton);
-        combinedPanel.add(reserveButtonPanel);
+		combinedPanel.add(detailsPanel);
+		combinedPanel.add(Box.createVerticalGlue());
 
-        // Añadir el panel combinado al panel principal
-        add(combinedPanel, BorderLayout.CENTER);
+		// Panel para el botón de reservar
+		reserveButtonPanel = new JPanel();
+		reserveButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		reserveButton = new JButton("Reservar");
+		reserveButton.setPreferredSize(new Dimension(200, 80));
+		reserveButton.addActionListener(e -> {
+			VentanaReserva();
+		});
+		reserveButtonPanel.add(reserveButton);
+		combinedPanel.add(reserveButtonPanel);
 
-        // Botón de regreso
-        backButton = new JButton("Volver");
-        backButton.setPreferredSize(new Dimension(400, 55));
-        backButton.addActionListener(e -> {
-            loader.cargarPrincipal();
-        });
-        add(backButton, BorderLayout.SOUTH);
+		// Añadir el panel combinado al panel principal
+		add(combinedPanel, BorderLayout.CENTER);
 
-        // Actualización de la imagen
-        SwingUtilities.invokeLater(() -> updateImageIcon(imageIcon));
-    }
+		// Botón de regreso
+		backButton = new JButton("Volver");
+		backButton.setPreferredSize(new Dimension(400, 55));
+		backButton.addActionListener(e -> {
+			loader.cargarPrincipal();
+		});
+		add(backButton, BorderLayout.SOUTH);
 
-    private void VentanaReserva() {
-        JDialog dialogReserva = new JDialog(main.getFrame(), "Detalles de la Reserva", true);
-        dialogReserva.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        dialogReserva.setLayout(new GridLayout(0, 1));
-        dialogReserva.setSize(400, 300);
+		// Actualización de la imagen
+		SwingUtilities.invokeLater(() -> updateImageIcon(imageIcon));
+	}
 
-        // Agrega etiquetas y campos para los detalles de la reserva
-        dialogReserva.add(new JLabel("Nombre de la habitación: " + nombreHabitacion));
-        dialogReserva.add(new JLabel("Precio: " + precioHabitacion));
-        dialogReserva.add(new JLabel("Descripción: " + descripcionHabitacion));
+	private void VentanaReserva() {
+		JDialog dialogReserva = new JDialog(main.getFrame(), "Detalles de la Reserva", true);
+		dialogReserva.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		dialogReserva.setLayout(new GridLayout(0, 1));
+		dialogReserva.setSize(400, 300);
 
-        // Obten las fechas seleccionadas
-        Date fechaInicio = dateChooserInicio.getDate();
-        Date fechaFinal = dateChooserFinal.getDate();
-        
-        if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
-        	JOptionPane.showMessageDialog(this, " La fecha final no puede ser anterior a la fecha de inicio.", "Error en las Fechas", JOptionPane.ERROR_MESSAGE);
-        	return;
-        	
-        }
+		// Agrega etiquetas y campos para los detalles de la reserva
+		dialogReserva.add(new JLabel("Nombre de la habitación: " + nombreHabitacion));
+		dialogReserva.add(new JLabel("Precio: " + precioHabitacion));
+		dialogReserva.add(new JLabel("Descripción: " + descripcionHabitacion));
 
-        // Formatea las fechas para mostrarlas
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String strFechaInicio = fechaInicio != null ? sdf.format(fechaInicio) : "N/A";
-        String strFechaFinal = fechaFinal != null ? sdf.format(fechaFinal) : "N/A";
+		// Obten las fechas seleccionadas
+		Date fechaInicio = dateChooserInicio.getDate();
+		Date fechaFinal = dateChooserFinal.getDate();
 
-        dialogReserva.add(new JLabel("Fecha de inicio: " + strFechaInicio));
-        dialogReserva.add(new JLabel("Fecha final: " + strFechaFinal));
+		if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
+			JOptionPane.showMessageDialog(this, " La fecha final no puede ser anterior a la fecha de inicio.",
+					"Error en las Fechas", JOptionPane.ERROR_MESSAGE);
+			return;
 
-        // Botón para confirmar la reserva
-        JButton confirmButton = new JButton("Confirmar Reserva");
-        confirmButton.addActionListener(e -> {
-        	db.comprarReserva(Integer.parseInt(cliente[0]), id_habitacion, 10, "P", strFechaInicio, strFechaFinal);
-            JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: " + strFechaInicio + "\nFecha Final: " + strFechaFinal);
-        });
-        dialogReserva.add(confirmButton);
+		}
 
-        dialogReserva.setVisible(true);
-    }
-    
+		// Formatea las fechas para mostrarlas
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		String strFechaInicio = fechaInicio != null ? sdf.format(fechaInicio) : "N/A";
+		String strFechaFinal = fechaFinal != null ? sdf.format(fechaFinal) : "N/A";
 
-    private void updateImageIcon(ImageIcon icon) {
-        if (icon != null) {
-            Image image = icon.getImage();
-            Image scaledImage = image.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(), Image.SCALE_SMOOTH);
-            imageLabel.setIcon(new ImageIcon(scaledImage));
-        }
-    }
+		dialogReserva.add(new JLabel("Fecha de inicio: " + strFechaInicio));
+		dialogReserva.add(new JLabel("Fecha final: " + strFechaFinal));
+
+		// Botón para confirmar la reserva
+		JButton confirmButton = new JButton("Confirmar Reserva");
+		confirmButton.addActionListener(e -> {
+			if (db.comprarReserva(Integer.parseInt(cliente[0]), id_habitacion, 10, "P", strFechaInicio,
+					strFechaFinal)) {
+JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
+					+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
+			}else {
+				JOptionPane.showMessageDialog(dialogReserva, "No se pudo hacer la reserva, vuelva a intentarlo en unos minutos.");
+			}
+			
+		});
+		dialogReserva.add(confirmButton);
+
+		dialogReserva.setVisible(true);
+	}
+
+	private void updateImageIcon(ImageIcon icon) {
+		if (icon != null) {
+			Image image = icon.getImage();
+			Image scaledImage = image.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(),
+					Image.SCALE_SMOOTH);
+			imageLabel.setIcon(new ImageIcon(scaledImage));
+		}
+	}
 }

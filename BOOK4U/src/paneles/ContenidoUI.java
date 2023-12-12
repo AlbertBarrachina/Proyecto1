@@ -114,11 +114,6 @@ public class ContenidoUI extends JPanel {
 		menuPanel.add(new JLabel("Número de Camas:"), gbc1);
 		menuPanel.add(filtroNumCamas, gbc1);
 		
-		
-		
-		
-		
-		
 
 		//// PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
 		JPanel topPanel = new JPanel(new BorderLayout());

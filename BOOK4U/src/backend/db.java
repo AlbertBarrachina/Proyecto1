@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -390,32 +391,28 @@ public class db {
 			pst.setInt(2, idc);
 			pst.setInt(3, precio);
 			pst.setString(4, estado);
-			pst.setTimestamp(5, java.sql.Timestamp.valueOf("2023-11-30 14:30:00"));
-			pst.setTimestamp(6, java.sql.Timestamp.valueOf("2023-11-30 14:30:00"));
-
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//////////////////////////////////////////////////////////////////
-			/// poner la variable en el texto de la fecha //
-			/////////////////////////////////////////////////////////////////
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//insert de la fecha
+			SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date currentDate = inputDateFormat.parse(strEntrada);
+            java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
+			pst.setDate(5, sqlDate);
+			currentDate = inputDateFormat.parse(strSalida);
+            sqlDate = new java.sql.Date(currentDate.getTime());
+			pst.setDate(6, sqlDate);
 
 			int rowsInserted = pst.executeUpdate();
 			if (rowsInserted > 0) {
+				con.commit();
 				return true;
 			} else {
 				return false;
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | ParseException e) {
+			System.out.println("error fatal");
 			return false;
 		}
 	}
 
-	
-	//////////////////////////////////////////////
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!///
-	//esta funcion peta el progama//////////////
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!//////////////
-	///////////////////////////////////////
 	
 	// permite cancelar reservas.
 	public static boolean editarInfoReserva(int id_reserva) {
@@ -437,7 +434,7 @@ public class db {
 		}
 	}
 	
-
+	//historico de las reservas, puede mostrar las reservas acaadas canceladas o fenegadas o las reservas pagadas
 	public static ArrayList<String[]> historialReservas(int idc, String estado, String estado2, String estado3) {
 		ArrayList<String[]> resultados = new ArrayList<>();
 		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?)";
@@ -499,7 +496,7 @@ public class db {
 	}
 
 	///////////////////////////////////////////////////////////
-	// funciones tabla habitacion ///
+	//----- funciones tabla habitacion ---------------------///
 	///////////////////////////////////////////////////////////
 
 	// ----------------------------------------------------------------
