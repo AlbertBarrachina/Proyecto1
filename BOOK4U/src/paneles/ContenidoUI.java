@@ -216,7 +216,6 @@ public class ContenidoUI extends JPanel {
 			gbc.gridx = i % 4;
 			gbc.gridy = i / 4;
 			contentPanel.add(contenido, gbc);
-			System.out.println("habitacion" + i);
 		}
 
 		/// A�ADIMOS UN SCROLLPANE PARA PODER DESPLAZARSE
