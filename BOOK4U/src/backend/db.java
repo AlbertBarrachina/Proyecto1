@@ -587,7 +587,6 @@ public class db {
 					row[6] = Integer.toString(rs.getInt("camas"));
 					row[7] = rs.getString("nombre");
 					row[8] = rs.getString("descripcion");
-
 					resultados.add(row);
 				}
 			}

@@ -43,9 +43,6 @@ public class detallesHabitacion extends JPanel {
 	private JDateChooser dateChooserFinal;
 
 	public detallesHabitacion(ImageIcon imageIcon, String[] habitacion) {
-		this.nombreHabitacion = nombreHabitacion;
-		this.precioHabitacion = precioHabitacion;
-		this.descripcionHabitacion = descripcionHabitacion;
 
 		setLayout(new BorderLayout(10, 10));
 		setBackground(new Color(173, 216, 230));
@@ -69,17 +66,17 @@ public class detallesHabitacion extends JPanel {
 		detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		detailsPanel.setPreferredSize(new Dimension(400, 300));
 
-		JLabel nameLabel = new JLabel(nombreHabitacion);
+		JLabel nameLabel = new JLabel(habitacion[7]);
 		nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		nameLabel.setPreferredSize(new Dimension(500, 200));
 		detailsPanel.add(nameLabel);
 
-		JLabel priceLabel = new JLabel(precioHabitacion);
+		JLabel priceLabel = new JLabel(habitacion[2]);
 		priceLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		priceLabel.setPreferredSize(new Dimension(500, 200));
 		detailsPanel.add(priceLabel);
 
-		JLabel descriptionLabel = new JLabel("Descripción: " + descripcionHabitacion);
+		JLabel descriptionLabel = new JLabel("Descripción: " + habitacion[8]);
 		descriptionLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		descriptionLabel.setPreferredSize(new Dimension(500, 200));
 		detailsPanel.add(descriptionLabel);

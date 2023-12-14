@@ -82,18 +82,18 @@ public class ContenidoUI extends JPanel {
 		JComboBox<Integer> filtroNumCamas = new JComboBox<>(new Integer[] { 1, 2, 3, 4 });
 
 		// Listeners para los componentes de filtrado
-		/*
-		 * ActionListener filtroListener = new ActionListener() { public void
-		 * actionPerformed(ActionEvent e) { filtrador.filtrarContenidos( (String)
-		 * filtroPrecio.getSelectedItem(), filtroDescuento.isSelected(), (String)
-		 * filtroTipoHabitacion.getSelectedItem(), (Integer)
-		 * filtroNumCamas.getSelectedItem() ); } };
-		 * 
-		 * filtroPrecio.addActionListener(filtroListener);
-		 * filtroDescuento.addActionListener(filtroListener);
-		 * filtroTipoHabitacion.addActionListener(filtroListener);
-		 * filtroNumCamas.addActionListener(filtroListener);
-		 */
+
+		ActionListener filtroListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filtrador.filtrarContenidos((String) filtroPrecio.getSelectedItem(), filtroDescuento.isSelected(),
+						(String) filtroTipoHabitacion.getSelectedItem(), (Integer) filtroNumCamas.getSelectedItem());
+			}
+		};
+
+		filtroPrecio.addActionListener(filtroListener);
+		filtroDescuento.addActionListener(filtroListener);
+		filtroTipoHabitacion.addActionListener(filtroListener);
+		filtroNumCamas.addActionListener(filtroListener);
 
 		Dimension maxComponentSize = new Dimension(Integer.MAX_VALUE, filtroPrecio.getPreferredSize().height);
 		filtroPrecio.setMaximumSize(maxComponentSize);
@@ -216,6 +216,7 @@ public class ContenidoUI extends JPanel {
 			gbc.gridx = i % 4;
 			gbc.gridy = i / 4;
 			contentPanel.add(contenido, gbc);
+			System.out.println("habitacion" + i);
 		}
 
 		/// A�ADIMOS UN SCROLLPANE PARA PODER DESPLAZARSE
