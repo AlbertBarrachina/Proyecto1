@@ -42,7 +42,7 @@ public class detallesHabitacion extends JPanel {
 	private JDateChooser dateChooserInicio;
 	private JDateChooser dateChooserFinal;
 
-	public detallesHabitacion(ImageIcon imageIcon, String nombreHabitacion, String precioHabitacion) {
+	public detallesHabitacion(ImageIcon imageIcon, String[] habitacion) {
 		this.nombreHabitacion = nombreHabitacion;
 		this.precioHabitacion = precioHabitacion;
 		this.descripcionHabitacion = descripcionHabitacion;

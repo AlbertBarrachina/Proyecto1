@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 import backend.FiltradoHabitaciones;
 import backend.archivo;
+import backend.db;
 import components.ImagenPerfil;
 import main.*;
 
@@ -42,9 +43,6 @@ public class ContenidoUI extends JPanel {
 		int[] dimensiones = main.getDimensiones();
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
-
-		String[] descriptions1 = archivo.leerTodasLasLineas("src/config/descripciones1.txt").toArray(new String[0]);
-		String[] descriptions2 = archivo.leerTodasLasLineas("src/config/descripciones2.txt").toArray(new String[0]);
 
 		// Colores para los diferentes paneles
 		Color baseColor1 = new Color(255, 228, 196);
@@ -64,45 +62,44 @@ public class ContenidoUI extends JPanel {
 		menuPanel.setPreferredSize(new Dimension(200, 600));
 		menuPanel.setBackground(menuColor); // Establecer el color de fondo
 		panelPrincipal.add(menuPanel, BorderLayout.WEST);
-		
+
 		menuPanel.setLayout(new GridBagLayout()); // Usando GridBagLayout para un mejor control
 		GridBagConstraints gbc1 = new GridBagConstraints();
 		gbc1.gridwidth = GridBagConstraints.REMAINDER;
 		gbc1.fill = GridBagConstraints.HORIZONTAL;
-		
-		
+
 		// Crear una instancia de la clase FiltradorDeContenido
-		FiltradoHabitaciones filtrador = new FiltradoHabitaciones(contenidos, contentPanel); // Asegúrate de que contenidos y contentPanel están definidos
+		FiltradoHabitaciones filtrador = new FiltradoHabitaciones(contenidos, contentPanel); // Asegúrate de que
+																								// contenidos y
+																								// contentPanel están
+																								// definidos
 
 		// Componentes de filtrado
-		JComboBox<String> filtroPrecio = new JComboBox<>(new String[]{"1 - 10", "11 - 20", "21 - 30", "31 - 40", "41 - 50", "51 - 60", "61 - 70", "71 - 80", "81 - 90", "91 - 99"});
+		JComboBox<String> filtroPrecio = new JComboBox<>(new String[] { "1 - 10", "11 - 20", "21 - 30", "31 - 40",
+				"41 - 50", "51 - 60", "61 - 70", "71 - 80", "81 - 90", "91 - 99" });
 		JCheckBox filtroDescuento = new JCheckBox("Con descuento");
-		JComboBox<String> filtroTipoHabitacion = new JComboBox<>(new String[]{"Hotel", "Casa Rural", "ApartHotel"});
-		JComboBox<Integer> filtroNumCamas = new JComboBox<>(new Integer[]{1, 2, 3, 4});
+		JComboBox<String> filtroTipoHabitacion = new JComboBox<>(new String[] { "Hotel", "Casa Rural", "ApartHotel" });
+		JComboBox<Integer> filtroNumCamas = new JComboBox<>(new Integer[] { 1, 2, 3, 4 });
 
 		// Listeners para los componentes de filtrado
-		/*ActionListener filtroListener = new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        filtrador.filtrarContenidos(
-		            (String) filtroPrecio.getSelectedItem(), 
-		            filtroDescuento.isSelected(), 
-		            (String) filtroTipoHabitacion.getSelectedItem(), 
-		            (Integer) filtroNumCamas.getSelectedItem()
-		        );
-		    }
-		};
+		/*
+		 * ActionListener filtroListener = new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { filtrador.filtrarContenidos( (String)
+		 * filtroPrecio.getSelectedItem(), filtroDescuento.isSelected(), (String)
+		 * filtroTipoHabitacion.getSelectedItem(), (Integer)
+		 * filtroNumCamas.getSelectedItem() ); } };
+		 * 
+		 * filtroPrecio.addActionListener(filtroListener);
+		 * filtroDescuento.addActionListener(filtroListener);
+		 * filtroTipoHabitacion.addActionListener(filtroListener);
+		 * filtroNumCamas.addActionListener(filtroListener);
+		 */
 
-		filtroPrecio.addActionListener(filtroListener);
-		filtroDescuento.addActionListener(filtroListener);
-		filtroTipoHabitacion.addActionListener(filtroListener);
-		filtroNumCamas.addActionListener(filtroListener);*/
-		
 		Dimension maxComponentSize = new Dimension(Integer.MAX_VALUE, filtroPrecio.getPreferredSize().height);
 		filtroPrecio.setMaximumSize(maxComponentSize);
 		filtroDescuento.setMaximumSize(maxComponentSize);
 		filtroTipoHabitacion.setMaximumSize(maxComponentSize);
 		filtroNumCamas.setMaximumSize(maxComponentSize);
-
 
 		// Agregar componentes de filtrado al panel de menú
 		menuPanel.add(new JLabel("Filtrar por Precio:"), gbc1);
@@ -113,7 +110,6 @@ public class ContenidoUI extends JPanel {
 		menuPanel.add(filtroTipoHabitacion, gbc1);
 		menuPanel.add(new JLabel("Número de Camas:"), gbc1);
 		menuPanel.add(filtroNumCamas, gbc1);
-		
 
 		//// PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
 		JPanel topPanel = new JPanel(new BorderLayout());
@@ -207,17 +203,14 @@ public class ContenidoUI extends JPanel {
 		gbc.weightx = 1.0;
 		gbc.insets = new Insets(75, 75, 75, 75);
 
-		//// MARCAMOS CUANTOS CONTENIDOS QUEREMOS QUE TENGA EL PANEL////
-		int numContents = 20;
-
 		/// INICIAMOS UN BUCLE PARA QUE CARGUE LA IMAGENES Y DESCRIPCIONES
 		/// CORRESPONDIENTES A CADA UNO DE LOS CONTENIDOS///
 		/// A SU VEZ SE MARCA COMO SE QUIERE QUE ESTOS CONTENIDOS ESTEN DISTRIBUIDOS///
-		for (int i = 0; i < numContents; i++) {
+		List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 1.00, "", 0, 0);
+		for (int i = 0; i < habitaciones.size(); i++) {
 			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
-			String description1 = descriptions1[i];
-			String description2 = descriptions2[i];
-			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, panelPrincipal);
+
+			paneles.Contenido contenido = new paneles.Contenido(habitaciones.get(i), imagePath);
 
 			contenidos.add(contenido);
 			gbc.gridx = i % 4;
@@ -254,8 +247,7 @@ public class ContenidoUI extends JPanel {
 
 		int count = 0;
 		for (paneles.Contenido contenido : contenidos) {
-			if (contenido.getDescription1().toLowerCase().contains(texto)
-					|| contenido.getDescription2().toLowerCase().contains(texto)) {
+			if (1 == 1) {
 				gbc.gridx = count % 4;
 				gbc.gridy = count / 4;
 				contentPanel.add(contenido, gbc);

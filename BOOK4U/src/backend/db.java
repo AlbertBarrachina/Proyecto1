@@ -16,9 +16,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -353,8 +353,8 @@ public class db {
 				row[2] = Integer.toString(rs.getInt("cantidad"));
 				row[3] = Integer.toString(rs.getInt("precio"));
 				row[4] = rs.getString("id_compra");
-                row[5] = dateFormat.format(rs.getDate("fecha").toString());
-				
+				row[5] = dateFormat.format(rs.getDate("fecha").toString());
+
 				resultados.add(row);
 
 			}
@@ -379,20 +379,22 @@ public class db {
 	// permite crear reservas
 	public static Boolean comprarReserva(int idc, int id_habitacion, int precio, String estado, String strEntrada,
 			String strSalida) {
-		String sql = "INSERT INTO COMPRAS values( NULL ,? ,? ,? ,?, ?, ?)";
+		String sql = "INSERT INTO COMPRAS values(0, ?, ?, ?, ?, ?, ?)";
+		strEntrada = strEntrada.replace("-", "/");
+		strSalida = strSalida.replace("-", "/");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, id_habitacion);
 			pst.setInt(2, idc);
 			pst.setInt(3, precio);
 			pst.setString(4, estado);
-			//insert de la fecha
-			SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date currentDate = inputDateFormat.parse(strEntrada);
-            java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
+			java.util.Date utilDate = dateFormat.parse(strEntrada);
+			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 			pst.setDate(5, sqlDate);
-			currentDate = inputDateFormat.parse(strSalida);
-            sqlDate = new java.sql.Date(currentDate.getTime());
+			utilDate = dateFormat.parse(strSalida);
+			sqlDate = new java.sql.Date(utilDate.getTime());
+			System.out.println(sqlDate);
 			pst.setDate(6, sqlDate);
 
 			int rowsInserted = pst.executeUpdate();
@@ -403,12 +405,12 @@ public class db {
 				return false;
 			}
 		} catch (SQLException | ParseException e) {
+			 e.printStackTrace(); // Print the exception details for debugging
 			System.out.println("error fatal");
 			return false;
 		}
 	}
 
-	
 	// permite cancelar reservas.
 	public static boolean editarInfoReserva(int id_reserva) {
 
@@ -428,8 +430,9 @@ public class db {
 			return false;
 		}
 	}
-	
-	//historico de las reservas, puede mostrar las reservas acaadas canceladas o fenegadas o las reservas pagadas
+
+	// historico de las reservas, puede mostrar las reservas acaadas canceladas o
+	// fenegadas o las reservas pagadas
 	public static ArrayList<String[]> historialReservas(int idc, String estado, String estado2, String estado3) {
 		ArrayList<String[]> resultados = new ArrayList<>();
 		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?)";
@@ -491,7 +494,7 @@ public class db {
 	}
 
 	///////////////////////////////////////////////////////////
-	//----- funciones tabla habitacion ---------------------///
+	// ----- funciones tabla habitacion ---------------------///
 	///////////////////////////////////////////////////////////
 
 	// ----------------------------------------------------------------
@@ -527,78 +530,79 @@ public class db {
 	// busca toda la informacion de las habitaciones que entren dentro de las
 	// categorias de busqueda introducidas, si la categoria es null no se incluye en
 	// el select
-	public static List<String[]> buscarHabitacion(int empresa, int precio, float descuento, String tipo, int camas, int idh) {
-        List<String[]> resultados = new ArrayList<>();
+	public static List<String[]> buscarHabitacion(int empresa, int precio, float descuento, String tipo, int camas,
+			int idh) {
+		List<String[]> resultados = new ArrayList<>();
 
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
-        List<Object> params = new ArrayList<>();
+		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
+		List<Object> params = new ArrayList<>();
 
-        if (idh > 0) {
-            sqlBuilder.append(" AND id_habitacion = ?");
-            params.add(idh);
-        } else {
-            if (empresa > 0) {
-                sqlBuilder.append(" AND empresa = ?");
-                params.add(empresa);
-            }
+		if (idh > 0) {
+			sqlBuilder.append(" AND id_habitacion = ?");
+			params.add(idh);
+		} else {
+			if (empresa > 0) {
+				sqlBuilder.append(" AND empresa = ?");
+				params.add(empresa);
+			}
 
-            if (precio > 0) {
-                sqlBuilder.append(" AND precio <= ?");
-                params.add(precio);
-            }
+			if (precio > 0) {
+				sqlBuilder.append(" AND precio <= ?");
+				params.add(precio);
+			}
 
-            if (descuento > 0) {
-                sqlBuilder.append(" AND descuento = ?");
-                params.add(descuento);
-            }
+			if (descuento > 0) {
+				sqlBuilder.append(" AND descuento = ?");
+				params.add(descuento);
+			}
 
-            if (tipo != null && !tipo.isEmpty()) {
-                sqlBuilder.append(" AND tipo = ?");
-                params.add(tipo);
-            }
+			if (tipo != null && !tipo.isEmpty()) {
+				sqlBuilder.append(" AND tipo = ?");
+				params.add(tipo);
+			}
 
-            if (camas > 0) {
-                sqlBuilder.append(" AND camas = ?");
-                params.add(camas);
-            }
-        }
+			if (camas > 0) {
+				sqlBuilder.append(" AND camas = ?");
+				params.add(camas);
+			}
+		}
 
-        String sql = sqlBuilder.toString();
+		String sql = sqlBuilder.toString();
 
-        try (PreparedStatement pst = con.prepareStatement(sql)) {
-            // Set parameters
-            for (int i = 0; i < params.size(); i++) {
-                pst.setObject(i + 1, params.get(i));
-            }
+		try (PreparedStatement pst = con.prepareStatement(sql)) {
+			// Set parameters
+			for (int i = 0; i < params.size(); i++) {
+				pst.setObject(i + 1, params.get(i));
+			}
 
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    String[] row = new String[9];
-                    row[0] = Integer.toString(rs.getInt("id_habitacion"));
-                    row[1] = Integer.toString(rs.getInt("empresa"));
-                    row[2] = Integer.toString(rs.getInt("precio"));
-                    row[3] = Integer.toString(rs.getInt("descuento"));
-                    row[4] = rs.getString("disponibilidad");
-                    row[5] = rs.getString("tipo");
-                    row[6] = Integer.toString(rs.getInt("camas"));
-                    row[7] = rs.getString("nombre");
-                    row[8] = rs.getString("descripcion");
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					String[] row = new String[9];
+					row[0] = Integer.toString(rs.getInt("id_habitacion"));
+					row[1] = Integer.toString(rs.getInt("empresa"));
+					row[2] = Integer.toString(rs.getInt("precio"));
+					row[3] = Integer.toString(rs.getInt("descuento"));
+					row[4] = rs.getString("disponibilidad");
+					row[5] = rs.getString("tipo");
+					row[6] = Integer.toString(rs.getInt("camas"));
+					row[7] = rs.getString("nombre");
+					row[8] = rs.getString("descripcion");
 
-                    resultados.add(row);
-                }
-            }
+					resultados.add(row);
+				}
+			}
 
-            if (resultados.isEmpty()) {
-                String[] row = new String[9];
-                row[0] = "No se han encontrado habitaciones. :(";
-                resultados.add(row);
-            }
+			if (resultados.isEmpty()) {
+				String[] row = new String[9];
+				row[0] = "No se han encontrado habitaciones. :(";
+				resultados.add(row);
+			}
 
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception or handle it as needed
-        }
+		} catch (SQLException e) {
+			e.printStackTrace(); // Log the exception or handle it as needed
+		}
 
-        return resultados;
-    }
+		return resultados;
+	}
 
 }

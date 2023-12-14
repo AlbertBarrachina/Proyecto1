@@ -96,13 +96,12 @@ public class loader {
 	}
 
 	// funcio para cargar el panel de detalles habitacion
-	public static void cargardetallesHabitacion(ImageIcon icono, String nombreHabitacion, String precioHabitacion) {
+	public static void cargardetallesHabitacion(ImageIcon icono, String[] habitacion) {
 		JFrame frame = main.getFrame();
 		frame.getContentPane().removeAll();
 		frame.setTitle("BOOK4U - habitacion");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		paneles.detallesHabitacion panelPerfil = new paneles.detallesHabitacion(icono, nombreHabitacion,
-				precioHabitacion);
+		paneles.detallesHabitacion panelPerfil = new paneles.detallesHabitacion(icono, habitacion);
 		frame.getContentPane().add(panelPerfil, BorderLayout.CENTER);
 		frame.revalidate();
 		frame.repaint();
