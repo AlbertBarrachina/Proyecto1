@@ -23,14 +23,20 @@ public class ImagenPerfil extends JButton {
 		if (Integer.parseInt(usuario[0]) > 0) {
 			path = ("src/assets/perfiles/"+usuario[0]+".png");
 		}else {
-			
+			path = ("src/assets/perfiles/default.png");
 		}
 		try {
 			imagenPerfil = ImageIO.read(new File(path));
 			imagenPerfil = imagenPerfil.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
 			setIcon(new ImageIcon(imagenPerfil));
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			try {
+				imagenPerfil = ImageIO.read(new File("src/assets/perfiles/default.png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			imagenPerfil = imagenPerfil.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+			setIcon(new ImageIcon(imagenPerfil));
 		}
 		setBackground(new Color(245, 245, 220));
 		setFocusPainted(false);

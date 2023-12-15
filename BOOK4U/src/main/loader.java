@@ -77,6 +77,7 @@ public class loader {
 		frame.setTitle("BOOK4U");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
+		frame.setSize((int) Math.round(screenSize.width * 0.8), (int) Math.round(screenSize.height * 0.8));
 		paneles.ContenidoUI panelPrincipal = new paneles.ContenidoUI();
 		frame.getContentPane().add(panelPrincipal, BorderLayout.CENTER);
 		frame.revalidate();

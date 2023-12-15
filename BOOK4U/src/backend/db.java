@@ -100,11 +100,11 @@ public class db {
 						return "No se pudo crear el usuario.";
 					}
 				} catch (SQLException e) {
-					return "Error: " + (e);
+					return "No se pudo crear el usuario.";
 				}
 			}
 		} catch (SQLException e) {
-			return "Error: " + (e);
+			return "No se pudo crear el usuario.";
 		}
 	}
 

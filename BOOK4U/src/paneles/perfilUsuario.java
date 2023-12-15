@@ -1,11 +1,14 @@
 package paneles;
 
 import java.awt.*;
+import java.sql.SQLException;
+
 import javax.swing.*;
 import main.*;
 
 public class perfilUsuario extends JPanel {
-    public perfilUsuario() {
+	public perfilUsuario() {
+    	String[] usuario = main.getSesion();
         // Establece el layout para que sea responsive
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -13,7 +16,13 @@ public class perfilUsuario extends JPanel {
         setBackground(new Color(173, 216, 230)); // Establecer el color de fondo deseado
 
         // Componente para la foto del usuario
-        ImageIcon userPhoto = new ImageIcon("src/assets/perfiles/1.png"); // Asegúrate de cambiar "path/to/user/photo" a la ruta real de la imagen
+        ImageIcon userPhoto = new ImageIcon("src/assets/perfiles/default.png");
+        try {
+        	userPhoto = new ImageIcon("src/assets/perfiles/"+ usuario[0] +".png");
+		}catch(Exception e) {
+			
+		}
+         // Asegúrate de cambiar "path/to/user/photo" a la ruta real de la imagen
         JLabel photoLabel = new JLabel(userPhoto);
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -27,7 +36,7 @@ public class perfilUsuario extends JPanel {
         // Panel para los datos del usuario
         JPanel userDataPanel = new JPanel();
         userDataPanel.setLayout(new BoxLayout(userDataPanel, BoxLayout.Y_AXIS));
-        userDataPanel.add(new JLabel("Nombre: [Nombre del Usuario]")); // Añade más etiquetas según sea necesario
+        userDataPanel.add(new JLabel("Nombre: " + usuario[1])); // Añade más etiquetas según sea necesario
         userDataPanel.setBackground(new Color(173, 216, 230)); // Establecer el color de fondo igual al del panel principal
         constraints.gridx = 1;
         constraints.gridy = 0;
