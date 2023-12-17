@@ -238,7 +238,7 @@ public class db {
 	// edita cuantos creditos tiene una persona, comprueba si tiene suficientes para
 	// gastar y si tiene demasiados (max 999) y los actualiza, manda una string para
 	// que salga como notificacion por pantalla
-	public static boolean editarCreditosCliente(int idc, int creditos) {
+	public static Boolean editarCreditosCliente(int idc, int creditos) {
 
 		String sql = "UPDATE CLIENTE SET creditos =  creditos + ? WHERE idc = ?";
 		try {
@@ -322,14 +322,14 @@ public class db {
 				pst.setDate(5, sqlDate);
 				int rowsInserted = pst.executeUpdate();
 				if (rowsInserted > 0) {
-					creditos = creditosActuales + creditos;
 					if (editarCreditosCliente(idc, creditos)) {
-						mensaje = "Operacion realizada con exito. Ahora tiene " + creditos + " creditos.";
+						mensaje = "Operacion realizada con exito. Ahora tiene " + (creditos + creditosActuales)
+								+ " creditos.";
 					} else {
-						mensaje = "No se pudo hacer la transaccion.";
+						mensaje = "No se pudo hacer la transaccion.1";
 					}
 				} else {
-					mensaje = "No se pudo hacer la transaccion.";
+					mensaje = "No se pudo hacer la transaccion.2";
 				}
 			} catch (SQLException e) {
 				mensaje = "Error: " + (e);

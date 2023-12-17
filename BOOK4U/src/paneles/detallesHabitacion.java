@@ -187,6 +187,7 @@ public class detallesHabitacion extends JPanel {
 							-(Integer.parseInt(habitacion[2]) * Integer.parseInt(dias)))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
 						+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
+				dialogReserva.dispose();
 			} else {
 				JOptionPane.showMessageDialog(dialogReserva,
 						"No se pudo hacer la reserva, vuelva a intentarlo en unos minutos.");

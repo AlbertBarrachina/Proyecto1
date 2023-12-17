@@ -156,7 +156,7 @@ public class creditos extends JPanel {
 							} else {
 								JOptionPane.showMessageDialog(creditos.this,
 										db.comprarCompras(Integer.parseInt(cliente[0]), cantidad, metodoPago)
-												+ "Compra realizada por €" + total,
+												+ "\nCompra realizada por €" + total,
 										"Compra Exitosa", JOptionPane.INFORMATION_MESSAGE);
 							}
 
