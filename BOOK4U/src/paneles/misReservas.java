@@ -76,7 +76,7 @@ public class misReservas extends JPanel {
 					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen
 					try {
-						File file = new File("src/assets/imagenes/"+habitacion[0]+".jpg");
+						File file = new File("src/assets/imagenes/" + habitacion[0] + ".jpg");
 						Image image = ImageIO.read(file);
 						Image resizedImage = image.getScaledInstance(190, 190, Image.SCALE_SMOOTH);
 
@@ -106,9 +106,9 @@ public class misReservas extends JPanel {
 					} catch (Exception e) {
 						reserva[4] = "No se pudo cargar.";
 					}
-					textPane.setText("\rNombre: " + habitacion[7] + "\rDireccion: " + empresa[2] + "\rPrecio: "
-							+ reserva[3] + " EcoBits\rEstado: " + reserva[4] + "\rFecha de entrada: " + reserva[5]
-							+ "\rFecha de salida: " + reserva[6] + " .");
+					textPane.setText("\rNombre: " + habitacion[7] + "\rDescripcion: " + habitacion[8] + "\rDireccion: "
+							+ empresa[2] + "\rPrecio: " + reserva[3] + " EcoBits\rEstado: " + reserva[4]
+							+ "\rFecha de entrada: " + reserva[5] + "\rFecha de salida: " + reserva[6] + " .");
 				} else {
 					textPane.setText("Invalid data");
 				}
@@ -163,13 +163,13 @@ public class misReservas extends JPanel {
 		dialogReserva.add(new JLabel("Nombre de la habitación: " + habitacion[7]));
 		dialogReserva.add(new JLabel("Precio: " + reserva[3]));
 		dialogReserva.add(new JLabel("Descripción: " + habitacion[8]));
-		
+
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Cancelar reserva");
 		confirmButton.addActionListener(e -> {
-			if(db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
+			if (db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(dialogReserva, "ERROR");
 			}
 		});

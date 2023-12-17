@@ -238,9 +238,9 @@ public class db {
 	// edita cuantos creditos tiene una persona, comprueba si tiene suficientes para
 	// gastar y si tiene demasiados (max 999) y los actualiza, manda una string para
 	// que salga como notificacion por pantalla
-	public static String editarCreditosCliente(int idc, int creditos) {
+	public static boolean editarCreditosCliente(int idc, int creditos) {
 
-		String sql = "UPDATE CLIENTE SET creditos =  ? WHERE idc = ?";
+		String sql = "UPDATE CLIENTE SET creditos =  creditos + ? WHERE idc = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, creditos);
@@ -249,12 +249,12 @@ public class db {
 			int rowsUpdated = pst.executeUpdate();
 
 			if (rowsUpdated > 0) {
-				return "Operacion realizada con exito. Ahora tiene " + creditos + " creditos.";
+				return true;
 			} else {
-				return "No se ha encontrado el usuario.";
+				return false;
 			}
 		} catch (SQLException e) {
-			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+			return false;
 		}
 	}
 
@@ -279,22 +279,22 @@ public class db {
 
 	// -------------------------------------------------------
 	// elimina el cliente que se ha indicado en casos extremos.
-	public static String eliminarCliente(int idc) {
-		String sql = "DELETE FROM CLIENTE WHERE idc = ?";
-		try {
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, idc);
-
-			int rowsDeleted = pst.executeUpdate();
-			if (rowsDeleted > 0) {
-				return "El cliente ha sido eliminado correctamente.";
-			} else {
-				return "No se ha podido eliminar el cliente.";
-			}
-		} catch (SQLException e) {
-			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
-		}
-	}
+//	public static String eliminarCliente(int idc) {
+//		String sql = "DELETE FROM CLIENTE WHERE idc = ?";
+//		try {
+//			PreparedStatement pst = con.prepareStatement(sql);
+//			pst.setInt(1, idc);
+//
+//			int rowsDeleted = pst.executeUpdate();
+//			if (rowsDeleted > 0) {
+//				return "El cliente ha sido eliminado correctamente.";
+//			} else {
+//				return "No se ha podido eliminar el cliente.";
+//			}
+//		} catch (SQLException e) {
+//			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
+//		}
+//	}
 
 	///////////////////////////////////////////////////////////
 	// funciones tabla compras ///
@@ -323,7 +323,11 @@ public class db {
 				int rowsInserted = pst.executeUpdate();
 				if (rowsInserted > 0) {
 					creditos = creditosActuales + creditos;
-					mensaje = (editarCreditosCliente(idc, creditos));
+					if (editarCreditosCliente(idc, creditos)) {
+						mensaje = "Operacion realizada con exito. Ahora tiene " + creditos + " creditos.";
+					} else {
+						mensaje = "No se pudo hacer la transaccion.";
+					}
 				} else {
 					mensaje = "No se pudo hacer la transaccion.";
 				}
@@ -376,9 +380,9 @@ public class db {
 	public static Boolean comprarReserva(int idc, int id_habitacion, int precio, String estado, String strEntrada,
 			String strSalida) {
 		String sql = "INSERT INTO RESERVA values(0, ?, ?, ?, ?, ?, ?)";
-			
+
 		SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		
+
 		try {
 			Date Inicial = DateFormat.parse(strEntrada);
 			Date Final = DateFormat.parse(strSalida);
@@ -403,7 +407,7 @@ public class db {
 			System.out.println("error fatal");
 			return false;
 		}
-		
+
 	}
 
 	// permite cancelar reservas.
@@ -470,15 +474,16 @@ public class db {
 	// obtiene la info de la empresa especificada
 	public static String[] InfoEmpresa(int ide) {
 		String[] resultados = new String[3];
-		String sql = "SELECT * FROM EMPRESA WERE IDE = ?";
+		String sql = "SELECT * FROM EMPRESA WHERE IDE = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, ide);
 
 			ResultSet rs = pst.executeQuery();
-					resultados[0] = Integer.toString(rs.getInt("ide"));
-					resultados[1] = rs.getString("nombre");
-					resultados[2] = rs.getString("direccion");
+			rs.next();
+			resultados[0] = Integer.toString(rs.getInt("ide"));
+			resultados[1] = rs.getString("nombre");
+			resultados[2] = rs.getString("direccion");
 		} catch (SQLException e) {
 			resultados[0] = "1";
 			resultados[1] = "BOOK4U";

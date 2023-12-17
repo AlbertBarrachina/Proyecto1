@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -31,18 +34,14 @@ import main.*;
 public class detallesHabitacion extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
-	int id_habitacion = 1;
 	private JLabel imageLabel;
 	private JPanel imagePanel, detailsPanel, reserveButtonPanel, combinedPanel;
 	private JButton backButton, reserveButton;
-	private String nombreHabitacion;
-	private String precioHabitacion;
-	private String descripcionHabitacion;
 	private JDateChooser dateChooserInicio;
 	private JDateChooser dateChooserFinal;
 
 	public detallesHabitacion(ImageIcon imageIcon, String[] habitacion) {
-
+		String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 		setLayout(new BorderLayout(10, 10));
 		setBackground(new Color(173, 216, 230));
 
@@ -66,17 +65,22 @@ public class detallesHabitacion extends JPanel {
 		detailsPanel.setPreferredSize(new Dimension(400, 300));
 
 		JLabel nameLabel = new JLabel(habitacion[7]);
-		nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
-		nameLabel.setPreferredSize(new Dimension(500, 200));
+		nameLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		nameLabel.setPreferredSize(new Dimension(500, 100));
 		detailsPanel.add(nameLabel);
 
-		JLabel priceLabel = new JLabel(habitacion[2]);
-		priceLabel.setFont(new Font("Arial", Font.BOLD, 16));
-		priceLabel.setPreferredSize(new Dimension(500, 200));
+		JLabel directionLabel = new JLabel(empresa[2]);
+		directionLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		directionLabel.setPreferredSize(new Dimension(500, 100));
+		detailsPanel.add(directionLabel);
+
+		JLabel priceLabel = new JLabel(habitacion[2] + " EcoBits");
+		priceLabel.setFont(new Font("Arial", Font.BOLD, 17));
+		priceLabel.setPreferredSize(new Dimension(500, 100));
 		detailsPanel.add(priceLabel);
 
 		JLabel descriptionLabel = new JLabel("Descripción: " + habitacion[8]);
-		descriptionLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		descriptionLabel.setFont(new Font("Arial", Font.BOLD, 15));
 		descriptionLabel.setPreferredSize(new Dimension(500, 200));
 		detailsPanel.add(descriptionLabel);
 
@@ -115,7 +119,7 @@ public class detallesHabitacion extends JPanel {
 		reserveButton = new JButton("Reservar");
 		reserveButton.setPreferredSize(new Dimension(200, 80));
 		reserveButton.addActionListener(e -> {
-			VentanaReserva();
+			VentanaReserva(habitacion, empresa);
 		});
 		reserveButtonPanel.add(reserveButton);
 		combinedPanel.add(reserveButtonPanel);
@@ -135,20 +139,29 @@ public class detallesHabitacion extends JPanel {
 		SwingUtilities.invokeLater(() -> updateImageIcon(imageIcon));
 	}
 
-	private void VentanaReserva() {
+	private void VentanaReserva(String[] habitacion, String[] empresa) {
 		JDialog dialogReserva = new JDialog(main.getFrame(), "Detalles de la Reserva", true);
 		dialogReserva.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		dialogReserva.setLayout(new GridLayout(0, 1));
 		dialogReserva.setSize(400, 300);
 
-		// Agrega etiquetas y campos para los detalles de la reserva
-		dialogReserva.add(new JLabel("Nombre de la habitación: " + nombreHabitacion));
-		dialogReserva.add(new JLabel("Precio: " + precioHabitacion));
-		dialogReserva.add(new JLabel("Descripción: " + descripcionHabitacion));
-
-		// Obten las fechas seleccionadas
+// Obten las fechas seleccionadas
 		Date fechaInicio = dateChooserInicio.getDate();
 		Date fechaFinal = dateChooserFinal.getDate();
+
+		LocalDate localFechaInicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate localFechaFinal = fechaFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		// Calculate the difference in days
+		long daysDifference = ChronoUnit.DAYS.between(localFechaInicio, localFechaFinal);
+		daysDifference += 1;
+
+		String dias = Long.toString(daysDifference);
+		// Agrega etiquetas y campos para los detalles de la reserva
+		dialogReserva.add(new JLabel("Nombre de la habitación: " + habitacion[7]));
+		dialogReserva.add(new JLabel("Direccion: " + empresa[2]));
+		dialogReserva.add(new JLabel("Precio total: " + Integer.parseInt(habitacion[2]) * Integer.parseInt(dias)));
+		dialogReserva.add(new JLabel("Descripción: " + habitacion[8]));
 
 		if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
 			JOptionPane.showMessageDialog(this, " La fecha final no puede ser anterior a la fecha de inicio.",
@@ -168,8 +181,10 @@ public class detallesHabitacion extends JPanel {
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Confirmar Reserva");
 		confirmButton.addActionListener(e -> {
-			if (db.comprarReserva(Integer.parseInt(cliente[0]), id_habitacion, 10, "P", strFechaInicio,
-					strFechaFinal)) {
+			if (db.comprarReserva(Integer.parseInt(cliente[0]), Integer.parseInt(habitacion[0]),
+					Integer.parseInt(habitacion[2]) * Integer.parseInt(dias), "P", strFechaInicio, strFechaFinal)
+					&& db.editarCreditosCliente(Integer.parseInt(cliente[0]),
+							-(Integer.parseInt(habitacion[2]) * Integer.parseInt(dias)))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
 						+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
 			} else {
