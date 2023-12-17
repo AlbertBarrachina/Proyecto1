@@ -69,9 +69,9 @@ public class ContenidoUI extends JPanel {
 		gbc1.fill = GridBagConstraints.HORIZONTAL;
 
 		// Crear una instancia de la clase FiltradorDeContenido
-		FiltradoHabitaciones filtrador = new FiltradoHabitaciones(contenidos, contentPanel); // Asegúrate de que
+		FiltradoHabitaciones filtrador = new FiltradoHabitaciones(contenidos, contentPanel); // Asegï¿½rate de que
 																								// contenidos y
-																								// contentPanel están
+																								// contentPanel estï¿½n
 																								// definidos
 
 		// Componentes de filtrado
@@ -101,14 +101,14 @@ public class ContenidoUI extends JPanel {
 		filtroTipoHabitacion.setMaximumSize(maxComponentSize);
 		filtroNumCamas.setMaximumSize(maxComponentSize);
 
-		// Agregar componentes de filtrado al panel de menú
+		// Agregar componentes de filtrado al panel de menï¿½
 		menuPanel.add(new JLabel("Filtrar por Precio:"), gbc1);
 		menuPanel.add(filtroPrecio, gbc1);
 		menuPanel.add(new JLabel("Descuento:"), gbc1);
 		menuPanel.add(filtroDescuento, gbc1);
-		menuPanel.add(new JLabel("Tipo de Habitación:"), gbc1);
+		menuPanel.add(new JLabel("Tipo de Habitaciï¿½n:"), gbc1);
 		menuPanel.add(filtroTipoHabitacion, gbc1);
-		menuPanel.add(new JLabel("Número de Camas:"), gbc1);
+		menuPanel.add(new JLabel("Nï¿½mero de Camas:"), gbc1);
 		menuPanel.add(filtroNumCamas, gbc1);
 
 		//// PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
@@ -124,10 +124,10 @@ public class ContenidoUI extends JPanel {
 		titulo.setHorizontalAlignment(JLabel.CENTER);
 		titulo.setFont(font);
 
-		// Cargar y añadir la imagen al panel tituloPanel
+		// Cargar y aï¿½adir la imagen al panel tituloPanel
 		try {
 			Image img = ImageIO.read(new File("src/assets/book4u.png")); // Reemplaza con la ruta a tu imagen
-			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tamaño según sea
+			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tamaï¿½o segï¿½n sea
 																					// necesario
 
 			ImageIcon imageIcon = new ImageIcon(resizedImg);

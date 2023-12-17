@@ -31,23 +31,23 @@ public class Registro extends JPanel {
 		JTextField correoField = new JTextField(20);
 		add(correoField);
 
-		JLabel contraseñaLabel = new JLabel("Contraseña:");
-		add(contraseñaLabel);
-		JPasswordField contraseñaField = new JPasswordField(20);
-		add(contraseñaField);
+		JLabel contraseÃ±aLabel = new JLabel("Contraseï¿½a:");
+		add(contraseÃ±aLabel);
+		JPasswordField contraseÃ±aField = new JPasswordField(20);
+		add(contraseÃ±aField);
 
-		JLabel contraseña2Label = new JLabel("Repita la contraseña:");
-		add(contraseña2Label);
-		JPasswordField contraseña2Field = new JPasswordField(20);
-		add(contraseña2Field);
+		JLabel contraseÃ±a2Label = new JLabel("Repita la contraseï¿½a:");
+		add(contraseÃ±a2Label);
+		JPasswordField contraseÃ±a2Field = new JPasswordField(20);
+		add(contraseÃ±a2Field);
 
 		JButton registrarButton = new JButton("Registrar");
 		add(registrarButton);
 
 		registrarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				char[] passwd1 = contraseñaField.getPassword();
-				char[] passwd2 = contraseña2Field.getPassword();
+				char[] passwd1 = contraseÃ±aField.getPassword();
+				char[] passwd2 = contraseÃ±a2Field.getPassword();
 
 				String password1 = new String(passwd1);
 				String password2 = new String(passwd2);
@@ -76,7 +76,7 @@ public class Registro extends JPanel {
 						JOptionPane.showMessageDialog(null, mensaje);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.");
+					JOptionPane.showMessageDialog(null, "Las contraseï¿½as no coinciden.");
 				}
 
 			}

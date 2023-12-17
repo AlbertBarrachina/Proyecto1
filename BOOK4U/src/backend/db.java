@@ -143,7 +143,7 @@ public class db {
 
 	// ------------------------------------------------------------------------------------------
 	// comprueba si los datos insertados coinciden con los datos en la base de
-	// datos(correo y contraseña).
+	// datos(correo y contraseï¿½a).
 
 	public static boolean comprobarLoginCliente(String correo, String contrasenya) {
 		String contrasenyaCorrecta;
@@ -214,7 +214,7 @@ public class db {
 	}
 
 	// -----------------------------------------------------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!
-	// Cambia la contraseña de la cuenta. !!!!!!!!!!!!!!!!!!!(falta
+	// Cambia la contraseï¿½a de la cuenta. !!!!!!!!!!!!!!!!!!!(falta
 	// encriptar)!!!!!!!!!!!!!!!!
 	public static String editarContrasenyaCliente(int idc, String contrasenya) {
 		String sql = "UPDATE CLIENTE SET contrasenya = ? WHERE idc = ?";
@@ -225,9 +225,9 @@ public class db {
 
 			int rowsUpdated = pst.executeUpdate();
 			if (rowsUpdated > 0) {
-				return "La contraseña se ha cambiado correctamente.";
+				return "La contraseï¿½a se ha cambiado correctamente.";
 			} else {
-				return "No se ha podido cambiar la contraseña.";
+				return "No se ha podido cambiar la contraseï¿½a.";
 			}
 		} catch (SQLException e) {
 			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
