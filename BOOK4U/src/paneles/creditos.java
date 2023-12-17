@@ -148,10 +148,18 @@ public class creditos extends JPanel {
 						int total = cantidad * precioCredito;
 						if (!metodoPago.equals("Cargando...") && !metodoPago.equals("---")
 								&& (cantidad < 100 && cantidad > 0)) {
-							JOptionPane.showMessageDialog(creditos.this,
-									db.comprarCompras(Integer.parseInt(cliente[0]), cantidad, metodoPago)
-											+ "Compra realizada por €" + total,
-									"Compra Exitosa", JOptionPane.INFORMATION_MESSAGE);
+							if ((Integer.parseInt(cliente[7]) + cantidad) > 999) {
+								JOptionPane.showMessageDialog(creditos.this,
+										"No puede comprar tantos EcoBits, el numero maximo de EcoBits es 999 y actualmente solo puede pomprar "
+												+ (999 - Integer.parseInt(cliente[7])) + " EcoBits.",
+										"Error", JOptionPane.ERROR_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(creditos.this,
+										db.comprarCompras(Integer.parseInt(cliente[0]), cantidad, metodoPago)
+												+ "Compra realizada por €" + total,
+										"Compra Exitosa", JOptionPane.INFORMATION_MESSAGE);
+							}
+
 						} else if (cantidad >= 100 || cantidad <= 0) {
 							JOptionPane.showMessageDialog(creditos.this,
 									"Seleccione una cantidad permitida.\nCantidades permitidas: de 1 a 99 EcoBits",

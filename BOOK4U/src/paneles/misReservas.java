@@ -1,6 +1,7 @@
 package paneles;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -69,11 +70,15 @@ public class misReservas extends JPanel {
 				textPane.setEditable(false);
 				String[] reserva = reservas.get(i - 1);
 				if (reserva.length == 7) {
+					List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0,
+							Integer.parseInt(reserva[1]));
+					String[] habitacion = habitaciones.get(0);
+					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen
 					try {
-						File file = new File("src/assets/imagenes/1.jpg");
+						File file = new File("src/assets/imagenes/"+habitacion[0]+".jpg");
 						Image image = ImageIO.read(file);
-						Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+						Image resizedImage = image.getScaledInstance(190, 190, Image.SCALE_SMOOTH);
 
 						// Create an ImageIcon from the Image
 						ImageIcon imageIcon = new ImageIcon(resizedImage);
@@ -101,9 +106,9 @@ public class misReservas extends JPanel {
 					} catch (Exception e) {
 						reserva[4] = "No se pudo cargar.";
 					}
-					textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3]
-							+ " creditos.\rEstado: " + reserva[4] + ".\rFecha de entrada: " + reserva[5]
-							+ ".\rFecha de salida: " + reserva[6] + ".");
+					textPane.setText("\rNombre: " + habitacion[7] + "\rDireccion: " + empresa[2] + "\rPrecio: "
+							+ reserva[3] + " EcoBits\rEstado: " + reserva[4] + "\rFecha de entrada: " + reserva[5]
+							+ "\rFecha de salida: " + reserva[6] + " .");
 				} else {
 					textPane.setText("Invalid data");
 				}
@@ -112,6 +117,8 @@ public class misReservas extends JPanel {
 				editarButton.addActionListener(e -> {
 					VentanaEditar(reserva);
 				});
+				Font readableFont = new Font("SansSerif", Font.PLAIN, 20);
+				textPane.setFont(readableFont);
 				panelTexto.add(editarButton);
 				textPanel.add(panelTexto);
 			}

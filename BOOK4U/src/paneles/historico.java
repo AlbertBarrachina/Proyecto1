@@ -1,21 +1,29 @@
 package paneles;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
+import javax.swing.JViewport;
+
 import main.*;
 import backend.db;
 
@@ -64,11 +72,15 @@ public class historico extends JPanel {
 				textPane.setEditable(false);
 				String[] reserva = reservas.get(i - 1);
 				if (reserva.length == 7) {
+					List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0,
+							Integer.parseInt(reserva[1]));
+					String[] habitacion = habitaciones.get(0);
+					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen
 					try {
-						File file = new File("src/assets/imagenes/1.jpg");
+						File file = new File("src/assets/imagenes/"+habitacion[0]+".jpg");
 						Image image = ImageIO.read(file);
-						Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+						Image resizedImage = image.getScaledInstance(170, 170, Image.SCALE_SMOOTH);
 
 						// Create an ImageIcon from the Image
 						ImageIcon imageIcon = new ImageIcon(resizedImage);
@@ -96,12 +108,14 @@ public class historico extends JPanel {
 					} catch (Exception e) {
 						reserva[4] = "No se pudo cargar.";
 					}
-					textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3]
-							+ " creditos.\rEstado: " + reserva[4] + ".\rFecha de entrada: " + reserva[5]
-							+ ".\rFecha de salida: " + reserva[6] + ".");
+					textPane.setText("\rNombre: " + habitacion[7] + "\rDireccion: " + empresa[2] + "\rPrecio: "
+							+ reserva[3] + " EcoBits\rEstado: " + reserva[4] + "\rFecha de entrada: " + reserva[5]
+							+ "\rFecha de salida: " + reserva[6] + " .");
 				} else {
 					textPane.setText("Invalid data");
 				}
+				Font readableFont = new Font("SansSerif", Font.PLAIN, 18);
+				textPane.setFont(readableFont);
 				panelTexto.add(textPane);
 				textPanel.add(panelTexto);
 			}
@@ -109,17 +123,17 @@ public class historico extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
 
-		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
+		scrollPane.setViewportView(textPanel);
+
+		scrollPane.getVerticalScrollBar().setUnitIncrement(8);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
-		JPanel panel1 = new JPanel();
-		panel1.add(scrollPane);
-		tabbedPane.addTab("Reservas", null, panel1, "Reservas");
+		tabbedPane.addTab("Reservas", null, scrollPane, "Reservas");
 
 		// segunda pestanya
 
 		JPanel textPanel2 = new JPanel();
-		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+		textPanel2.setLayout(new BoxLayout(textPanel2, BoxLayout.Y_AXIS));
 
 		ArrayList<String[]> compras = db.historialCompras(Integer.parseInt(cliente[0]));
 		if (compras.size() < 1) {
@@ -139,9 +153,9 @@ public class historico extends JPanel {
 				if (compra.length == 6) {
 					// intenta cargar la imgen
 					try {
-						File file = new File("src/assets/book4u.png");
+						File file = new File("src/assets/EcoBit.png");
 						Image image = ImageIO.read(file);
-						Image resizedImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+						Image resizedImage = image.getScaledInstance(110, 110, Image.SCALE_SMOOTH);
 
 						// Create an ImageIcon from the Image
 						ImageIcon imageIcon = new ImageIcon(resizedImage);
@@ -154,10 +168,13 @@ public class historico extends JPanel {
 						JLabel imageLabel = new JLabel("Imagen no encontrada.");
 						panelTexto.add(imageLabel);
 					}
-					textPane.setText("\rCantidad: " + compra[2] + ".");
+					textPane.setText("\rCantidad: " + compra[2] + "\rPrecio de compra: " + compra[3]
+							+ " €\rFecha compra" + compra[5] + ".\r");
 				} else {
 					textPane.setText("Invalid data");
 				}
+				Font readableFont = new Font("SansSerif", Font.PLAIN, 18);
+				textPane.setFont(readableFont);
 				panelTexto.add(textPane);
 				textPanel2.add(panelTexto);
 			}
@@ -165,12 +182,14 @@ public class historico extends JPanel {
 
 		JScrollPane scrollPane2 = new JScrollPane(textPanel2);
 
-		scrollPane2.getVerticalScrollBar().setUnitIncrement(32);
+		JScrollBar verticalScrollBar = scrollPane2.getVerticalScrollBar();
+
+		// Set the scrollbar's value to the top
+		verticalScrollBar.setValue(-1000);
+		scrollPane2.getVerticalScrollBar().setUnitIncrement(8);
 		scrollPane2.getHorizontalScrollBar().setUnitIncrement(16);
 
-		JPanel panel2 = new JPanel();
-		panel2.add(scrollPane2);
-		tabbedPane.addTab("EcoBits", null, panel2, "EcoBits");
+		tabbedPane.addTab("EcoBits", null, scrollPane2, "EcoBits");
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;

@@ -467,27 +467,24 @@ public class db {
 	// ------------funciones tabla empresa----------------- ///
 	///////////////////////////////////////////////////////////
 
-	// edita la informacion de la empresa en caso de que se cambie le direccion o
-	// hagan un cambio de nombre
-	public static String editarInfoEmpresa(int ide, String nombre, String direccion) {
-
-		String sql = "UPDATE EMPRESA SET nombre =  ?, direccion = ? WHERE ide = ?";
+	// obtiene la info de la empresa especificada
+	public static String[] InfoEmpresa(int ide) {
+		String[] resultados = new String[3];
+		String sql = "SELECT * FROM EMPRESA WERE IDE = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, nombre);
-			pst.setString(2, direccion);
-			pst.setInt(2, ide);
+			pst.setInt(1, ide);
 
-			int rowsUpdated = pst.executeUpdate();
-
-			if (rowsUpdated > 0) {
-				return "Infomracion cambiada correctamente";
-			} else {
-				return "No se ha encontrado la empresa.";
-			}
+			ResultSet rs = pst.executeQuery();
+					resultados[0] = Integer.toString(rs.getInt("ide"));
+					resultados[1] = rs.getString("nombre");
+					resultados[2] = rs.getString("direccion");
 		} catch (SQLException e) {
-			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+			resultados[0] = "1";
+			resultados[1] = "BOOK4U";
+			resultados[2] = "No se pudo cargar la direccion";
 		}
+		return resultados;
 	}
 
 	///////////////////////////////////////////////////////////
