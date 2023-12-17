@@ -4,14 +4,13 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import backend.archivo;
-import backend.db;
+import backend.*;
+import paneles.*;
+import main.loader;
 
 public class main {
 	// frame de la aplicacion, se usara este para todo

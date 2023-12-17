@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -338,33 +339,28 @@ public class db {
 
 	public static ArrayList<String[]> historialCompras(int idc) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * FROM COMPRAS WHERE cliente = ? ORDER BY DESC";
+		String sql = "SELECT * FROM COMPRAS WHERE cliente = ? ORDER BY fecha DESC";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
 
 			ResultSet rs = pst.executeQuery();
+			// formato para convertir fechas en strings
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM'h'");
 			// si existe el usuario
 			while (rs.next()) {
-				String[] row = new String[5];
+				String[] row = new String[6];
 				row[0] = Integer.toString(rs.getInt("id_compra"));
 				row[1] = Integer.toString(rs.getInt("cliente"));
 				row[2] = Integer.toString(rs.getInt("cantidad"));
 				row[3] = Integer.toString(rs.getInt("precio"));
 				row[4] = rs.getString("id_compra");
-				row[5] = dateFormat.format(rs.getDate("fecha").toString());
+				row[5] = dateFormat.format(rs.getDate("fecha"));
 
-				resultados.add(row);
-
-			}
-			if (resultados.isEmpty()) {
-				String[] row = new String[5];
-				row[0] = "No compraste nada.";
 				resultados.add(row);
 			}
 		} catch (SQLException e) {
-			String[] row = new String[5];
+			String[] row = new String[6];
 			row[0] = "" + (e);
 			resultados.add(row);
 		}
@@ -379,36 +375,35 @@ public class db {
 	// permite crear reservas
 	public static Boolean comprarReserva(int idc, int id_habitacion, int precio, String estado, String strEntrada,
 			String strSalida) {
-		String sql = "INSERT INTO COMPRAS values(0, ?, ?, ?, ?, ?, ?)";
-		strEntrada = strEntrada.replace("-", "/");
-		strSalida = strSalida.replace("-", "/");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String sql = "INSERT INTO RESERVA values(0, ?, ?, ?, ?, ?, ?)";
+			
+		SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		
 		try {
+			Date Inicial = DateFormat.parse(strEntrada);
+			Date Final = DateFormat.parse(strSalida);
+			Timestamp Entrada = new Timestamp(Inicial.getTime());
+			Timestamp Salida = new Timestamp(Final.getTime());
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, id_habitacion);
 			pst.setInt(2, idc);
 			pst.setInt(3, precio);
 			pst.setString(4, estado);
-			java.util.Date utilDate = dateFormat.parse(strEntrada);
-			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-			pst.setDate(5, sqlDate);
-			utilDate = dateFormat.parse(strSalida);
-			sqlDate = new java.sql.Date(utilDate.getTime());
-			System.out.println(sqlDate);
-			pst.setDate(6, sqlDate);
+			pst.setTimestamp(5, Entrada);
+			pst.setTimestamp(6, Salida);
 
 			int rowsInserted = pst.executeUpdate();
 			if (rowsInserted > 0) {
-				con.commit();
 				return true;
 			} else {
 				return false;
 			}
 		} catch (SQLException | ParseException e) {
-			 e.printStackTrace(); // Print the exception details for debugging
+			e.printStackTrace(); // Print the exception details for debugging
 			System.out.println("error fatal");
 			return false;
 		}
+		
 	}
 
 	// permite cancelar reservas.
@@ -435,7 +430,7 @@ public class db {
 	// fenegadas o las reservas pagadas
 	public static ArrayList<String[]> historialReservas(int idc, String estado, String estado2, String estado3) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?)";
+		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?) ORDER BY fecha_entrada DESC";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
@@ -460,7 +455,9 @@ public class db {
 
 			}
 		} catch (SQLException e) {
-			System.out.println("catch");
+			String[] row = new String[7];
+			row[0] = "" + (e);
+			resultados.add(row);
 		}
 		return resultados;
 

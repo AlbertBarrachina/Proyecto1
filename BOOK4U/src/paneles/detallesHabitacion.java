@@ -26,8 +26,7 @@ import javax.swing.SwingUtilities;
 import com.toedter.calendar.JDateChooser;
 
 import backend.db;
-import main.loader;
-import main.main;
+import main.*;
 
 public class detallesHabitacion extends JPanel {
 	int[] dimensiones = main.getDimensiones();
@@ -88,19 +87,21 @@ public class detallesHabitacion extends JPanel {
 		/////////////////////////////////////////////////////////////////////////////////////////////////// ///////
 		/////// ///////
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		dateChooserInicio = new JDateChooser();
-		dateChooserFinal = new JDateChooser();
 
+		// fecha entrada
 		dateChooserInicio = new JDateChooser();
+		dateChooserInicio.setDateFormatString("yyyy/MM/dd");
 		dateChooserInicio.getJCalendar().setMinSelectableDate(new Date());
 		((JTextField) dateChooserInicio.getDateEditor().getUiComponent()).setEditable(false);
 
-		dateChooserFinal = new JDateChooser();
-		dateChooserFinal.getJCalendar().setMinSelectableDate(new Date());
-		((JTextField) dateChooserFinal.getDateEditor().getUiComponent()).setEditable(false);
-
 		detailsPanel.add(new JLabel("Fecha de Inicio:"));
 		detailsPanel.add(dateChooserInicio);
+
+		// fecha salida
+		dateChooserFinal = new JDateChooser();
+		dateChooserFinal.setDateFormatString("yyyy/MM/dd");
+		dateChooserFinal.getJCalendar().setMinSelectableDate(new Date());
+		((JTextField) dateChooserFinal.getDateEditor().getUiComponent()).setEditable(false);
 
 		detailsPanel.add(new JLabel("Fecha Final:"));
 		detailsPanel.add(dateChooserFinal);
@@ -157,7 +158,7 @@ public class detallesHabitacion extends JPanel {
 		}
 
 		// Formatea las fechas para mostrarlas
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String strFechaInicio = fechaInicio != null ? sdf.format(fechaInicio) : "N/A";
 		String strFechaFinal = fechaFinal != null ? sdf.format(fechaFinal) : "N/A";
 
@@ -169,12 +170,13 @@ public class detallesHabitacion extends JPanel {
 		confirmButton.addActionListener(e -> {
 			if (db.comprarReserva(Integer.parseInt(cliente[0]), id_habitacion, 10, "P", strFechaInicio,
 					strFechaFinal)) {
-JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
-					+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
-			}else {
-				JOptionPane.showMessageDialog(dialogReserva, "No se pudo hacer la reserva, vuelva a intentarlo en unos minutos.");
+				JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
+						+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
+			} else {
+				JOptionPane.showMessageDialog(dialogReserva,
+						"No se pudo hacer la reserva, vuelva a intentarlo en unos minutos.");
 			}
-			
+
 		});
 		dialogReserva.add(confirmButton);
 

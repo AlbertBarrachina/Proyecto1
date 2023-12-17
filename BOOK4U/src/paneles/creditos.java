@@ -42,7 +42,7 @@ public class creditos extends JPanel {
 
 		// JLabels
 
-		labelTitulo = new JLabel("Compra de Créditos");
+		labelTitulo = new JLabel("Compra de EcoBits");
 		labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -50,7 +50,7 @@ public class creditos extends JPanel {
 		constraints.weighty = 0.01;
 		add(labelTitulo, constraints);
 
-		labelCantidad = new JLabel("Cantidad de créditos a comprar:");
+		labelCantidad = new JLabel("Cantidad de EcoBits a comprar:");
 		labelCantidad.setHorizontalAlignment(SwingConstants.CENTER);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -59,8 +59,7 @@ public class creditos extends JPanel {
 		add(labelCantidad, constraints);
 
 		// Metodo de pago
-		// falta añadir la funcionalida de la cuenta de banco
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// Paypal o sin metodo de pago (este no permite comprar nada)
 		String[] opciones = { "---", "Paypal" };
 
 		JLabel labelTargeta = new JLabel("Metodo de pago");
@@ -118,7 +117,7 @@ public class creditos extends JPanel {
 					if (cantidad >= 0 && cantidad < 100) {
 						labelTotal.setText("Total a pagar: €" + total);
 					} else {
-						labelTotal.setText("Total a pagar: €ERROR, no se pueden comprar tantos creditos a la vez");
+						labelTotal.setText("Total a pagar: €ERROR, no se pueden comprar tantos EcoBits a la vez");
 					}
 				} catch (NumberFormatException ex) {
 					labelTotal.setText("Total a pagar: €0");
@@ -147,17 +146,22 @@ public class creditos extends JPanel {
 					try {
 						int cantidad = Integer.parseInt(cantidadText);
 						int total = cantidad * precioCredito;
-						if (!metodoPago.equals("Cargando...") && !metodoPago.equals("---")) {
+						if (!metodoPago.equals("Cargando...") && !metodoPago.equals("---")
+								&& (cantidad < 100 && cantidad > 0)) {
 							JOptionPane.showMessageDialog(creditos.this,
 									db.comprarCompras(Integer.parseInt(cliente[0]), cantidad, metodoPago)
 											+ "Compra realizada por €" + total,
 									"Compra Exitosa", JOptionPane.INFORMATION_MESSAGE);
+						} else if (cantidad >= 100 || cantidad <= 0) {
+							JOptionPane.showMessageDialog(creditos.this,
+									"Seleccione una cantidad permitida.\nCantidades permitidas: de 1 a 99 EcoBits",
+									"Error", JOptionPane.ERROR_MESSAGE);
 						} else {
 							JOptionPane.showMessageDialog(creditos.this, "Seleccione un metodo de pago", "Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} catch (NumberFormatException ex) {
-						JOptionPane.showMessageDialog(creditos.this, "Ingresa una cantidad válida2", "Error",
+						JOptionPane.showMessageDialog(creditos.this, "Ingresa una cantidad válida", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}

@@ -20,7 +20,7 @@ public class perfilUsuario extends JPanel {
         try {
         	userPhoto = new ImageIcon("src/assets/perfiles/"+ usuario[0] +".png");
 		}catch(Exception e) {
-			
+			userPhoto = new ImageIcon("src/assets/perfiles/default.png");
 		}
          // Asegúrate de cambiar "path/to/user/photo" a la ruta real de la imagen
         JLabel photoLabel = new JLabel(userPhoto);
@@ -59,7 +59,7 @@ public class perfilUsuario extends JPanel {
             loader.cargarMisReservas();
         });
 
-        JButton historialButton = new JButton("Histórico de reservas");
+        JButton historialButton = new JButton("Histórico de reservas y compras");
         constraints.gridx = 1;
         constraints.gridy = 2;
         constraints.weightx = 0.5;
@@ -69,7 +69,7 @@ public class perfilUsuario extends JPanel {
             loader.cargarHistoricoReservas();
         });
 
-        JButton creditosButton = new JButton("Comprar Créditos");
+        JButton creditosButton = new JButton("Comprar EcoBits");
         constraints.gridx = 1;
         constraints.gridy = 3;
         constraints.weightx = 0.5;

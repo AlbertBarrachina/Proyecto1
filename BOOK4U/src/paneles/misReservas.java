@@ -52,7 +52,6 @@ public class misReservas extends JPanel {
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]), "P", "P", "P");
-
 		// areglar!! no comprueba si hay habitaciones correctamente
 		if (reservas.isEmpty()) {
 			JTextPane textPane = new JTextPane();

@@ -5,7 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import paneles.*;
+import backend.*;
 
 public class loader {
 	private static int[] dimensiones;
@@ -77,7 +78,7 @@ public class loader {
 		frame.setTitle("BOOK4U");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
-		frame.setSize((int) Math.round(screenSize.width * 0.8), (int) Math.round(screenSize.height * 0.8));
+//		frame.setSize((int) Math.round(screenSize.width * 0.8), (int) Math.round(screenSize.height * 0.8));
 		paneles.ContenidoUI panelPrincipal = new paneles.ContenidoUI();
 		frame.getContentPane().add(panelPrincipal, BorderLayout.CENTER);
 		frame.revalidate();

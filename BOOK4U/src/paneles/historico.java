@@ -22,7 +22,7 @@ import backend.db;
 public class historico extends JPanel {
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
-	
+
 	public historico() {
 		// establece el display para que sea responsive
 		setLayout(new GridBagLayout());
@@ -46,7 +46,7 @@ public class historico extends JPanel {
 
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-		
+
 		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]), "F", "C", "D");
 		if (reservas.size() < 1) {
 			JTextPane textPane = new JTextPane();
@@ -54,7 +54,7 @@ public class historico extends JPanel {
 			textPane.setText("No se han encontrado reservas");
 			textPanel.add(textPane);
 		} else {
-			
+
 			int numberOfTexts = reservas.size();
 			for (int i = 1; i <= numberOfTexts; i++) {
 				// panel para cargar cada resultado
@@ -170,7 +170,7 @@ public class historico extends JPanel {
 
 		JPanel panel2 = new JPanel();
 		panel2.add(scrollPane2);
-		tabbedPane.addTab("Creditos", null, panel2, "Creditos");
+		tabbedPane.addTab("EcoBits", null, panel2, "EcoBits");
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
