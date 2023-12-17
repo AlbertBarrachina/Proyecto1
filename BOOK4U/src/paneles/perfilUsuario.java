@@ -36,7 +36,7 @@ public class perfilUsuario extends JPanel {
         // Panel para los datos del usuario
         JPanel userDataPanel = new JPanel();
         userDataPanel.setLayout(new BoxLayout(userDataPanel, BoxLayout.Y_AXIS));
-        userDataPanel.add(new JLabel("Nombre: " + usuario[1])); // Añade más etiquetas según sea necesario
+        userDataPanel.add(new JLabel("Nombre: " + usuario[1])); // Anyade más etiquetas según sea necesario
         userDataPanel.setBackground(new Color(173, 216, 230)); // Establecer el color de fondo igual al del panel principal
         constraints.gridx = 1;
         constraints.gridy = 0;

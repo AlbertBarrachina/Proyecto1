@@ -22,7 +22,7 @@ public class main {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setDimensiones((int)Math.round(screenSize.height*0.8),(int)Math.round(screenSize.width*0.8));
 		frame.setBounds((int)Math.round(dimensiones[0]*0.05),(int)Math.round(dimensiones[1]*0.05),dimensiones[0], dimensiones[1]);
-		//actualiza las dimensiones cada vez que se modifica el tamaño del frame
+		//actualiza las dimensiones cada vez que se modifica el tamanyo del frame
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {

@@ -29,7 +29,7 @@ public class Contenido extends JPanel {
 		}
         if (imageIcon != null) {
             Image image = imageIcon.getImage();
-            //establece tamaño de la imaen con respecto al tamaño del frame
+            //establece tamanyo de la imaen con respecto al tamaño del frame
             Image newImg = image.getScaledInstance((int)Math.round(dimensiones[0]*0.25), (int)Math.round(dimensiones[1]*0.3), Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);
             imageLabel = new JLabel(imageIcon);

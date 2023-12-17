@@ -59,7 +59,7 @@ public class detallesHabitacion extends JPanel {
 		combinedPanel = new JPanel();
 		combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.Y_AXIS));
 
-		// Panel de detalles con fuente más grande y mayor tamaño
+		// Panel de detalles con fuente más grande y mayor tamanyo
 		detailsPanel = new JPanel();
 		detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 		detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -82,7 +82,7 @@ public class detallesHabitacion extends JPanel {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		/////// ///////
-		/////// UTILIZANDO LA LIBRERIA DE JCALENDAR AÑADIMOS EL CAMPO DE FECHA_INICIO Y
+		/////// UTILIZANDO LA LIBRERIA DE JCALENDAR ANYADIMOS EL CAMPO DE FECHA_INICIO Y
 		/////////////////////////////////////////////////////////////////////////////////////////////////// FECHA_FINAL
 		/////////////////////////////////////////////////////////////////////////////////////////////////// ///////
 		/////// ///////
@@ -120,7 +120,7 @@ public class detallesHabitacion extends JPanel {
 		reserveButtonPanel.add(reserveButton);
 		combinedPanel.add(reserveButtonPanel);
 
-		// Añadir el panel combinado al panel principal
+		// Anyadir el panel combinado al panel principal
 		add(combinedPanel, BorderLayout.CENTER);
 
 		// Botón de regreso

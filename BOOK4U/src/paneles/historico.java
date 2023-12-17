@@ -116,7 +116,7 @@ public class historico extends JPanel {
 		panel1.add(scrollPane);
 		tabbedPane.addTab("Reservas", null, panel1, "Reservas");
 
-		// segunda pestaña
+		// segunda pestanya
 
 		JPanel textPanel2 = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));

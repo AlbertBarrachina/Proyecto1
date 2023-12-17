@@ -31,23 +31,23 @@ public class Registro extends JPanel {
 		JTextField correoField = new JTextField(20);
 		add(correoField);
 
-		JLabel contraseñaLabel = new JLabel("Contrase�a:");
-		add(contraseñaLabel);
-		JPasswordField contraseñaField = new JPasswordField(20);
-		add(contraseñaField);
+		JLabel contrasenaLabel = new JLabel("Contrase�a:");
+		add(contrasenaLabel);
+		JPasswordField contrasenaField = new JPasswordField(20);
+		add(contrasenaField);
 
-		JLabel contraseña2Label = new JLabel("Repita la contrase�a:");
-		add(contraseña2Label);
-		JPasswordField contraseña2Field = new JPasswordField(20);
-		add(contraseña2Field);
+		JLabel contrasena2Label = new JLabel("Repita la contrase�a:");
+		add(contrasena2Label);
+		JPasswordField contrasena2Field = new JPasswordField(20);
+		add(contrasena2Field);
 
 		JButton registrarButton = new JButton("Registrar");
 		add(registrarButton);
 
 		registrarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				char[] passwd1 = contraseñaField.getPassword();
-				char[] passwd2 = contraseña2Field.getPassword();
+				char[] passwd1 = contrasenaField.getPassword();
+				char[] passwd2 = contrasena2Field.getPassword();
 
 				String password1 = new String(passwd1);
 				String password2 = new String(passwd2);
