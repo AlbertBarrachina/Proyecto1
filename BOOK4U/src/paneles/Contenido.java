@@ -42,7 +42,7 @@ public class Contenido extends JPanel {
         descriptionLabel1.setBackground(backgroundColor);  // Establece el color de fondo de la etiqueta
         add(descriptionLabel1);
 
-        JLabel descriptionLabel2 = new JLabel(habitacion[2]);
+        JLabel descriptionLabel2 = new JLabel(habitacion[2]+ " EcoBits");
         descriptionLabel2.setFont(new Font("Arial", Font.PLAIN, 18));
         descriptionLabel2.setOpaque(true);  // Hace que el fondo de la etiqueta sea opaco
         descriptionLabel2.setBackground(backgroundColor);  // Establece el color de fondo de la etiqueta

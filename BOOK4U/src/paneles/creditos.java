@@ -172,6 +172,8 @@ public class creditos extends JPanel {
 						JOptionPane.showMessageDialog(creditos.this, "Ingresa una cantidad válida", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
+					main.setSesion(cliente[5], cliente[6]);
+					cliente = main.getSesion();
 				}
 			}
 		});

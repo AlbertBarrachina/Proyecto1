@@ -41,6 +41,8 @@ public class detallesHabitacion extends JPanel {
 	private JDateChooser dateChooserFinal;
 
 	public detallesHabitacion(ImageIcon imageIcon, String[] habitacion) {
+		main.setSesion(cliente[6], cliente[7]);
+		cliente = main.getSesion();
 		String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 		setLayout(new BorderLayout(10, 10));
 		setBackground(new Color(173, 216, 230));

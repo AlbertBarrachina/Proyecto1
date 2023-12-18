@@ -106,9 +106,9 @@ public class ContenidoUI extends JPanel {
 		menuPanel.add(filtroPrecio, gbc1);
 		menuPanel.add(new JLabel("Descuento:"), gbc1);
 		menuPanel.add(filtroDescuento, gbc1);
-		menuPanel.add(new JLabel("Tipo de Habitaci�n:"), gbc1);
+		menuPanel.add(new JLabel("Tipo de Habitacion:"), gbc1);
 		menuPanel.add(filtroTipoHabitacion, gbc1);
-		menuPanel.add(new JLabel("N�mero de Camas:"), gbc1);
+		menuPanel.add(new JLabel("Numero de Camas:"), gbc1);
 		menuPanel.add(filtroNumCamas, gbc1);
 
 		//// PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
@@ -127,7 +127,7 @@ public class ContenidoUI extends JPanel {
 		// Cargar y a�adir la imagen al panel tituloPanel
 		try {
 			Image img = ImageIO.read(new File("src/assets/book4u.png")); // Reemplaza con la ruta a tu imagen
-			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tama�o seg�n sea
+			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tamano segun sea
 																					// necesario
 
 			ImageIcon imageIcon = new ImageIcon(resizedImg);
