@@ -33,7 +33,7 @@ import main.*;
 
 public class detallesHabitacion extends JPanel {
 	int[] dimensiones = main.getDimensiones();
-	String[] cliente = main.getSesion();
+	String[] cliente;
 	private JLabel imageLabel;
 	private JPanel imagePanel, detailsPanel, reserveButtonPanel, combinedPanel;
 	private JButton backButton, reserveButton;
@@ -41,7 +41,8 @@ public class detallesHabitacion extends JPanel {
 	private JDateChooser dateChooserFinal;
 
 	public detallesHabitacion(ImageIcon imageIcon, String[] habitacion) {
-		main.setSesion(cliente[6], cliente[7]);
+		cliente = main.getSesion();
+		main.setSesion(cliente[5], cliente[6]);
 		cliente = main.getSesion();
 		String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 		setLayout(new BorderLayout(10, 10));

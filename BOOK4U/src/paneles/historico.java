@@ -78,7 +78,7 @@ public class historico extends JPanel {
 					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen
 					try {
-						File file = new File("src/assets/imagenes/"+habitacion[0]+".jpg");
+						File file = new File("src/assets/imagenes/" + habitacion[0] + ".jpg");
 						Image image = ImageIO.read(file);
 						Image resizedImage = image.getScaledInstance(170, 170, Image.SCALE_SMOOTH);
 
@@ -123,11 +123,11 @@ public class historico extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
 
-		scrollPane.setViewportView(textPanel);
-
+		
 		scrollPane.getVerticalScrollBar().setUnitIncrement(8);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
-
+//		scrollPane.setVisible(true);
+//		scrollPane.getViewport().setViewPosition(new Point(0, 0));
 		tabbedPane.addTab("Reservas", null, scrollPane, "Reservas");
 
 		// segunda pestanya

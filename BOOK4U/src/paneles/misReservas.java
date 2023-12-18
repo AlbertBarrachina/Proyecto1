@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class misReservas extends JPanel {
 				panelTexto.add(textPane);
 				JButton editarButton = new JButton("Editar reserva");
 				editarButton.addActionListener(e -> {
-					VentanaEditar(reserva);
+					VentanaEditar(reserva, panelTexto);
 				});
 				Font readableFont = new Font("SansSerif", Font.PLAIN, 20);
 				textPane.setFont(readableFont);
@@ -126,6 +127,7 @@ public class misReservas extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
 
+		scrollPane.getViewport().setViewPosition(new Point(0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
@@ -148,7 +150,7 @@ public class misReservas extends JPanel {
 		add(backButton, constraints);
 	}
 
-	private void VentanaEditar(String[] reserva) {
+	private void VentanaEditar(String[] reserva, JPanel panelActual) {
 		List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0, Integer.parseInt(reserva[1]));
 		String[] habitacion = new String[9];
 		if (!habitaciones.isEmpty()) {
@@ -169,9 +171,13 @@ public class misReservas extends JPanel {
 		confirmButton.addActionListener(e -> {
 			if (db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
+				panelActual.removeAll();
+				revalidate();
+				repaint();
 			} else {
 				JOptionPane.showMessageDialog(dialogReserva, "ERROR");
 			}
+			dialogReserva.dispose();
 		});
 		dialogReserva.add(confirmButton);
 		dialogReserva.setVisible(true);
