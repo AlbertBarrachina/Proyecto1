@@ -184,6 +184,12 @@ public class detallesHabitacion extends JPanel {
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Confirmar Reserva");
 		confirmButton.addActionListener(e -> {
+			if (Integer.parseInt(cliente[7]) < (Integer.parseInt(habitacion[2]) * Integer.parseInt(dias))) {
+				JOptionPane.showMessageDialog(this,
+						"No dispone de tantos EcoBits.\nActualmente tiene " + cliente[7] + " EcoBits.", "Insuficientes EcoBits!",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			if (db.comprarReserva(Integer.parseInt(cliente[0]), Integer.parseInt(habitacion[0]),
 					Integer.parseInt(habitacion[2]) * Integer.parseInt(dias), "P", strFechaInicio, strFechaFinal)
 					&& db.editarCreditosCliente(Integer.parseInt(cliente[0]),

@@ -17,9 +17,9 @@ public class db {
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -276,25 +276,6 @@ public class db {
 		}
 		return creditosActuales;
 	}
-
-	// -------------------------------------------------------
-	// elimina el cliente que se ha indicado en casos extremos.
-//	public static String eliminarCliente(int idc) {
-//		String sql = "DELETE FROM CLIENTE WHERE idc = ?";
-//		try {
-//			PreparedStatement pst = con.prepareStatement(sql);
-//			pst.setInt(1, idc);
-//
-//			int rowsDeleted = pst.executeUpdate();
-//			if (rowsDeleted > 0) {
-//				return "El cliente ha sido eliminado correctamente.";
-//			} else {
-//				return "No se ha podido eliminar el cliente.";
-//			}
-//		} catch (SQLException e) {
-//			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
-//		}
-//	}
 
 	///////////////////////////////////////////////////////////
 	// funciones tabla compras ///

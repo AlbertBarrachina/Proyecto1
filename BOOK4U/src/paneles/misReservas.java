@@ -9,9 +9,13 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Date;
+
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -107,9 +111,24 @@ public class misReservas extends JPanel {
 					} catch (Exception e) {
 						reserva[4] = "No se pudo cargar.";
 					}
+					String fecha1 = "Cargando...";
+					String fecha2 = "Cargando...";
+					SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+			        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+			            Date date;
+						try {
+							date = inputFormat.parse(reserva[5]);
+							fecha1 = outputFormat.format(date);
+						} catch (ParseException e1) {
+						}
+						try {
+							date = inputFormat.parse(reserva[6]);
+							fecha2 = outputFormat.format(date);
+						} catch (ParseException e1) {
+						}
 					textPane.setText("\rNombre: " + habitacion[7] + "\rDescripcion: " + habitacion[8] + "\rDireccion: "
 							+ empresa[2] + "\rPrecio: " + reserva[3] + " EcoBits\rEstado: " + reserva[4]
-							+ "\rFecha de entrada: " + reserva[5] + "\rFecha de salida: " + reserva[6] + " .");
+							+ "\rFecha de entrada: " + fecha1 + "\rFecha de salida: " + fecha2);
 				} else {
 					textPane.setText("Invalid data");
 				}
@@ -163,14 +182,16 @@ public class misReservas extends JPanel {
 
 		// Agrega etiquetas y campos para los detalles de la reserva
 		dialogReserva.add(new JLabel("Nombre de la habitación: " + habitacion[7]));
-		dialogReserva.add(new JLabel("Precio: " + reserva[3]));
-		dialogReserva.add(new JLabel("Descripción: " + habitacion[8]));
+		dialogReserva.add(new JLabel("Precio: " + reserva[3] + " EcoBits"));
+		String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
+		dialogReserva.add(new JLabel("Dirección: " + empresa[2]));
 
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Cancelar reserva");
 		confirmButton.addActionListener(e -> {
 			if (db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
+				db.editarCreditosCliente(Integer.parseInt(cliente[0]), Integer.parseInt(reserva[3]));
 				panelActual.removeAll();
 				revalidate();
 				repaint();

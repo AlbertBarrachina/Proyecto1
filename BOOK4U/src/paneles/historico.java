@@ -9,7 +9,10 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -108,9 +111,24 @@ public class historico extends JPanel {
 					} catch (Exception e) {
 						reserva[4] = "No se pudo cargar.";
 					}
+					String fecha1 = "Cargando...";
+					String fecha2 = "Cargando...";
+					SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+					Date date;
+					try {
+						date = inputFormat.parse(reserva[5]);
+						fecha1 = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
+					try {
+						date = inputFormat.parse(reserva[5]);
+						fecha2 = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
 					textPane.setText("\rNombre: " + habitacion[7] + "\rDireccion: " + empresa[2] + "\rPrecio: "
-							+ reserva[3] + " EcoBits\rEstado: " + reserva[4] + "\rFecha de entrada: " + reserva[5]
-							+ "\rFecha de salida: " + reserva[6] + " .");
+							+ reserva[3] + " EcoBits\rEstado: " + reserva[4] + "\rFecha de entrada: " + fecha1
+							+ "\rFecha de salida: " + fecha2);
 				} else {
 					textPane.setText("Invalid data");
 				}
@@ -123,7 +141,6 @@ public class historico extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
 
-		
 		scrollPane.getVerticalScrollBar().setUnitIncrement(8);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 //		scrollPane.setVisible(true);
@@ -168,8 +185,17 @@ public class historico extends JPanel {
 						JLabel imageLabel = new JLabel("Imagen no encontrada.");
 						panelTexto.add(imageLabel);
 					}
+					String fecha = "Cargando...";
+					SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+					Date date;
+					try {
+						date = inputFormat.parse(compra[5]);
+						fecha = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
 					textPane.setText("\rCantidad: " + compra[2] + "\rPrecio de compra: " + compra[3]
-							+ " €\rFecha compra" + compra[5] + ".\r");
+							+ " €\rFecha compra" + fecha + "\r");
 				} else {
 					textPane.setText("Invalid data");
 				}
