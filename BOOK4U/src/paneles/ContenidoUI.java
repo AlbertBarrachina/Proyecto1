@@ -208,9 +208,10 @@ public class ContenidoUI extends JPanel {
 		/// A SU VEZ SE MARCA COMO SE QUIERE QUE ESTOS CONTENIDOS ESTEN DISTRIBUIDOS///
 		List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 1.00, "", 0, 0);
 		for (int i = 0; i < habitaciones.size(); i++) {
-			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
+			String[] habitacion = habitaciones.get(i);
+			String imagePath = "src/assets/imagenes/" + (habitacion[0]) + ".jpg";
 
-			paneles.Contenido contenido = new paneles.Contenido(habitaciones.get(i), imagePath);
+			paneles.Contenido contenido = new paneles.Contenido(habitacion, imagePath);
 
 			contenidos.add(contenido);
 			gbc.gridx = i % 4;

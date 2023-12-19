@@ -186,8 +186,8 @@ public class detallesHabitacion extends JPanel {
 		confirmButton.addActionListener(e -> {
 			if (Integer.parseInt(cliente[7]) < (Integer.parseInt(habitacion[2]) * Integer.parseInt(dias))) {
 				JOptionPane.showMessageDialog(this,
-						"No dispone de tantos EcoBits.\nActualmente tiene " + cliente[7] + " EcoBits.", "Insuficientes EcoBits!",
-						JOptionPane.ERROR_MESSAGE);
+						"No dispone de tantos EcoBits.\nActualmente tiene " + cliente[7] + " EcoBits.",
+						"Insuficientes EcoBits!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (db.comprarReserva(Integer.parseInt(cliente[0]), Integer.parseInt(habitacion[0]),
@@ -196,6 +196,7 @@ public class detallesHabitacion extends JPanel {
 							-(Integer.parseInt(habitacion[2]) * Integer.parseInt(dias)))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
 						+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
+				System.out.println(db.editarInfoHabitacion(Integer.parseInt(habitacion[0]), "N"));
 				dialogReserva.dispose();
 			} else {
 				JOptionPane.showMessageDialog(dialogReserva,

@@ -478,22 +478,14 @@ public class db {
 	///////////////////////////////////////////////////////////
 
 	// ----------------------------------------------------------------
-	// edita la informacion de la habitacion en caso de querer cambiar el precio,
-	// los descuentos, la descripcion, el tipo o cuantas camas tiene(personas que
-	// pueden dormir en esta).
-	public static String editarInfoHabitacion(int id_habitacion, int precio, Float descuento, String tipo, int camas,
-			String nombre, String descripcion) {
+	// cambia el estado de la habitacion.
+	public static String editarInfoHabitacion(int id_habitacion, String estado) {
 
-		String sql = "UPDATE HABITACION SET precio =  ?, descuento = ?, tipo = ?, camas = ?, nombre = ? descripcion = ? WHERE id_habitacion = ?";
+		String sql = "UPDATE HABITACION SET disponibilidad = ? WHERE id_habitacion = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, precio);
-			pst.setFloat(2, descuento);
-			pst.setString(3, tipo);
-			pst.setInt(4, camas);
-			pst.setString(5, descripcion);
-			pst.setString(6, nombre);
-			pst.setInt(7, id_habitacion);
+			pst.setString(1, estado);
+			pst.setInt(2, id_habitacion);
 
 			int rowsUpdated = pst.executeUpdate();
 
@@ -521,6 +513,8 @@ public class db {
 			sqlBuilder.append(" AND id_habitacion = ?");
 			params.add(idh);
 		} else {
+			sqlBuilder.append(" AND disponibilidad = 'S'");
+			System.out.println("texto");
 			if (empresa > 0) {
 				sqlBuilder.append(" AND empresa = ?");
 				params.add(empresa);

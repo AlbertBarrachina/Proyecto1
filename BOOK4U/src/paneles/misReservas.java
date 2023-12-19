@@ -114,18 +114,18 @@ public class misReservas extends JPanel {
 					String fecha1 = "Cargando...";
 					String fecha2 = "Cargando...";
 					SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-			        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
-			            Date date;
-						try {
-							date = inputFormat.parse(reserva[5]);
-							fecha1 = outputFormat.format(date);
-						} catch (ParseException e1) {
-						}
-						try {
-							date = inputFormat.parse(reserva[6]);
-							fecha2 = outputFormat.format(date);
-						} catch (ParseException e1) {
-						}
+					SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+					Date date;
+					try {
+						date = inputFormat.parse(reserva[5]);
+						fecha1 = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
+					try {
+						date = inputFormat.parse(reserva[6]);
+						fecha2 = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
 					textPane.setText("\rNombre: " + habitacion[7] + "\rDescripcion: " + habitacion[8] + "\rDireccion: "
 							+ empresa[2] + "\rPrecio: " + reserva[3] + " EcoBits\rEstado: " + reserva[4]
 							+ "\rFecha de entrada: " + fecha1 + "\rFecha de salida: " + fecha2);
@@ -188,10 +188,12 @@ public class misReservas extends JPanel {
 
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Cancelar reserva");
+		final int idh = Integer.parseInt(habitacion[0]);
 		confirmButton.addActionListener(e -> {
 			if (db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
 				db.editarCreditosCliente(Integer.parseInt(cliente[0]), Integer.parseInt(reserva[3]));
+				db.editarInfoHabitacion(idh, "S");
 				panelActual.removeAll();
 				revalidate();
 				repaint();
