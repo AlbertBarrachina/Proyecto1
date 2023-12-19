@@ -39,7 +39,6 @@ public class LogIn extends JPanel {
 					main.setSesion(array[0], array[1]);
 					Dimension screenSize = main.getDimensionesPantalla();
 					loader.cargarPrincipal();
-//					main.setDimensiones((int)Math.round(screenSize.height*0.8),(int)Math.round(screenSize.width*0.8));
 					JFrame frame = main.getFrame();
 					frame.setSize((int)Math.round(screenSize.width*0.8),(int)Math.round(screenSize.height*0.8));
 					frame.setExtendedState(frame.MAXIMIZED_BOTH);

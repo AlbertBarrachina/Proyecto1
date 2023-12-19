@@ -75,8 +75,7 @@ public class misReservas extends JPanel {
 				textPane.setEditable(false);
 				String[] reserva = reservas.get(i - 1);
 				if (reserva.length == 7) {
-					List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0,
-							Integer.parseInt(reserva[1]));
+					List<String[]> habitaciones = db.buscarHabitacion(Integer.parseInt(reserva[1]));
 					String[] habitacion = habitaciones.get(0);
 					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen
@@ -170,7 +169,7 @@ public class misReservas extends JPanel {
 	}
 
 	private void VentanaEditar(String[] reserva, JPanel panelActual) {
-		List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0, Integer.parseInt(reserva[1]));
+		List<String[]> habitaciones = db.buscarHabitacion(Integer.parseInt(reserva[1]));
 		String[] habitacion = new String[9];
 		if (!habitaciones.isEmpty()) {
 			habitacion = Arrays.copyOf(habitaciones.get(0), 9);

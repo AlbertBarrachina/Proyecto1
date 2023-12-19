@@ -75,8 +75,7 @@ public class historico extends JPanel {
 				textPane.setEditable(false);
 				String[] reserva = reservas.get(i - 1);
 				if (reserva.length == 7) {
-					List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0,
-							Integer.parseInt(reserva[1]));
+					List<String[]> habitaciones = db.buscarHabitacion(Integer.parseInt(reserva[1]));
 					String[] habitacion = habitaciones.get(0);
 					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen

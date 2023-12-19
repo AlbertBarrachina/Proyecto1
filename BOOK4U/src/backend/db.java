@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -19,7 +20,7 @@ public class db {
 	// conexionn dentro de ilerna
 //	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
-	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
 	private static final Connection con = conectarBD();
 
@@ -30,7 +31,12 @@ public class db {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection(URL, USER, PWD);
+			try {
+				con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.3.26:1521:xe", USER, PWD);
+			} catch (Exception e) {
+				con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.ilerna.com:1521:xe", USER, PWD);
+			}
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
@@ -85,7 +91,7 @@ public class db {
 			if (rs.next()) {
 				return "El correo o el telefono ya estan en uso";
 			} else {
-				sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0, 'S')";
+				sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0)";
 				try {
 					pst = con.prepareStatement(sql);
 					pst.setString(1, nombre);
@@ -112,7 +118,7 @@ public class db {
 	// ------------------------------------------------------
 	// recoje toda la informacion del cliente
 	public static String[] mostrarInfoCliente(String correo, String contrasenya) {
-		String cliente[] = new String[9];
+		String cliente[] = new String[8];
 		String sql = "SELECT * from CLIENTE WHERE correo = ? AND contrasenya = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
@@ -131,7 +137,6 @@ public class db {
 				cliente[5] = rs.getString("correo");
 				cliente[6] = rs.getString("contrasenya");
 				cliente[7] = Integer.toString(rs.getInt("creditos"));
-				cliente[8] = rs.getString("tipo");
 			} else {
 				System.out.println("No hay cliente.");
 			}
@@ -502,47 +507,20 @@ public class db {
 	// busca toda la informacion de las habitaciones que entren dentro de las
 	// categorias de busqueda introducidas, si la categoria es null no se incluye en
 	// el select
-	public static List<String[]> buscarHabitacion(int empresa, int precio, float descuento, String tipo, int camas,
-			int idh) {
+	public static List<String[]> buscarHabitacion(int idh) {
 		List<String[]> resultados = new ArrayList<>();
 
-		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
+		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1 = 1");
 		List<Object> params = new ArrayList<>();
 
 		if (idh > 0) {
 			sqlBuilder.append(" AND id_habitacion = ?");
 			params.add(idh);
 		} else {
-			sqlBuilder.append(" AND disponibilidad = 'S'");
-			System.out.println("texto");
-			if (empresa > 0) {
-				sqlBuilder.append(" AND empresa = ?");
-				params.add(empresa);
-			}
-
-			if (precio > 0) {
-				sqlBuilder.append(" AND precio <= ?");
-				params.add(precio);
-			}
-
-			if (descuento > 0) {
-				sqlBuilder.append(" AND descuento = ?");
-				params.add(descuento);
-			}
-
-			if (tipo != null && !tipo.isEmpty()) {
-				sqlBuilder.append(" AND tipo = ?");
-				params.add(tipo);
-			}
-
-			if (camas > 0) {
-				sqlBuilder.append(" AND camas = ?");
-				params.add(camas);
-			}
+			sqlBuilder.append(" AND DISPONIBILIDAD = 'S'");
 		}
 
 		String sql = sqlBuilder.toString();
-
 		try (PreparedStatement pst = con.prepareStatement(sql)) {
 			// Set parameters
 			for (int i = 0; i < params.size(); i++) {
@@ -552,25 +530,24 @@ public class db {
 			try (ResultSet rs = pst.executeQuery()) {
 				while (rs.next()) {
 					String[] row = new String[9];
-					row[0] = Integer.toString(rs.getInt("id_habitacion"));
-					row[1] = Integer.toString(rs.getInt("empresa"));
-					row[2] = Integer.toString(rs.getInt("precio"));
-					row[3] = Integer.toString(rs.getInt("descuento"));
-					row[4] = rs.getString("disponibilidad");
-					row[5] = rs.getString("tipo");
-					row[6] = Integer.toString(rs.getInt("camas"));
-					row[7] = rs.getString("nombre");
-					row[8] = rs.getString("descripcion");
+					row[0] = Integer.toString(rs.getInt("ID_HABITACION"));
+					row[1] = Integer.toString(rs.getInt("EMPRESA"));
+					row[2] = Integer.toString(rs.getInt("PRECIO"));
+					row[3] = Integer.toString(rs.getInt("DESCUENTO"));
+					row[4] = rs.getString("DISPONIBILIDAD");
+					row[5] = rs.getString("TIPO");
+					row[6] = Integer.toString(rs.getInt("CAMAS"));
+					row[7] = rs.getString("NOMBRE");
+					row[8] = rs.getString("DESCRIPCION");
+					resultados.add(row);
+				}
+			} catch (Exception e) {
+				if (resultados.isEmpty()) {
+					String[] row = new String[9];
+					row[0] = "No se han encontrado habitaciones. :(";
 					resultados.add(row);
 				}
 			}
-
-			if (resultados.isEmpty()) {
-				String[] row = new String[9];
-				row[0] = "No se han encontrado habitaciones. :(";
-				resultados.add(row);
-			}
-
 		} catch (SQLException e) {
 			e.printStackTrace(); // Log the exception or handle it as needed
 		}
