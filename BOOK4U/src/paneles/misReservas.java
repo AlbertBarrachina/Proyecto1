@@ -132,7 +132,7 @@ public class misReservas extends JPanel {
 					textPane.setText("Invalid data");
 				}
 				panelTexto.add(textPane);
-				JButton editarButton = new JButton("Editar reserva");
+				JButton editarButton = new JButton("Cancelar reserva");
 				editarButton.addActionListener(e -> {
 					VentanaEditar(reserva, panelTexto);
 				});

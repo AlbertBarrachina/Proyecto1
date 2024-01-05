@@ -7,10 +7,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -26,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.toedter.calendar.IDateEvaluator;
 import com.toedter.calendar.JDateChooser;
 
 import backend.db;
@@ -91,13 +94,11 @@ public class detallesHabitacion extends JPanel {
 		/////// ///////
 		/////// UTILIZANDO LA LIBRERIA DE JCALENDAR ANYADIMOS EL CAMPO DE FECHA_INICIO Y
 		/////////////////////////////////////////////////////////////////////////////////////////////////// FECHA_FINAL
-		/////////////////////////////////////////////////////////////////////////////////////////////////// ///////
-		/////// ///////
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// fecha entrada
 		dateChooserInicio = new JDateChooser();
-		dateChooserInicio.setDateFormatString("yyyy/MM/dd");
+		dateChooserInicio.setDateFormatString("dd-MM-yyyy");
 		dateChooserInicio.getJCalendar().setMinSelectableDate(new Date());
 		((JTextField) dateChooserInicio.getDateEditor().getUiComponent()).setEditable(false);
 
@@ -106,8 +107,9 @@ public class detallesHabitacion extends JPanel {
 
 		// fecha salida
 		dateChooserFinal = new JDateChooser();
-		dateChooserFinal.setDateFormatString("yyyy/MM/dd");
+		dateChooserFinal.setDateFormatString("dd-MM-yyyy");
 		dateChooserFinal.getJCalendar().setMinSelectableDate(new Date());
+
 		((JTextField) dateChooserFinal.getDateEditor().getUiComponent()).setEditable(false);
 
 		detailsPanel.add(new JLabel("Fecha Final:"));
@@ -165,16 +167,19 @@ public class detallesHabitacion extends JPanel {
 		dialogReserva.add(new JLabel("Direccion: " + empresa[2]));
 		dialogReserva.add(new JLabel("Precio total: " + Integer.parseInt(habitacion[2]) * Integer.parseInt(dias)));
 		dialogReserva.add(new JLabel("Descripción: " + habitacion[8]));
-
 		if (fechaInicio != null && fechaFinal != null && fechaFinal.before(fechaInicio)) {
 			JOptionPane.showMessageDialog(this, " La fecha final no puede ser anterior a la fecha de inicio.",
 					"Error en las Fechas", JOptionPane.ERROR_MESSAGE);
 			return;
 
+		} else if (hasOverlap(fechaInicio, fechaFinal, habitacion)) {
+			JOptionPane.showMessageDialog(this, " Alguna fecha de esta reserva ya esta reservada.",
+					"Error en las Fechas", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 
 		// Formatea las fechas para mostrarlas
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String strFechaInicio = fechaInicio != null ? sdf.format(fechaInicio) : "N/A";
 		String strFechaFinal = fechaFinal != null ? sdf.format(fechaFinal) : "N/A";
 
@@ -196,7 +201,6 @@ public class detallesHabitacion extends JPanel {
 							-(Integer.parseInt(habitacion[2]) * Integer.parseInt(dias)))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva realizada con éxito!\nFecha de Inicio: "
 						+ strFechaInicio + "\nFecha Final: " + strFechaFinal);
-				System.out.println(db.editarInfoHabitacion(Integer.parseInt(habitacion[0]), "N"));
 				dialogReserva.dispose();
 			} else {
 				JOptionPane.showMessageDialog(dialogReserva,
@@ -216,5 +220,38 @@ public class detallesHabitacion extends JPanel {
 					Image.SCALE_SMOOTH);
 			imageLabel.setIcon(new ImageIcon(scaledImage));
 		}
+	}
+
+	//comprueba si la reserva es posible
+	public static boolean hasOverlap(Date startDate, Date endDate, String[] habitacion) {
+		ArrayList<String[]> dateRanges = db.calendarioReservas(Integer.parseInt(habitacion[0]));
+
+		for (String[] dateRange : dateRanges) {
+			String rangeStartString = dateRange[0];
+			String rangeEndString = dateRange[1];
+			try {
+				Date rangeStartDate = parseDate(rangeStartString);
+				Date rangeEndDate = parseDate(rangeEndString);
+
+				// Check for overlap
+				if ((startDate.before(rangeEndDate) || startDate.equals(rangeEndDate))
+						&& (endDate.after(rangeStartDate) || endDate.equals(rangeStartDate))) {
+					System.out.println("NOT VALIDD: There is already a reservation on a day that you want.");
+					return true; // fecha ocupada encontrada
+				}
+			} catch (ParseException e) {
+				System.out.println(e);
+				System.out.println("data range = " + rangeStartString + rangeEndString);
+				return true;
+			}
+		}
+
+		return false; // Nno se encontraron errores
+	}
+
+// Parse date string to Date
+	public static Date parseDate(String dateString) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		return dateFormat.parse(dateString);
 	}
 }

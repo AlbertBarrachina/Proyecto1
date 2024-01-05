@@ -32,11 +32,11 @@ public class db {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			try {
-				con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.3.26:1521:xe", USER, PWD);
-			} catch (Exception e) {
 				con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.ilerna.com:1521:xe", USER, PWD);
+			} catch (Exception e) {
+				con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.3.26:1521:xe", USER, PWD);
 			}
-			
+
 		} catch (ClassNotFoundException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
@@ -367,7 +367,7 @@ public class db {
 			String strSalida) {
 		String sql = "INSERT INTO RESERVA values(0, ?, ?, ?, ?, ?, ?)";
 
-		SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat DateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		try {
 			Date Inicial = DateFormat.parse(strEntrada);
@@ -452,6 +452,32 @@ public class db {
 		return resultados;
 
 	}
+	
+	// busca todas las fechas donde las habitaciones estan reservadas en este momento
+		public static ArrayList<String[]> calendarioReservas(int idh) {
+			ArrayList<String[]> resultados = new ArrayList<>();
+			String sql = "SELECT * FROM RESERVA WHERE estado = 'P' AND ID_HABITACION = ? ORDER BY fecha_entrada DESC";
+			try {
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setInt(1, idh);
+				ResultSet rs = pst.executeQuery();
+				// formato para convertir fechas en strings
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				// si existe el usuario
+				while (rs.next()) {
+					String[] row = new String[2	];
+					row[0] = dateFormat.format(rs.getDate("fecha_entrada"));
+					row[1] = dateFormat.format(rs.getDate("fecha_salida"));
+
+					resultados.add(row);
+
+				}
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
+			return resultados;
+
+		}
 
 	///////////////////////////////////////////////////////////
 	// ------------funciones tabla empresa----------------- ///
