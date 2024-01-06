@@ -7,6 +7,11 @@ import main.*;
 import backend.db;
 
 public class Registro extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	{
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

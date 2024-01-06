@@ -5,7 +5,12 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.*;
 
 public class CircularButton extends JButton {
-    public CircularButton(String text, Color color) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public CircularButton(String text, Color color) {
         super(text);
         setPreferredSize(new Dimension(100, 100));
         setContentAreaFilled(false);

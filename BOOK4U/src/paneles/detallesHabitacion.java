@@ -28,13 +28,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import com.toedter.calendar.IDateEvaluator;
 import com.toedter.calendar.JDateChooser;
 
 import backend.db;
 import main.*;
 
 public class detallesHabitacion extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente;
 	private JLabel imageLabel;

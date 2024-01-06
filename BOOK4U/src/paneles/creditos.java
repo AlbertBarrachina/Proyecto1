@@ -3,8 +3,6 @@ package paneles;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 
 import backend.db;
 import main.loader;
@@ -14,11 +12,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.*;
-import java.text.NumberFormat;
 
 public class creditos extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel labelTitulo, labelCantidad, labelTotal;
-	private JTextField campoCantidad;
 	private JButton botonComprar;
 	private int precioCredito = 10; // Precio por crédito en €
 	private String metodoPago = "Cargando...";

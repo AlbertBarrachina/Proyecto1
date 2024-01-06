@@ -5,15 +5,12 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import paneles.*;
-import backend.*;
 
 public class loader {
-	private static int[] dimensiones;
 	private static Dimension screenSize;
 
 	public loader() {
-		dimensiones = main.getDimensiones();
+		main.getDimensiones();
 		screenSize = main.getDimensionesPantalla();
 	}
 

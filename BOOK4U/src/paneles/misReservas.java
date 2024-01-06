@@ -32,6 +32,10 @@ import backend.*;
 import main.*;
 
 public class misReservas extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 

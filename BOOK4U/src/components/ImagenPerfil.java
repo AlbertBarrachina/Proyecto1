@@ -15,6 +15,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ImagenPerfil extends JButton {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Image imagenPerfil;
 
 	public ImagenPerfil() {

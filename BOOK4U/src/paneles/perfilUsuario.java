@@ -1,22 +1,19 @@
 package paneles;
 
 import java.awt.*;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 import javax.swing.*;
 
-import backend.archivo;
-import backend.db;
+import backend.*;
 import main.*;
 
 public class perfilUsuario extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public perfilUsuario() {
-		int[] dimensiones = main.getDimensiones();
 		String[] usuario = main.getSesion();
 		main.setSesion(usuario[5], usuario[6]);
 		usuario = main.getSesion();

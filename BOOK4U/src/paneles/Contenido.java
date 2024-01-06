@@ -11,7 +11,11 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 public class Contenido extends JPanel {
-    private JLabel imageLabel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel imageLabel;
     private ImageIcon imageIcon;
     private Color backgroundColor = new Color(173, 216, 230);  // Define el color de fondo
     int[] dimensiones = main.getDimensiones();
@@ -30,7 +34,7 @@ public class Contenido extends JPanel {
         if (imageIcon != null) {
             Image image = imageIcon.getImage();
             //establece tamanyo de la imaen con respecto al tamaño del frame
-            Image newImg = image.getScaledInstance((int)Math.round(dimensiones[0]*0.25), (int)Math.round(dimensiones[1]*0.3), Image.SCALE_SMOOTH);
+            Image newImg = image.getScaledInstance(350, 300, Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);
             imageLabel = new JLabel(imageIcon);
             add(imageLabel);

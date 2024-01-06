@@ -1,12 +1,10 @@
 package paneles;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -25,12 +23,15 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
-import javax.swing.JViewport;
 
 import main.*;
 import backend.db;
 
 public class historico extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 

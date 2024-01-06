@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class LogIn extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -41,7 +46,7 @@ public class LogIn extends JPanel {
 					loader.cargarPrincipal();
 					JFrame frame = main.getFrame();
 					frame.setSize((int)Math.round(screenSize.width*0.8),(int)Math.round(screenSize.height*0.8));
-					frame.setExtendedState(frame.MAXIMIZED_BOTH);
+					frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 					String linea = backend.archivo.juntarLinea(array);
 					backend.archivo.editarTxt("src/config/config_usuario.txt", 0, linea);
 					JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");

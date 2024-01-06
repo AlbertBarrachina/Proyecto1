@@ -8,29 +8,24 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
-import backend.FiltradoHabitaciones;
-import backend.archivo;
 import backend.db;
 import components.ImagenPerfil;
 import main.*;
 
 public class ContenidoUI extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
 	private List<paneles.Contenido> contenidos;
@@ -40,13 +35,11 @@ public class ContenidoUI extends JPanel {
 		this.contenidos = new ArrayList<>();
 		this.backgroundColor = new Color(173, 216, 230);
 
-		int[] dimensiones = main.getDimensiones();
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
 
 		// Colores para los diferentes paneles
 		Color baseColor1 = new Color(255, 228, 196);
-		Color menuColor = baseColor1.darker();
 		Color titleColor = baseColor1;
 
 		Color baseColor2 = new Color(245, 245, 220);
@@ -94,7 +87,7 @@ public class ContenidoUI extends JPanel {
 		tituloLabel.setFont(new Font("Arial", Font.BOLD, 24));
 		tituloLabel.setHorizontalAlignment(JLabel.CENTER);
 		tituloLabel.setVerticalAlignment(JLabel.CENTER);
-		busquedaPanel.add(tituloLabel	, BorderLayout.CENTER);
+		busquedaPanel.add(tituloLabel, BorderLayout.CENTER);
 
 		topPanel.add(busquedaPanel, BorderLayout.CENTER);
 
@@ -136,8 +129,7 @@ public class ContenidoUI extends JPanel {
 			paneles.Contenido contenido = new paneles.Contenido(habitacion, imagePath);
 
 			contenidos.add(contenido);
-			gbc.gridx = i % 4;
-			gbc.gridy = i / 4;
+			gbc.gridy = i / 3;
 			contentPanel.add(contenido, gbc);
 		}
 
@@ -159,26 +151,6 @@ public class ContenidoUI extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		add(panelPrincipal, constraints);
-	}
-
-	private void buscar(String texto) {
-		contentPanel.removeAll();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 1.0;
-		gbc.insets = new Insets(75, 75, 75, 75);
-
-		int count = 0;
-		for (paneles.Contenido contenido : contenidos) {
-			if (1 == 1) {
-				gbc.gridx = count % 4;
-				gbc.gridy = count / 4;
-				contentPanel.add(contenido, gbc);
-				count++;
-			}
-		}
-		contentPanel.revalidate();
-		contentPanel.repaint();
 	}
 
 }
