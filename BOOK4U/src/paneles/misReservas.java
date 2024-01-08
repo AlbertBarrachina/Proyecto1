@@ -1,15 +1,21 @@
 package paneles;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Date;
+
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,6 +32,10 @@ import backend.*;
 import main.*;
 
 public class misReservas extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int[] dimensiones = main.getDimensiones();
 	String[] cliente = main.getSesion();
 
@@ -52,7 +62,6 @@ public class misReservas extends JPanel {
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 		ArrayList<String[]> reservas = db.historialReservas(Integer.parseInt(cliente[0]), "P", "P", "P");
-
 		// areglar!! no comprueba si hay habitaciones correctamente
 		if (reservas.isEmpty()) {
 			JTextPane textPane = new JTextPane();
@@ -70,11 +79,14 @@ public class misReservas extends JPanel {
 				textPane.setEditable(false);
 				String[] reserva = reservas.get(i - 1);
 				if (reserva.length == 7) {
+					List<String[]> habitaciones = db.buscarHabitacion(Integer.parseInt(reserva[1]));
+					String[] habitacion = habitaciones.get(0);
+					String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
 					// intenta cargar la imgen
 					try {
-						File file = new File("src/assets/imagenes/1.jpg");
+						File file = new File("src/assets/imagenes/" + habitacion[0] + ".jpg");
 						Image image = ImageIO.read(file);
-						Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+						Image resizedImage = image.getScaledInstance(190, 190, Image.SCALE_SMOOTH);
 
 						// Create an ImageIcon from the Image
 						ImageIcon imageIcon = new ImageIcon(resizedImage);
@@ -102,17 +114,34 @@ public class misReservas extends JPanel {
 					} catch (Exception e) {
 						reserva[4] = "No se pudo cargar.";
 					}
-					textPane.setText("\rNº Habitacion: " + reserva[1] + ".\rPrecio: " + reserva[3]
-							+ " creditos.\rEstado: " + reserva[4] + ".\rFecha de entrada: " + reserva[5]
-							+ ".\rFecha de salida: " + reserva[6] + ".");
+					String fecha1 = "Cargando...";
+					String fecha2 = "Cargando...";
+					SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+					Date date;
+					try {
+						date = inputFormat.parse(reserva[5]);
+						fecha1 = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
+					try {
+						date = inputFormat.parse(reserva[6]);
+						fecha2 = outputFormat.format(date);
+					} catch (ParseException e1) {
+					}
+					textPane.setText("\rNombre: " + habitacion[7] + "\rDescripcion: " + habitacion[8] + "\rDireccion: "
+							+ empresa[2] + "\rPrecio: " + reserva[3] + " EcoBits\rEstado: " + reserva[4]
+							+ "\rFecha de entrada: " + fecha1 + "\rFecha de salida: " + fecha2);
 				} else {
 					textPane.setText("Invalid data");
 				}
 				panelTexto.add(textPane);
-				JButton editarButton = new JButton("Editar reserva");
+				JButton editarButton = new JButton("Cancelar reserva");
 				editarButton.addActionListener(e -> {
-					VentanaEditar(reserva);
+					VentanaEditar(reserva, panelTexto);
 				});
+				Font readableFont = new Font("SansSerif", Font.PLAIN, 20);
+				textPane.setFont(readableFont);
 				panelTexto.add(editarButton);
 				textPanel.add(panelTexto);
 			}
@@ -120,6 +149,7 @@ public class misReservas extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(textPanel);
 
+		scrollPane.getViewport().setViewPosition(new Point(0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
@@ -142,8 +172,8 @@ public class misReservas extends JPanel {
 		add(backButton, constraints);
 	}
 
-	private void VentanaEditar(String[] reserva) {
-		List<String[]> habitaciones = db.buscarHabitacion(0, 0, (float) 0.00, "", 0, Integer.parseInt(reserva[1]));
+	private void VentanaEditar(String[] reserva, JPanel panelActual) {
+		List<String[]> habitaciones = db.buscarHabitacion(Integer.parseInt(reserva[1]));
 		String[] habitacion = new String[9];
 		if (!habitaciones.isEmpty()) {
 			habitacion = Arrays.copyOf(habitaciones.get(0), 9);
@@ -155,17 +185,25 @@ public class misReservas extends JPanel {
 
 		// Agrega etiquetas y campos para los detalles de la reserva
 		dialogReserva.add(new JLabel("Nombre de la habitación: " + habitacion[7]));
-		dialogReserva.add(new JLabel("Precio: " + reserva[3]));
-		dialogReserva.add(new JLabel("Descripción: " + habitacion[8]));
-		
+		dialogReserva.add(new JLabel("Precio: " + reserva[3] + " EcoBits"));
+		String[] empresa = db.InfoEmpresa(Integer.parseInt(habitacion[1]));
+		dialogReserva.add(new JLabel("Dirección: " + empresa[2]));
+
 		// Botón para confirmar la reserva
 		JButton confirmButton = new JButton("Cancelar reserva");
+		final int idh = Integer.parseInt(habitacion[0]);
 		confirmButton.addActionListener(e -> {
-			if(db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
+			if (db.editarInfoReserva(Integer.parseInt(reserva[0]))) {
 				JOptionPane.showMessageDialog(dialogReserva, "Reserva Cancelada con exito.");
-			}else {
+				db.editarCreditosCliente(Integer.parseInt(cliente[0]), Integer.parseInt(reserva[3]));
+				db.editarInfoHabitacion(idh, "S");
+				panelActual.removeAll();
+				revalidate();
+				repaint();
+			} else {
 				JOptionPane.showMessageDialog(dialogReserva, "ERROR");
 			}
+			dialogReserva.dispose();
 		});
 		dialogReserva.add(confirmButton);
 		dialogReserva.setVisible(true);

@@ -1,24 +1,23 @@
 package backend;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.SwingWorker;
+import java.util.Date;
 
 public class db {
 
 	private static final String USER = "DW2_2324_BOOK4U_ASA";
 	private static final String PWD = "AASA";
 	// conexionn dentro de ilerna
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 	// conexion fuera de ilerna
 //	private static final String URL = "jdbc:oracle:thin:@oracle.ilerna.com:1521:xe";
 
@@ -31,7 +30,12 @@ public class db {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection(URL, USER, PWD);
+			try {
+				con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.ilerna.com:1521:xe", USER, PWD);
+			} catch (Exception e) {
+				con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.3.26:1521:xe", USER, PWD);
+			}
+
 		} catch (ClassNotFoundException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
@@ -86,7 +90,7 @@ public class db {
 			if (rs.next()) {
 				return "El correo o el telefono ya estan en uso";
 			} else {
-				sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0, 'S')";
+				sql = "INSERT INTO CLIENTE values( NULL , ? , ? , ? , NULL , ? , ? ,0)";
 				try {
 					pst = con.prepareStatement(sql);
 					pst.setString(1, nombre);
@@ -102,18 +106,18 @@ public class db {
 						return "No se pudo crear el usuario.";
 					}
 				} catch (SQLException e) {
-					return "Error: " + (e);
+					return "No se pudo crear el usuario.";
 				}
 			}
 		} catch (SQLException e) {
-			return "Error: " + (e);
+			return "No se pudo crear el usuario.";
 		}
 	}
 
 	// ------------------------------------------------------
 	// recoje toda la informacion del cliente
 	public static String[] mostrarInfoCliente(String correo, String contrasenya) {
-		String cliente[] = new String[9];
+		String cliente[] = new String[8];
 		String sql = "SELECT * from CLIENTE WHERE correo = ? AND contrasenya = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
@@ -132,7 +136,6 @@ public class db {
 				cliente[5] = rs.getString("correo");
 				cliente[6] = rs.getString("contrasenya");
 				cliente[7] = Integer.toString(rs.getInt("creditos"));
-				cliente[8] = rs.getString("tipo");
 			} else {
 				System.out.println("No hay cliente.");
 			}
@@ -144,7 +147,7 @@ public class db {
 
 	// ------------------------------------------------------------------------------------------
 	// comprueba si los datos insertados coinciden con los datos en la base de
-	// datos(correo y contraseña).
+	// datos(correo y contraseï¿½a).
 
 	public static boolean comprobarLoginCliente(String correo, String contrasenya) {
 		String contrasenyaCorrecta;
@@ -215,7 +218,7 @@ public class db {
 	}
 
 	// -----------------------------------------------------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!
-	// Cambia la contraseña de la cuenta. !!!!!!!!!!!!!!!!!!!(falta
+	// Cambia la contraseï¿½a de la cuenta. !!!!!!!!!!!!!!!!!!!(falta
 	// encriptar)!!!!!!!!!!!!!!!!
 	public static String editarContrasenyaCliente(int idc, String contrasenya) {
 		String sql = "UPDATE CLIENTE SET contrasenya = ? WHERE idc = ?";
@@ -226,9 +229,9 @@ public class db {
 
 			int rowsUpdated = pst.executeUpdate();
 			if (rowsUpdated > 0) {
-				return "La contraseña se ha cambiado correctamente.";
+				return "La contraseï¿½a se ha cambiado correctamente.";
 			} else {
-				return "No se ha podido cambiar la contraseña.";
+				return "No se ha podido cambiar la contraseï¿½a.";
 			}
 		} catch (SQLException e) {
 			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
@@ -239,9 +242,9 @@ public class db {
 	// edita cuantos creditos tiene una persona, comprueba si tiene suficientes para
 	// gastar y si tiene demasiados (max 999) y los actualiza, manda una string para
 	// que salga como notificacion por pantalla
-	public static String editarCreditosCliente(int idc, int creditos) {
+	public static Boolean editarCreditosCliente(int idc, int creditos) {
 
-		String sql = "UPDATE CLIENTE SET creditos =  ? WHERE idc = ?";
+		String sql = "UPDATE CLIENTE SET creditos =  creditos + ? WHERE idc = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, creditos);
@@ -250,12 +253,12 @@ public class db {
 			int rowsUpdated = pst.executeUpdate();
 
 			if (rowsUpdated > 0) {
-				return "Operacion realizada con exito. Ahora tiene " + creditos + " creditos.";
+				return true;
 			} else {
-				return "No se ha encontrado el usuario.";
+				return false;
 			}
 		} catch (SQLException e) {
-			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+			return false;
 		}
 	}
 
@@ -278,25 +281,6 @@ public class db {
 		return creditosActuales;
 	}
 
-	// -------------------------------------------------------
-	// elimina el cliente que se ha indicado en casos extremos.
-	public static String eliminarCliente(int idc) {
-		String sql = "DELETE FROM CLIENTE WHERE idc = ?";
-		try {
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, idc);
-
-			int rowsDeleted = pst.executeUpdate();
-			if (rowsDeleted > 0) {
-				return "El cliente ha sido eliminado correctamente.";
-			} else {
-				return "No se ha podido eliminar el cliente.";
-			}
-		} catch (SQLException e) {
-			return "Ha sucedido un error en la base de datos, vuelva a intentarlo en unos minutos.";
-		}
-	}
-
 	///////////////////////////////////////////////////////////
 	// funciones tabla compras ///
 	///////////////////////////////////////////////////////////
@@ -311,20 +295,26 @@ public class db {
 		int creditosActuales = getCreditosCliente(idc);
 		int temp = creditosActuales + creditos;
 		if (temp <= 999) {
-			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?)";
+			String sql = "INSERT INTO COMPRAS values( NULL , ? , ? , ? , ?, ?)";
 			try {
 				PreparedStatement pst = con.prepareStatement(sql);
 				pst.setInt(1, idc);
 				pst.setInt(2, creditos);
 				pst.setInt(3, creditos * 10);
 				pst.setString(4, metodo_pago);
-
+				java.util.Date currentDate = new java.util.Date();
+				java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
+				pst.setDate(5, sqlDate);
 				int rowsInserted = pst.executeUpdate();
 				if (rowsInserted > 0) {
-					creditos = creditosActuales + creditos;
-					mensaje = (editarCreditosCliente(idc, creditos));
+					if (editarCreditosCliente(idc, creditos)) {
+						mensaje = "Operacion realizada con exito. Ahora tiene " + (creditos + creditosActuales)
+								+ " creditos.";
+					} else {
+						mensaje = "No se pudo hacer la transaccion.1";
+					}
 				} else {
-					mensaje = "No se pudo hacer la transaccion.";
+					mensaje = "No se pudo hacer la transaccion.2";
 				}
 			} catch (SQLException e) {
 				mensaje = "Error: " + (e);
@@ -338,32 +328,28 @@ public class db {
 
 	public static ArrayList<String[]> historialCompras(int idc) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * FROM COMPRAS WHERE cliente = ?";
+		String sql = "SELECT * FROM COMPRAS WHERE cliente = ? ORDER BY fecha DESC";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
 
 			ResultSet rs = pst.executeQuery();
-
+			// formato para convertir fechas en strings
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM'h'");
 			// si existe el usuario
 			while (rs.next()) {
-				String[] row = new String[5];
+				String[] row = new String[6];
 				row[0] = Integer.toString(rs.getInt("id_compra"));
 				row[1] = Integer.toString(rs.getInt("cliente"));
 				row[2] = Integer.toString(rs.getInt("cantidad"));
 				row[3] = Integer.toString(rs.getInt("precio"));
 				row[4] = rs.getString("id_compra");
+				row[5] = dateFormat.format(rs.getDate("fecha"));
 
-				resultados.add(row);
-
-			}
-			if (resultados.isEmpty()) {
-				String[] row = new String[5];
-				row[0] = "No compraste nada.";
 				resultados.add(row);
 			}
 		} catch (SQLException e) {
-			String[] row = new String[5];
+			String[] row = new String[6];
 			row[0] = "" + (e);
 			resultados.add(row);
 		}
@@ -378,21 +364,22 @@ public class db {
 	// permite crear reservas
 	public static Boolean comprarReserva(int idc, int id_habitacion, int precio, String estado, String strEntrada,
 			String strSalida) {
-		String sql = "INSERT INTO COMPRAS values( NULL ,? ,? ,? ,?, ?, ?)";
+		String sql = "INSERT INTO RESERVA values(0, ?, ?, ?, ?, ?, ?)";
+
+		SimpleDateFormat DateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
 		try {
+			Date Inicial = DateFormat.parse(strEntrada);
+			Date Final = DateFormat.parse(strSalida);
+			Timestamp Entrada = new Timestamp(Inicial.getTime());
+			Timestamp Salida = new Timestamp(Final.getTime());
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, id_habitacion);
 			pst.setInt(2, idc);
 			pst.setInt(3, precio);
 			pst.setString(4, estado);
-			pst.setTimestamp(5, java.sql.Timestamp.valueOf("2023-11-30 14:30:00"));
-			pst.setTimestamp(6, java.sql.Timestamp.valueOf("2023-11-30 14:30:00"));
-
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//////////////////////////////////////////////////////////////////
-			/// poner la variable en el texto de la fecha //
-			/////////////////////////////////////////////////////////////////
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			pst.setTimestamp(5, Entrada);
+			pst.setTimestamp(6, Salida);
 
 			int rowsInserted = pst.executeUpdate();
 			if (rowsInserted > 0) {
@@ -400,18 +387,14 @@ public class db {
 			} else {
 				return false;
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace(); // Print the exception details for debugging
+			System.out.println("error fatal");
 			return false;
 		}
+
 	}
 
-	
-	//////////////////////////////////////////////
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!///
-	//esta funcion peta el progama//////////////
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!//////////////
-	///////////////////////////////////////
-	
 	// permite cancelar reservas.
 	public static boolean editarInfoReserva(int id_reserva) {
 
@@ -431,11 +414,12 @@ public class db {
 			return false;
 		}
 	}
-	
 
+	// historico de las reservas, puede mostrar las reservas acaadas canceladas o
+	// fenegadas o las reservas pagadas
 	public static ArrayList<String[]> historialReservas(int idc, String estado, String estado2, String estado3) {
 		ArrayList<String[]> resultados = new ArrayList<>();
-		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?)";
+		String sql = "SELECT * FROM RESERVA WHERE cliente = ? AND (estado = ? OR estado = ? OR estado = ?) ORDER BY fecha_entrada DESC";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, idc);
@@ -447,7 +431,6 @@ public class db {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM'h'");
 			// si existe el usuario
 			while (rs.next()) {
-				System.out.println("se ha encontrado habitaciones");
 				String[] row = new String[7];
 				row[0] = Integer.toString(rs.getInt("id_reserva"));
 				row[1] = Integer.toString(rs.getInt("id_habitacion"));
@@ -461,60 +444,78 @@ public class db {
 
 			}
 		} catch (SQLException e) {
-			System.out.println("catch");
+			String[] row = new String[7];
+			row[0] = "" + (e);
+			resultados.add(row);
 		}
 		return resultados;
 
 	}
+	
+	// busca todas las fechas donde las habitaciones estan reservadas en este momento
+		public static ArrayList<String[]> calendarioReservas(int idh) {
+			ArrayList<String[]> resultados = new ArrayList<>();
+			String sql = "SELECT * FROM RESERVA WHERE estado = 'P' AND ID_HABITACION = ? ORDER BY fecha_entrada DESC";
+			try {
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setInt(1, idh);
+				ResultSet rs = pst.executeQuery();
+				// formato para convertir fechas en strings
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				// si existe el usuario
+				while (rs.next()) {
+					String[] row = new String[2	];
+					row[0] = dateFormat.format(rs.getDate("fecha_entrada"));
+					row[1] = dateFormat.format(rs.getDate("fecha_salida"));
+
+					resultados.add(row);
+
+				}
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
+			return resultados;
+
+		}
 
 	///////////////////////////////////////////////////////////
 	// ------------funciones tabla empresa----------------- ///
 	///////////////////////////////////////////////////////////
 
-	// edita la informacion de la empresa en caso de que se cambie le direccion o
-	// hagan un cambio de nombre
-	public static String editarInfoEmpresa(int ide, String nombre, String direccion) {
-
-		String sql = "UPDATE EMPRESA SET nombre =  ?, direccion = ? WHERE ide = ?";
+	// obtiene la info de la empresa especificada
+	public static String[] InfoEmpresa(int ide) {
+		String[] resultados = new String[3];
+		String sql = "SELECT * FROM EMPRESA WHERE IDE = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, nombre);
-			pst.setString(2, direccion);
-			pst.setInt(2, ide);
+			pst.setInt(1, ide);
 
-			int rowsUpdated = pst.executeUpdate();
-
-			if (rowsUpdated > 0) {
-				return "Infomracion cambiada correctamente";
-			} else {
-				return "No se ha encontrado la empresa.";
-			}
+			ResultSet rs = pst.executeQuery();
+			rs.next();
+			resultados[0] = Integer.toString(rs.getInt("ide"));
+			resultados[1] = rs.getString("nombre");
+			resultados[2] = rs.getString("direccion");
 		} catch (SQLException e) {
-			return "No se ha podido hacer la operacion, error: " + (e) + ".";
+			resultados[0] = "1";
+			resultados[1] = "BOOK4U";
+			resultados[2] = "No se pudo cargar la direccion";
 		}
+		return resultados;
 	}
 
 	///////////////////////////////////////////////////////////
-	// funciones tabla habitacion ///
+	// ----- funciones tabla habitacion ---------------------///
 	///////////////////////////////////////////////////////////
 
 	// ----------------------------------------------------------------
-	// edita la informacion de la habitacion en caso de querer cambiar el precio,
-	// los descuentos, la descripcion, el tipo o cuantas camas tiene(personas que
-	// pueden dormir en esta).
-	public static String editarInfoHabitacion(int id_habitacion, int precio, Float descuento, String tipo, int camas,
-			String nombre, String descripcion) {
+	// cambia el estado de la habitacion.
+	public static String editarInfoHabitacion(int id_habitacion, String estado) {
 
-		String sql = "UPDATE HABITACION SET precio =  ?, descuento = ?, tipo = ?, camas = ?, nombre = ? descripcion = ? WHERE id_habitacion = ?";
+		String sql = "UPDATE HABITACION SET disponibilidad = ? WHERE id_habitacion = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, precio);
-			pst.setFloat(2, descuento);
-			pst.setString(3, tipo);
-			pst.setInt(4, camas);
-			pst.setString(5, descripcion);
-			pst.setString(6, nombre);
-			pst.setInt(7, id_habitacion);
+			pst.setString(1, estado);
+			pst.setInt(2, id_habitacion);
 
 			int rowsUpdated = pst.executeUpdate();
 
@@ -531,78 +532,52 @@ public class db {
 	// busca toda la informacion de las habitaciones que entren dentro de las
 	// categorias de busqueda introducidas, si la categoria es null no se incluye en
 	// el select
-	public static List<String[]> buscarHabitacion(int empresa, int precio, float descuento, String tipo, int camas, int idh) {
-        List<String[]> resultados = new ArrayList<>();
+	public static List<String[]> buscarHabitacion(int idh) {
+		List<String[]> resultados = new ArrayList<>();
 
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1=1");
-        List<Object> params = new ArrayList<>();
+		StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM HABITACION WHERE 1 = 1");
+		List<Object> params = new ArrayList<>();
 
-        if (idh > 0) {
-            sqlBuilder.append(" AND id_habitacion = ?");
-            params.add(idh);
-        } else {
-            if (empresa > 0) {
-                sqlBuilder.append(" AND empresa = ?");
-                params.add(empresa);
-            }
+		if (idh > 0) {
+			sqlBuilder.append(" AND id_habitacion = ?");
+			params.add(idh);
+		} else {
+			sqlBuilder.append(" AND DISPONIBILIDAD = 'S'");
+		}
 
-            if (precio > 0) {
-                sqlBuilder.append(" AND precio <= ?");
-                params.add(precio);
-            }
+		String sql = sqlBuilder.toString();
+		try (PreparedStatement pst = con.prepareStatement(sql)) {
+			// Set parameters
+			for (int i = 0; i < params.size(); i++) {
+				pst.setObject(i + 1, params.get(i));
+			}
 
-            if (descuento > 0) {
-                sqlBuilder.append(" AND descuento = ?");
-                params.add(descuento);
-            }
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					String[] row = new String[9];
+					row[0] = Integer.toString(rs.getInt("ID_HABITACION"));
+					row[1] = Integer.toString(rs.getInt("EMPRESA"));
+					row[2] = Integer.toString(rs.getInt("PRECIO"));
+					row[3] = Integer.toString(rs.getInt("DESCUENTO"));
+					row[4] = rs.getString("DISPONIBILIDAD");
+					row[5] = rs.getString("TIPO");
+					row[6] = Integer.toString(rs.getInt("CAMAS"));
+					row[7] = rs.getString("NOMBRE");
+					row[8] = rs.getString("DESCRIPCION");
+					resultados.add(row);
+				}
+			} catch (Exception e) {
+				if (resultados.isEmpty()) {
+					String[] row = new String[9];
+					row[0] = "No se han encontrado habitaciones. :(";
+					resultados.add(row);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(); // Log the exception or handle it as needed
+		}
 
-            if (tipo != null && !tipo.isEmpty()) {
-                sqlBuilder.append(" AND tipo = ?");
-                params.add(tipo);
-            }
-
-            if (camas > 0) {
-                sqlBuilder.append(" AND camas = ?");
-                params.add(camas);
-            }
-        }
-
-        String sql = sqlBuilder.toString();
-
-        try (PreparedStatement pst = con.prepareStatement(sql)) {
-            // Set parameters
-            for (int i = 0; i < params.size(); i++) {
-                pst.setObject(i + 1, params.get(i));
-            }
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    String[] row = new String[9];
-                    row[0] = Integer.toString(rs.getInt("id_habitacion"));
-                    row[1] = Integer.toString(rs.getInt("empresa"));
-                    row[2] = Integer.toString(rs.getInt("precio"));
-                    row[3] = Integer.toString(rs.getInt("descuento"));
-                    row[4] = rs.getString("disponibilidad");
-                    row[5] = rs.getString("tipo");
-                    row[6] = Integer.toString(rs.getInt("camas"));
-                    row[7] = rs.getString("nombre");
-                    row[8] = rs.getString("descripcion");
-
-                    resultados.add(row);
-                }
-            }
-
-            if (resultados.isEmpty()) {
-                String[] row = new String[9];
-                row[0] = "No se han encontrado habitaciones. :(";
-                resultados.add(row);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception or handle it as needed
-        }
-
-        return resultados;
-    }
+		return resultados;
+	}
 
 }

@@ -1,17 +1,15 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import backend.archivo;
-import backend.db;
+import backend.*;
 
 public class main {
 	// frame de la aplicacion, se usara este para todo
@@ -19,11 +17,11 @@ public class main {
 	private static String[] cliente = new String[10];
 	private static int[] dimensiones = new int[2];
 	private static Dimension screenSize;
-	public static void main(String[] args) {
+	public static void main(String[] args) {   
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setDimensiones((int)Math.round(screenSize.height*0.8),(int)Math.round(screenSize.width*0.8));
 		frame.setBounds((int)Math.round(dimensiones[0]*0.05),(int)Math.round(dimensiones[1]*0.05),dimensiones[0], dimensiones[1]);
-		//actualiza las dimensiones cada vez que se modifica el tamaño del frame
+		//actualiza las dimensiones cada vez que se modifica el tamanyo del frame
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -52,7 +50,7 @@ public class main {
 		if (db.comprobarLoginCliente(cliente[0], cliente[1])) {
 			setSesion(cliente[0], cliente[1]);
 			loader.cargarPrincipal();
-			frame.setExtendedState(frame.MAXIMIZED_BOTH);
+			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 			frame.setVisible(true);
 			JOptionPane.showMessageDialog(null, "login correcto.");
 			// si no se puede hacer login carga la pantalla de login

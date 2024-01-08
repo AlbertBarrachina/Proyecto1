@@ -1,6 +1,5 @@
 package backend;
 
-import java.util.*;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -8,6 +7,8 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class FiltradoHabitaciones {
+	
+	//esta clase no esta en uso!!!
     private List<paneles.Contenido> contenidos;
     private JPanel contentPanel;
 

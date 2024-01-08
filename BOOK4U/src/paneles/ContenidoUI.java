@@ -8,28 +8,24 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
-import backend.FiltradoHabitaciones;
-import backend.archivo;
+import backend.db;
 import components.ImagenPerfil;
 import main.*;
 
 public class ContenidoUI extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel panelPrincipal;
 	private Color backgroundColor;
 	private List<paneles.Contenido> contenidos;
@@ -39,16 +35,11 @@ public class ContenidoUI extends JPanel {
 		this.contenidos = new ArrayList<>();
 		this.backgroundColor = new Color(173, 216, 230);
 
-		int[] dimensiones = main.getDimensiones();
 		this.contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setBackground(backgroundColor);
 
-		String[] descriptions1 = archivo.leerTodasLasLineas("src/config/descripciones1.txt").toArray(new String[0]);
-		String[] descriptions2 = archivo.leerTodasLasLineas("src/config/descripciones2.txt").toArray(new String[0]);
-
 		// Colores para los diferentes paneles
 		Color baseColor1 = new Color(255, 228, 196);
-		Color menuColor = baseColor1.darker();
 		Color titleColor = baseColor1;
 
 		Color baseColor2 = new Color(245, 245, 220);
@@ -58,67 +49,6 @@ public class ContenidoUI extends JPanel {
 		//// PANEL PRINCIPAL DONDE SE Aï¿½ADIRAN EL RESTO DE PANELES////
 		panelPrincipal = new JPanel(new BorderLayout());
 		panelPrincipal.setBackground(backgroundColor);
-
-		// PANEL LATERAL DONDE IRAN ALGUNO DE LOS APARTADOS DEL MENU
-		JPanel menuPanel = new JPanel();
-		menuPanel.setPreferredSize(new Dimension(200, 600));
-		menuPanel.setBackground(menuColor); // Establecer el color de fondo
-		panelPrincipal.add(menuPanel, BorderLayout.WEST);
-		
-		menuPanel.setLayout(new GridBagLayout()); // Usando GridBagLayout para un mejor control
-		GridBagConstraints gbc1 = new GridBagConstraints();
-		gbc1.gridwidth = GridBagConstraints.REMAINDER;
-		gbc1.fill = GridBagConstraints.HORIZONTAL;
-		
-		
-		// Crear una instancia de la clase FiltradorDeContenido
-		FiltradoHabitaciones filtrador = new FiltradoHabitaciones(contenidos, contentPanel); // Asegúrate de que contenidos y contentPanel están definidos
-
-		// Componentes de filtrado
-		JComboBox<String> filtroPrecio = new JComboBox<>(new String[]{"1 - 10", "11 - 20", "21 - 30", "31 - 40", "41 - 50", "51 - 60", "61 - 70", "71 - 80", "81 - 90", "91 - 99"});
-		JCheckBox filtroDescuento = new JCheckBox("Con descuento");
-		JComboBox<String> filtroTipoHabitacion = new JComboBox<>(new String[]{"Hotel", "Casa Rural", "ApartHotel"});
-		JComboBox<Integer> filtroNumCamas = new JComboBox<>(new Integer[]{1, 2, 3, 4});
-
-		// Listeners para los componentes de filtrado
-		/*ActionListener filtroListener = new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        filtrador.filtrarContenidos(
-		            (String) filtroPrecio.getSelectedItem(), 
-		            filtroDescuento.isSelected(), 
-		            (String) filtroTipoHabitacion.getSelectedItem(), 
-		            (Integer) filtroNumCamas.getSelectedItem()
-		        );
-		    }
-		};
-
-		filtroPrecio.addActionListener(filtroListener);
-		filtroDescuento.addActionListener(filtroListener);
-		filtroTipoHabitacion.addActionListener(filtroListener);
-		filtroNumCamas.addActionListener(filtroListener);*/
-		
-		Dimension maxComponentSize = new Dimension(Integer.MAX_VALUE, filtroPrecio.getPreferredSize().height);
-		filtroPrecio.setMaximumSize(maxComponentSize);
-		filtroDescuento.setMaximumSize(maxComponentSize);
-		filtroTipoHabitacion.setMaximumSize(maxComponentSize);
-		filtroNumCamas.setMaximumSize(maxComponentSize);
-
-
-		// Agregar componentes de filtrado al panel de menú
-		menuPanel.add(new JLabel("Filtrar por Precio:"), gbc1);
-		menuPanel.add(filtroPrecio, gbc1);
-		menuPanel.add(new JLabel("Descuento:"), gbc1);
-		menuPanel.add(filtroDescuento, gbc1);
-		menuPanel.add(new JLabel("Tipo de Habitación:"), gbc1);
-		menuPanel.add(filtroTipoHabitacion, gbc1);
-		menuPanel.add(new JLabel("Número de Camas:"), gbc1);
-		menuPanel.add(filtroNumCamas, gbc1);
-		
-		
-		
-		
-		
-		
 
 		//// PANEL SUPERIOR DONDE IRAN LOS PANELES DE BUSQUEDA, PERFIL Y TITULO////
 		JPanel topPanel = new JPanel(new BorderLayout());
@@ -133,10 +63,10 @@ public class ContenidoUI extends JPanel {
 		titulo.setHorizontalAlignment(JLabel.CENTER);
 		titulo.setFont(font);
 
-		// Cargar y añadir la imagen al panel tituloPanel
+		// Cargar y aï¿½adir la imagen al panel tituloPanel
 		try {
 			Image img = ImageIO.read(new File("src/assets/book4u.png")); // Reemplaza con la ruta a tu imagen
-			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tamaño según sea
+			Image resizedImg = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH); // Ajusta el tamano segun sea
 																					// necesario
 
 			ImageIcon imageIcon = new ImageIcon(resizedImg);
@@ -151,37 +81,13 @@ public class ContenidoUI extends JPanel {
 		tituloPanel.setPreferredSize(new Dimension(100, 30));
 		topPanel.add(tituloPanel, BorderLayout.WEST);
 
-		//// CREAMOS EL PANEL PARA EL CAMPO DE BUSQUEDA////
-		JTextField busqueda = new JTextField("");
-		busqueda.setFont(font);
-		busqueda.setHorizontalAlignment(JTextField.CENTER);
-
-		// CREAMOS EL BOTON DE BUSQUEDA
-		components.CircularButton buscarButton = new components.CircularButton("", null);
-		buscarButton.setPreferredSize(new Dimension(30, 30));
-		buscarButton.setContentAreaFilled(false);
-		buscarButton.setBorderPainted(true);
-		buscarButton.setFocusPainted(false);
-		buscarButton.setOpaque(false);
-
-		try {
-			Image img = ImageIO.read(new File("src/assets/imagenes/lupa.png")); // Reemplaza con la ruta a tu imagen
-			Image resizedImg = img.getScaledInstance(buscarButton.getPreferredSize().width,
-					buscarButton.getPreferredSize().height, Image.SCALE_SMOOTH);
-			buscarButton.setIcon(new ImageIcon(resizedImg));
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		buscarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				buscar(busqueda.getText().toLowerCase());
-			}
-		});
-
 		JPanel busquedaPanel = new JPanel(new BorderLayout());
 		busquedaPanel.setBackground(searchColor);
-		busquedaPanel.add(busqueda, BorderLayout.CENTER);
-		busquedaPanel.add(buscarButton, BorderLayout.EAST);
+		JLabel tituloLabel = new JLabel("Habitaciones");
+		tituloLabel.setFont(new Font("Arial", Font.BOLD, 24));
+		tituloLabel.setHorizontalAlignment(JLabel.CENTER);
+		tituloLabel.setVerticalAlignment(JLabel.CENTER);
+		busquedaPanel.add(tituloLabel, BorderLayout.CENTER);
 
 		topPanel.add(busquedaPanel, BorderLayout.CENTER);
 
@@ -212,21 +118,18 @@ public class ContenidoUI extends JPanel {
 		gbc.weightx = 1.0;
 		gbc.insets = new Insets(75, 75, 75, 75);
 
-		//// MARCAMOS CUANTOS CONTENIDOS QUEREMOS QUE TENGA EL PANEL////
-		int numContents = 20;
-
 		/// INICIAMOS UN BUCLE PARA QUE CARGUE LA IMAGENES Y DESCRIPCIONES
 		/// CORRESPONDIENTES A CADA UNO DE LOS CONTENIDOS///
 		/// A SU VEZ SE MARCA COMO SE QUIERE QUE ESTOS CONTENIDOS ESTEN DISTRIBUIDOS///
-		for (int i = 0; i < numContents; i++) {
-			String imagePath = "src/assets/imagenes/" + (i + 1) + ".jpg";
-			String description1 = descriptions1[i];
-			String description2 = descriptions2[i];
-			paneles.Contenido contenido = new paneles.Contenido(imagePath, description1, description2, panelPrincipal);
+		List<String[]> habitaciones = db.buscarHabitacion(0);
+		for (int i = 0; i < habitaciones.size(); i++) {
+			String[] habitacion = habitaciones.get(i);
+			String imagePath = "src/assets/imagenes/" + (habitacion[0]) + ".jpg";
+
+			paneles.Contenido contenido = new paneles.Contenido(habitacion, imagePath);
 
 			contenidos.add(contenido);
-			gbc.gridx = i % 4;
-			gbc.gridy = i / 4;
+			gbc.gridy = i / 3;
 			contentPanel.add(contenido, gbc);
 		}
 
@@ -248,27 +151,6 @@ public class ContenidoUI extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		add(panelPrincipal, constraints);
-	}
-
-	private void buscar(String texto) {
-		contentPanel.removeAll();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 1.0;
-		gbc.insets = new Insets(75, 75, 75, 75);
-
-		int count = 0;
-		for (paneles.Contenido contenido : contenidos) {
-			if (contenido.getDescription1().toLowerCase().contains(texto)
-					|| contenido.getDescription2().toLowerCase().contains(texto)) {
-				gbc.gridx = count % 4;
-				gbc.gridy = count / 4;
-				contentPanel.add(contenido, gbc);
-				count++;
-			}
-		}
-		contentPanel.revalidate();
-		contentPanel.repaint();
 	}
 
 }
